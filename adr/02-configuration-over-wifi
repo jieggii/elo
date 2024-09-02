@@ -1,0 +1,9 @@
+Since we need WiFi interface anyway to provide access to Elo's measurements,
+it's quite convenient to use this interface to configure Elo.
+
+Why configure Elo using WiFi and not using the device itself?
+It will be simpler to implement configuration over WiFi rather than
+implementing configuration on the device itself. The second option will
+require more code, time and effort to implement different states of the Settings view.
+
+Another reason for that is that LCD is too small (16x2) to provide a convenient Settings UI.
