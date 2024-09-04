@@ -1,46 +1,54 @@
 #include <Arduino.h>
-#include <LiquidCrystal_I2C.h>
-#include "SparkFun_SCD4x_Arduino_Library.h"
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
-SCD4x mySensor;
+#include "LCD1602.h"
+#include "SCD40.h"
 
+#include "ViewIndex.h"
+
+#include "ViewRouter.h"
+
+#include "views/IdleView.h"
+#include "views/StandView.h"
+
+namespace Hardware {
+    std::shared_ptr<LCD1602> screen = std::make_shared<LCD1602>(0x27);
+    std::shared_ptr<SCD40> cd_sensor = std::make_shared<SCD40>(); // environmental sensor sensor
+}
+
+ViewRouter VIEW_ROUTER;
+
+void init_views() {
+    VIEW_ROUTER.registerView(IDLE_VIEW_INDEX, []() {
+        return std::make_shared<IdleView>([&](uint8_t index) { VIEW_ROUTER.switchView(index); }, Hardware::cd_sensor,Hardware::screen);
+    });
+    VIEW_ROUTER.registerView(STAND_VIEW_INDEX, []() {
+        return std::make_shared<StandView>([&](uint8_t index) { VIEW_ROUTER.switchView(index); }, Hardware::cd_sensor, Hardware::screen);
+    });
+}
+
+// Globals:
 void setup() {
     Serial.begin(9600);
 
-    lcd.init();
-    lcd.backlight();
+    // Init screen:
+    Hardware::screen->init();
+    Hardware::screen->clear();
 
-    if (!mySensor.begin()) {
-        Serial.println("Sensor not detected. Please check wiring. Freezing...");
-        while (true) {}
-    }
+    // Create and register views:
+    init_views();
+
+    // Set and initialize current view:
+    VIEW_ROUTER.switchView(IDLE_VIEW_INDEX);
+    VIEW_ROUTER.getCurrentView()->setup();
 }
 
 void loop() {
-    lcd.clear();
-    lcd.print("elo");
+#ifdef DEBUG
+    unsigned long freeRAM = ESP.getFreeHeap();
+    Serial.print("dbg: free RAM: ");
+    Serial.print(freeRAM);
+    Serial.println(" bytes");
+#endif
 
-    delay(1000);
-
-    if (mySensor.readMeasurement()) // readMeasurement will return true when fresh data is available
-    {
-        Serial.println();
-
-        Serial.print("CO2(ppm):");
-        Serial.print(mySensor.getCO2());
-
-        Serial.print("\tTemperature(C):");
-        Serial.print(mySensor.getTemperature(), 1);
-
-        Serial.print("\tHumidity(%RH):");
-        Serial.print(mySensor.getHumidity(), 1);
-
-        Serial.println();
-    }
-    else {
-        Serial.print(F("."));
-    }
-
-    delay(500);
+    VIEW_ROUTER.getCurrentView()->loop();
 }
