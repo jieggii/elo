@@ -5,6 +5,7 @@
 
 #include "ViewIndex.h"
 
+#include "debug_print.h"
 #include "ViewRouter.h"
 
 #include "views/IdleView.h"
@@ -28,7 +29,10 @@ void init_views() {
 
 // Globals:
 void setup() {
+#ifdef DEBUG
     Serial.begin(9600);
+#endif
+    debug_println("begin setup");
 
     // Init screen:
     Hardware::screen->init();
@@ -40,6 +44,8 @@ void setup() {
     // Set and initialize current view:
     VIEW_ROUTER.switchView(IDLE_VIEW_INDEX);
     VIEW_ROUTER.getCurrentView()->setup();
+
+    debug_println("finish setup");
 }
 
 void loop() {
