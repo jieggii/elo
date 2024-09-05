@@ -5,20 +5,19 @@
 #ifndef ELO_VIEWROUTER_H
 #define ELO_VIEWROUTER_H
 
-#include "memory"
-
 #include "View.h"
+#include "memory"
 
 #define MAX_VIEWS 10
 
 using ViewFactory = std::function<std::shared_ptr<View>()>;
 
 class ViewRouter {
-private:
+   private:
     ViewFactory view_factories[MAX_VIEWS];
     std::shared_ptr<View> current_view;
 
-public:
+   public:
     ViewRouter() = default;
 
     void registerView(uint8_t index, const ViewFactory& factory) {
@@ -41,10 +40,7 @@ public:
         this->getCurrentView()->setup();
     }
 
-    [[nodiscard]] std::shared_ptr<View> getCurrentView() const {
-        return this->current_view;
-    }
+    [[nodiscard]] std::shared_ptr<View> getCurrentView() const { return this->current_view; }
 };
 
-
-#endif //ELO_VIEWROUTER_H
+#endif  // ELO_VIEWROUTER_H

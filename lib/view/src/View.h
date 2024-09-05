@@ -7,17 +7,16 @@
 
 #include <utility>
 
-#include "functional"
 #include "cstdint"
-
+#include "functional"
 
 class View {
-public:
+   public:
     virtual void setup() const = 0;
     virtual void loop() const = 0;
-//    virtual void cleanup() const = 0;
+    //    virtual void cleanup() const = 0;
 
     virtual ~View() = default;
 };
 
-#endif //ELO_VIEW_H
+#endif  // ELO_VIEW_H

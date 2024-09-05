@@ -5,10 +5,6 @@
 #ifndef ELO_SCD40_H
 #define ELO_SCD40_H
 
+class SCD40 {};
 
-class SCD40 {
-
-};
-
-
-#endif //ELO_SCD40_H
+#endif  // ELO_SCD40_H

@@ -9,13 +9,11 @@ void LCD1602::init() {
     this->lcd.backlight();
 }
 
-void LCD1602::clear() {
-    this->lcd.clear();
-}
+void LCD1602::clear() { this->lcd.clear(); }
 
 void LCD1602::cacheIcon(uint8_t slot, const Icon& icon) {
     // make sure not to use reserved CGRAM slot!
-    this->lcd.createChar(slot, reinterpret_cast<const char *>(icon));
+    this->lcd.createChar(slot, reinterpret_cast<const char*>(icon));
 }
 
 void LCD1602::displayCachedIcon(uint8_t slot, uint8_t col, uint8_t row) {

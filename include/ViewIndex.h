@@ -10,4 +10,4 @@
 
 // ...
 
-#endif //ELO_VIEWINDEX_H
+#endif  // ELO_VIEWINDEX_H

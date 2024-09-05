@@ -14,5 +14,4 @@
 #define debug_println(x)
 #endif
 
-
-#endif //ELO_DEBUG_PRINT_H
+#endif  // ELO_DEBUG_PRINT_H

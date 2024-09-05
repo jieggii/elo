@@ -2,16 +2,12 @@
 // Created by jieggii on 9/4/24.
 //
 
-#include "SoftwareSerial.h"
-
-#include "ViewIndex.h"
-
 #include "StandView.h"
 
+#include "SoftwareSerial.h"
+#include "ViewIndex.h"
 
-void StandView::setup() const {
-    this->display->clear();
-}
+void StandView::setup() const { this->display->clear(); }
 
 void StandView::loop() const {
     Serial.println("Hi from stand view");

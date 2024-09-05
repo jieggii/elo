@@ -9,4 +9,4 @@
 
 using Icon = uint8_t[8];
 
-#endif //ELO_ICON_H
+#endif  // ELO_ICON_H
