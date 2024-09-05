@@ -5,10 +5,6 @@
 #ifndef ELO_VIEWROUTER_H
 #define ELO_VIEWROUTER_H
 
-#ifdef DEGUG
-#include "SoftwareSerial.h"
-#endif
-
 #include "memory"
 
 #include "View.h"
@@ -27,9 +23,7 @@ public:
 
     void registerView(uint8_t index, const ViewFactory& factory) {
         if (index < 0 || index > MAX_VIEWS - 1) {
-#ifdef DEBUG
-            Serial.println("dbg: registerView: index is out of bounds");
-#endif
+            debug_println("error: registerView: index is out of bounds");
             return;
         }
 
@@ -38,9 +32,7 @@ public:
 
     void switchView(uint8_t index) {
         if (index < 0 || index > MAX_VIEWS - 1) {
-#ifdef DEBUG
-            Serial.println("dbg: switchView: index is out of bounds");
-#endif
+            debug_println("error: switchView: index is out of bounds");
             return;
         }
 

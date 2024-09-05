@@ -32,7 +32,7 @@ void setup() {
 #ifdef DEBUG
     Serial.begin(9600);
 #endif
-    debug_println("begin setup");
+    debug_println("info: begin setup");
 
     // Init screen:
     Hardware::screen->init();
@@ -45,16 +45,14 @@ void setup() {
     VIEW_ROUTER.switchView(IDLE_VIEW_INDEX);
     VIEW_ROUTER.getCurrentView()->setup();
 
-    debug_println("finish setup");
+    debug_println("info: finish setup");
 }
 
 void loop() {
-#ifdef DEBUG
-    unsigned long freeRAM = ESP.getFreeHeap();
-    Serial.print("dbg: free RAM: ");
-    Serial.print(freeRAM);
-    Serial.println(" bytes");
-#endif
+    // print free RAM:
+    debug_print("info: free RAM: ");
+    debug_print(ESP.getFreeHeap());
+    debug_println(" bytes");
 
     VIEW_ROUTER.getCurrentView()->loop();
 }
