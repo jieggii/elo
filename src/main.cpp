@@ -10,7 +10,7 @@
 
 namespace Hardware {
 std::shared_ptr<LCD1602> screen = std::make_shared<LCD1602>(0x27);
-std::shared_ptr<SCD40> cd_sensor = std::make_shared<SCD40>();  // environmental sensor sensor
+std::shared_ptr<SCD40> cd_sensor = std::make_shared<SCD40>();  // environmental sensor
 }  // namespace Hardware
 
 ViewRouter VIEW_ROUTER;
@@ -26,7 +26,6 @@ void init_views() {
     });
 }
 
-// Globals:
 void setup() {
 #ifdef DEBUG
     Serial.begin(9600);
