@@ -6,6 +6,7 @@
 #define ELO_VIEWROUTER_H
 
 #include "View.h"
+#include "debug_print.h"
 #include "memory"
 
 #define MAX_VIEWS 10
