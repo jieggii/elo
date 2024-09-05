@@ -6,3 +6,4 @@ UseTab: Never       # Always use spaces (Go and Python don't use tabs)
 #AllowShortIfStatementsOnASingleLine: true  # Optional: allows short `if` statements to remain on one line
 #ColumnLimit: 130    # Wider limit, Python doesn't have strict line limits, and Go uses around 100 chars
 ColumnLimit: 120
+SortIncludes: Never
