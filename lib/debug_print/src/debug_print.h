@@ -6,6 +6,7 @@
 #define ELO_DEBUG_PRINT_H
 
 #ifdef DEBUG
+#include "SoftwareSerial.h"
 #define debug_print(x) Serial.print(x)
 #define debug_println(x) Serial.println(x)
 #else
