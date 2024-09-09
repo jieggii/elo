@@ -3,9 +3,6 @@ INC_DIR := ./include
 LIB_DIR := ./lib
 TEST_DIR := ./test
 
-# Gather all files with the specified extensions in all defined directories
-FORMAT_FILES := $(shell find $(SRC_DIR) $(INC_DIR) $(LIB_DIR) $(TEST_DIR) -type f \( -name '*.cpp' -o -name '*.h' \))
-
 .PHONY: help
 help:
 	@echo "hello there!"
