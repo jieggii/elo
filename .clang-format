@@ -1,4 +1,5 @@
 BasedOnStyle: Google  # Or Google if preferred
+Standard: Latest
 IndentWidth: 4      # 4 spaces for indentation like Go and Python
 TabWidth: 4         # Tabs are 4 spaces wide
 UseTab: Never       # Always use spaces (Go and Python don't use tabs)
@@ -7,3 +8,4 @@ UseTab: Never       # Always use spaces (Go and Python don't use tabs)
 #ColumnLimit: 130    # Wider limit, Python doesn't have strict line limits, and Go uses around 100 chars
 ColumnLimit: 120
 SortIncludes: Never
+NamespaceIndentation: All
