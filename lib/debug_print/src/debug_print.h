@@ -7,9 +7,11 @@
 
 #ifdef DEBUG
 #include "SoftwareSerial.h"
+#define debug_init(x) Serial.begin(x)
 #define debug_print(x) Serial.print(x)
 #define debug_println(x) Serial.println(x)
 #else
+#define debug_init(x)
 #define debug_print(x)
 #define debug_println(x)
 #endif
