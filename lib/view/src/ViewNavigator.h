@@ -25,9 +25,7 @@ class ViewNavigator {
         this->currentViewIndex = viewIndex;
     }
 
-    [[nodiscard]] uint8_t getCurrentViewIndex() const {
-        return this->currentViewIndex;
-    }
+    [[nodiscard]] uint8_t getCurrentViewIndex() const { return this->currentViewIndex; }
 };
 
 #endif  // ELO_VIEWNAVIGATOR_H_

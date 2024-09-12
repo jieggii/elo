@@ -15,8 +15,7 @@ class View {
     ViewNavigator* viewNavigator;
 
    public:
-    View(LCD1602* display, ViewNavigator* viewNavigator)
-        : display(display), viewNavigator(viewNavigator) {}
+    View(LCD1602* display, ViewNavigator* viewNavigator) : display(display), viewNavigator(viewNavigator) {}
 
     virtual void setup() const = 0;
     virtual void loop() const = 0;

@@ -9,19 +9,19 @@
 #include "views/StandView.h"
 
 namespace Hardware {
-    LCD1602 SCREEN(0x27);
-    SCD40 ENV_SENSOR;
-}
+LCD1602 SCREEN(0x27);
+SCD40 ENV_SENSOR;
+}  // namespace Hardware
 
 namespace UI {
-    ViewNavigator VIEW_NAVIGATOR;
-    ViewController VIEW_CONTROLLER;
+ViewNavigator VIEW_NAVIGATOR;
+ViewController VIEW_CONTROLLER;
 
-    namespace Views {
-        IdleView IDLE(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
-        StandView STAND(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
-    }
-}
+namespace Views {
+IdleView IDLE(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
+StandView STAND(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
+}  // namespace Views
+}  // namespace UI
 
 void setup() {
     debug_init(9600);

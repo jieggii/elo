@@ -21,7 +21,7 @@ class StandView : public View {
         : View(display, navigator), env_sensor(env_sensor) {};
 
     void setup() const override;
-//    void loop(BaseContext* ctx) const override;
+    //    void loop(BaseContext* ctx) const override;
     void loop() const override;
 };
 
