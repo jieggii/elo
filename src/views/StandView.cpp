@@ -15,5 +15,5 @@ void StandView::loop() const {
 
     delay(1500);
 
-    this->switchView(IDLE_VIEW_INDEX);
+    this->viewNavigator->navigate(IDLE_VIEW_INDEX);
 }

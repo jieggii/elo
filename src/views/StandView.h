@@ -7,23 +7,21 @@
 
 #include "LCD1602.h"
 #include "SCD40.h"
-#include "View.h"
+#include "ViewController.h"
 
 #include <utility>
 #include "memory"
 
 class StandView : public View {
    private:
-    std::function<void(uint8_t)> switchView;
-    std::shared_ptr<SCD40> CD_sensor;  // carbon dioxide sensor
-    std::shared_ptr<LCD1602> display;  // display
+    SCD40* env_sensor;
 
    public:
-    StandView(std::function<void(uint8_t)> switchView, std::shared_ptr<SCD40> CD_sensor,
-              std::shared_ptr<LCD1602> display)
-        : switchView(std::move(switchView)), CD_sensor(std::move(CD_sensor)), display(std::move(display)) {}
+    StandView(LCD1602* display, ViewNavigator* navigator, SCD40* env_sensor)
+        : View(display, navigator), env_sensor(env_sensor) {};
 
     void setup() const override;
+//    void loop(BaseContext* ctx) const override;
     void loop() const override;
 };
 

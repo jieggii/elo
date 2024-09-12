@@ -7,26 +7,25 @@
 
 #include "LCD1602.h"
 #include "SCD40.h"
-#include "View.h"
 
 #include <utility>
 #include "iostream"
 #include "memory"
 
+#include "ViewController.h"
+
+#include "ViewController.h"
+
 class IdleView : public View {
    private:
-    std::function<void(uint8_t)> switchView;
-    std::shared_ptr<SCD40> CD_sensor;  // carbon dioxide sensor
-    std::shared_ptr<LCD1602> display;  // display
+    SCD40* env_sensor;
 
    public:
-    IdleView(std::function<void(uint8_t)> switchView, std::shared_ptr<SCD40> CD_sensor,
-             std::shared_ptr<LCD1602> display)
-        : switchView(std::move(switchView)), CD_sensor(std::move(CD_sensor)), display(std::move(display)) {}
-
+    IdleView(LCD1602* display, ViewNavigator* navigator, SCD40* env_sensor)
+        : View(display, navigator), env_sensor(env_sensor) {}
     void setup() const override;
+//    void loop(BaseContext* ctx) const override;
     void loop() const override;
-    //    void cleanup() const override;
 };
 
 #endif  // ELO_IDLEVIEW_H

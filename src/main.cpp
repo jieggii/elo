@@ -3,54 +3,61 @@
 #include "LCD1602.h"
 #include "SCD40.h"
 #include "ViewIndex.h"
-#include "ViewRouter.h"
+#include "ViewController.h"
 #include "debug_print.h"
 #include "views/IdleView.h"
 #include "views/StandView.h"
 
 namespace Hardware {
-std::shared_ptr<LCD1602> screen = std::make_shared<LCD1602>(0x27);
-std::shared_ptr<SCD40> cd_sensor = std::make_shared<SCD40>();  // environmental sensor
-}  // namespace Hardware
+    LCD1602 SCREEN(0x27);
+    SCD40 ENV_SENSOR;
+}
 
-ViewRouter VIEW_ROUTER;
+namespace UI {
+    ViewNavigator VIEW_NAVIGATOR;
+    ViewController VIEW_CONTROLLER;
 
-void init_views() {
-    VIEW_ROUTER.registerView(IDLE_VIEW_INDEX, []() {
-        return std::make_shared<IdleView>([&](uint8_t index) { VIEW_ROUTER.switchView(index); }, Hardware::cd_sensor,
-                                          Hardware::screen);
-    });
-    VIEW_ROUTER.registerView(STAND_VIEW_INDEX, []() {
-        return std::make_shared<StandView>([&](uint8_t index) { VIEW_ROUTER.switchView(index); }, Hardware::cd_sensor,
-                                           Hardware::screen);
-    });
+    namespace Views {
+        IdleView IDLE(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
+        StandView STAND(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
+    }
 }
 
 void setup() {
-#ifdef DEBUG
-    Serial.begin(9600);
-#endif
+    debug_init(9600);
     debug_println("info: begin setup");
 
-    // Init screen:
-    Hardware::screen->init();
-    Hardware::screen->clear();
+    Hardware::SCREEN.init();
+    Hardware::SCREEN.clear();
 
-    // Create and register views:
-    init_views();
+    UI::VIEW_CONTROLLER.registerView(IDLE_VIEW_INDEX, &UI::Views::IDLE);
+    UI::VIEW_CONTROLLER.registerView(STAND_VIEW_INDEX, &UI::Views::STAND);
 
-    // Set and initialize current view:
-    VIEW_ROUTER.switchView(IDLE_VIEW_INDEX);
-    VIEW_ROUTER.getCurrentView()->setup();
+    UI::VIEW_NAVIGATOR.navigate(IDLE_VIEW_INDEX);
 
     debug_println("info: finish setup");
 }
 
 void loop() {
-    // print free RAM:
-    debug_print("info: free RAM: ");
+    // debug print free RAM:
+    debug_print("inf: free heap: ");
     debug_print(ESP.getFreeHeap());
     debug_println(" bytes");
 
-    VIEW_ROUTER.getCurrentView()->loop();
+    // get current view:
+    uint8_t currentViewIndex = UI::VIEW_NAVIGATOR.getCurrentViewIndex();
+    View* currentView = UI::VIEW_CONTROLLER.getView(currentViewIndex);
+    if (currentView == nullptr) {
+        debug_print("err: loop: target view with index ");
+        debug_print(currentViewIndex);
+        debug_println(" was not found");
+
+        // todo: display error
+        // ...
+
+        return;
+    }
+
+    // run loop() for the current view:
+    currentView->loop();
 }
