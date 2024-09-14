@@ -11,21 +11,32 @@
 
 class ViewNavigator {
    private:
-    uint8_t currentViewIndex = 0;
+    uint8_t viewIndex = 0;
+    bool viewIndexChanged = false;
 
    public:
     ViewNavigator() = default;
 
-    void navigate(uint8_t viewIndex) {
-#ifdef DEBUG
-        if (viewIndex == this->currentViewIndex) {
-            debug_println("err: ViewNavigator.navigate: navigating to the current view");
-        }
-#endif
-        this->currentViewIndex = viewIndex;
+    [[nodiscard]] uint8_t getViewIndex() const { return this->viewIndex; }
+
+    [[nodiscard]] bool getViewIndexChanged() const {
+        return this->viewIndexChanged;
     }
 
-    [[nodiscard]] uint8_t getCurrentViewIndex() const { return this->currentViewIndex; }
+    void resetViewIndexChanged() {
+        this->viewIndexChanged = false;
+    }
+
+    void navigate(uint8_t nextViewIndex) {
+#ifdef DEBUG
+        if (nextViewIndex == this->viewIndex) {
+            debug_print("err: ViewNavigator.navigate: navigating to the current view ");
+            debug_println(nextViewIndex);
+        }
+#endif
+        this->viewIndexChanged = true;
+        this->viewIndex = nextViewIndex;
+    }
 };
 
 #endif  // ELO_VIEWNAVIGATOR_H_
