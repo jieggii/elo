@@ -25,7 +25,7 @@ void IdleView::loop() const {
     //    display->displayIcon(icon, 0, 0);
     this->display->clear();
     this->display->displayText("idle", 0, 0);
-    delay(3000);
+    delay(1);
 
     this->viewNavigator->navigate(STAND_VIEW_INDEX);
 }
