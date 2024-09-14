@@ -5,27 +5,27 @@
 #ifndef ELO_WIFISETTINGS_H
 #define ELO_WIFISETTINGS_H
 
-struct HostWiFiSettings {
+struct HostWiFiCredentials {
+    char const *SSID;
+    char const *PASSWORD;
+};
+
+struct ClientWiFiCredentials {
     char *SSID;
     char *PASSWORD;
 };
 
-struct ClientWiFiSettings {
-    char *SSID;
-    char *PASSWORD;
-};
-
-enum class WifiMode {
+enum class WiFiMode {
     HOST,
     CLIENT,
 };
 
-struct WiFiSettings {
-    WifiMode mode;
+struct WiFiConfig {
+    WiFiMode mode;
 
     union {
-        HostWiFiSettings hostWiFiSettings;
-        ClientWiFiSettings clientWifiSettings;
+        HostWiFiCredentials hostWiFiSettings;
+        ClientWiFiCredentials clientWifiSettings;
     };
 };
 
