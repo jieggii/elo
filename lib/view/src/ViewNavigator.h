@@ -19,13 +19,9 @@ class ViewNavigator {
 
     [[nodiscard]] uint8_t getViewIndex() const { return this->viewIndex; }
 
-    [[nodiscard]] bool getViewIndexChanged() const {
-        return this->viewIndexChanged;
-    }
+    [[nodiscard]] bool getViewIndexChanged() const { return this->viewIndexChanged; }
 
-    void resetViewIndexChanged() {
-        this->viewIndexChanged = false;
-    }
+    void resetViewIndexChanged() { this->viewIndexChanged = false; }
 
     void navigate(uint8_t nextViewIndex) {
 #ifdef DEBUG

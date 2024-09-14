@@ -7,40 +7,19 @@
 #include "binary.h"
 #include "Icon.h"
 
-//#include "ViewIndex.h"
+// #include "ViewIndex.h"
 
 void StandView::setup() const {
     Icon optimal = {
-        B00000,
-        B00000,
-        B01010,
-        B01010,
-        B00000,
-        B10001,
-        B01110,
-        B00000,
+        B00000, B00000, B01010, B01010, B00000, B10001, B01110, B00000,
     };
 
     Icon tableStand = {
-        B00000,
-        B00000,
-        B00000,
-        B00000,
-        B11111,
-        B01010,
-        B01010,
-        B01010,
+        B00000, B00000, B00000, B00000, B11111, B01010, B01010, B01010,
     };
 
     Icon personStand = {
-        B01110,
-        B01110,
-        B00100,
-        B00111,
-        B00100,
-        B00100,
-        B00100,
-        B00100,
+        B01110, B01110, B00100, B00111, B00100, B00100, B00100, B00100,
     };
 
     this->display->cacheIcon(0, optimal);
@@ -66,5 +45,5 @@ void StandView::loop() const {
     this->display->displayCachedIcon(0, 12, 1);
 
     delay(1000);
-//    this->viewNavigator->navigate(IDLE_VIEW_INDEX);
+    //    this->viewNavigator->navigate(IDLE_VIEW_INDEX);
 }

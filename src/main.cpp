@@ -29,7 +29,7 @@ namespace UI {
 namespace Config {
     OperationalConfig OPERATIONAL_CONFIG;
     WiFiConfig WIFI_CONFIG;
-}
+}  // namespace Config
 
 void setup() {
     debug_init(9600);
