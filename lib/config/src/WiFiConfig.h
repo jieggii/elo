@@ -15,13 +15,14 @@ struct ClientWiFiSettings {
     char *PASSWORD;
 };
 
-struct WiFiSettings {
-    enum class Mode {
-        HOST,
-        CLIENT,
-    };
+enum class WifiMode {
+    HOST,
+    CLIENT,
+};
 
-    Mode mode;
+struct WiFiSettings {
+    WifiMode mode;
+
     union {
         HostWiFiSettings hostWiFiSettings;
         ClientWiFiSettings clientWifiSettings;

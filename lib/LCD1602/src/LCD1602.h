@@ -10,12 +10,12 @@
 #include "Icon.h"
 #include "cstdint"
 
+#define MAX_SLOT 7
+
 class LCD1602 {
    private:
     const uint8_t cols = 16;
     const uint8_t rows = 2;
-
-    const uint8_t reserved_CGRAM_slot = 7;  // CGRAM slot used to temporally cache not precached icons
 
     LiquidCrystal_I2C lcd;
 
@@ -27,9 +27,6 @@ class LCD1602 {
 
     void cacheIcon(uint8_t slot, const Icon& icon);
     void displayCachedIcon(uint8_t slot, uint8_t col, uint8_t row);
-
-    void displayIcon(const Icon& icon, uint8_t col, uint8 row);
-
     void displayText(const char* text, uint8_t col, uint8_t row);
 };
 
