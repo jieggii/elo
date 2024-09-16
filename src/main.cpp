@@ -17,7 +17,7 @@ namespace Hardware {
 }  // namespace Hardware
 
 namespace UI {
-    ViewNavigator VIEW_NAVIGATOR;
+    ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
     ViewController VIEW_CONTROLLER;
 
     namespace Views {
