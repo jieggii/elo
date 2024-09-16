@@ -19,6 +19,11 @@ namespace Hardware {
     SCD40 ENV_SENSOR;
 }  // namespace Hardware
 
+namespace Config {
+    OperationalConfig OPERATIONAL_CONFIG;
+    WiFiConfig WIFI_CONFIG;
+}  // namespace Config
+
 namespace UI {
     ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
     ViewController VIEW_CONTROLLER;
@@ -26,14 +31,9 @@ namespace UI {
 
     namespace Views {
         IdleView IDLE(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
-        StandView STAND(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
+        StandView STAND(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Config::OPERATIONAL_CONFIG, &Hardware::ENV_SENSOR);
     }  // namespace Views
 }  // namespace UI
-
-namespace Config {
-    OperationalConfig OPERATIONAL_CONFIG;
-    WiFiConfig WIFI_CONFIG;
-}  // namespace Config
 
 void setup() {
     debug_init(9600);
