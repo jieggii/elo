@@ -8,42 +8,54 @@
 #include "Icon.h"
 
 // #include "ViewIndex.h"
+#include "core_esp8266_features.h"
+#include "cstdlib"
 
-void StandView::setup() const {
-    Icon optimal = {
+
+#define ICON_PERSON_STAND_SLOT 0
+#define ICON_TABLE_STAND_SLOT 1
+#define ICON_ENV_OPTIMAL_SLOT 2
+
+void StandView::setup()  {
+    Icon envOptimalIcon = {
         B00000, B00000, B01010, B01010, B00000, B10001, B01110, B00000,
     };
 
-    Icon tableStand = {
+    Icon tableStandIcon = {
         B00000, B00000, B00000, B00000, B11111, B01010, B01010, B01010,
     };
 
-    Icon personStand = {
+    Icon personStandIcon = {
         B01110, B01110, B00100, B00111, B00100, B00100, B00100, B00100,
     };
 
-    this->display->cacheIcon(0, optimal);
-    this->display->cacheIcon(1, personStand);
-    this->display->cacheIcon(2, tableStand);
+    this->display->cacheIcon(ICON_PERSON_STAND_SLOT, personStandIcon);
+    this->display->cacheIcon(ICON_TABLE_STAND_SLOT, tableStandIcon);
+    this->display->cacheIcon(ICON_ENV_OPTIMAL_SLOT, envOptimalIcon);
 
     this->display->clear();
+
+    debug_println("finish stand setup");
 }
 
-void StandView::loop() const {
-    this->display->displayCachedIcon(1, 0, 0);
-    this->display->displayCachedIcon(2, 1, 0);
+void StandView::render() {
+    some_var++;
+    this->display->displayCachedIcon(ICON_PERSON_STAND_SLOT, 0, 0);
+    this->display->displayCachedIcon(ICON_TABLE_STAND_SLOT, 1, 0);
 
     this->display->displayText("99:99:99", 4, 0);
-    this->display->displayCachedIcon(0, 15, 0);
+    this->display->displayCachedIcon(ICON_ENV_OPTIMAL_SLOT, 15, 0);
 
-    this->display->displayText("99*C 99% 9999ppm", 0, 1);
+    char some_var_buffer[3+1];
+    itoa(this->some_var, some_var_buffer, 10);
+    const char* cstr = some_var_buffer;
+    this->display->displayText(cstr, 12, 0);
 
-    delay(2500);
-    this->display->displayText("  *C   %     ppm", 0, 1);
-    this->display->displayCachedIcon(0, 1, 1);
-    this->display->displayCachedIcon(0, 6, 1);
-    this->display->displayCachedIcon(0, 12, 1);
+    this->display->displayText("99.9*C 99% 9999p", 0, 1);
 
-    delay(1000);
-    //    this->viewNavigator->navigate(IDLE_VIEW_INDEX);
+    debug_println("update screen");
+}
+
+void StandView::loop() {
+//    debug_println("loop called");
 }

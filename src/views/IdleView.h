@@ -23,9 +23,9 @@ class IdleView : public View {
    public:
     IdleView(LCD1602* display, ViewNavigator* navigator, SCD40* env_sensor)
         : View(display, navigator), env_sensor(env_sensor) {}
-    void setup() const override;
-    //    void loop(BaseContext* ctx) const override;
-    void loop() const override;
+    void setup() override;
+    void render() override;
+    void loop() override;
 };
 
 #endif  // ELO_IDLEVIEW_H

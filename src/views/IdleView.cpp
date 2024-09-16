@@ -9,12 +9,14 @@
 #include "ViewIndex.h"
 #include "binary.h"
 
-void IdleView::setup() const {
+void IdleView::setup()  {
     Serial.println("Idle view setup called!");
     this->display->clear();
 }
 
-void IdleView::loop() const {
+void IdleView::render() {}
+
+void IdleView::loop()  {
     Serial.println("Hello from IdleView loop!");
 
     //    Icon icon = {
