@@ -15,7 +15,7 @@ class ViewRenderer {
     bool renderInstantly = true;
 
     /**
-     * Returns true if it is time to render view.
+     * Returns true if it is time to render view (considering current time, render interval and last render time).
      * @param now
      * @return
      */
