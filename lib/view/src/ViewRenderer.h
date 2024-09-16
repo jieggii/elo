@@ -32,9 +32,7 @@ class ViewRenderer {
     /**
      * Render next view instantly, omitting waiting for render interval.
      */
-    void setRenderViewInstantly() {
-        this->renderInstantly = true;
-    }
+    void setRenderViewInstantly() { this->renderInstantly = true; }
 
     /**
      * Conditionally render view.

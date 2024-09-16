@@ -55,9 +55,9 @@ void setup() {
 
 void loop() {
     // debug print free RAM:
-//    debug_print("inf: free heap: ");
-//    debug_print(ESP.getFreeHeap());
-//    debug_println(" bytes");
+    //    debug_print("inf: free heap: ");
+    //    debug_print(ESP.getFreeHeap());
+    //    debug_println(" bytes");
 
     // get current view:
     uint8_t currentViewIndex = UI::VIEW_NAVIGATOR.getViewIndex();
@@ -80,7 +80,7 @@ void loop() {
         UI::VIEW_NAVIGATOR.resetViewIndexChanged();
         currentView->setup();
         UI::VIEW_RENDERER
-            .setRenderViewInstantly(); // the view will be rendered instantly instead of waiting for render interval
+            .setRenderViewInstantly();  // the view will be rendered instantly instead of waiting for render interval
     }
 
     // (re)render view (if needed):

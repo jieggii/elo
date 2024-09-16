@@ -12,8 +12,7 @@
 
 #include <utility>
 
-
-#define DISPLAY_REFRESH_RATE 1 // (times per second)
+#define DISPLAY_REFRESH_RATE 1  // (times per second)
 
 class StandView : public View {
    private:
@@ -25,10 +24,10 @@ class StandView : public View {
     uint16_t timer;
 
    public:
-    StandView(LCD1602* display, ViewNavigator* navigator,  OperationalConfig* const operationalConfig, SCD40* env_sensor)
+    StandView(LCD1602* display, ViewNavigator* navigator, OperationalConfig* const operationalConfig, SCD40* env_sensor)
         : View(display, navigator), operationalConfig(operationalConfig), env_sensor(env_sensor) {
-              this->timer = operationalConfig->standMode.duration;
-          };
+        this->timer = operationalConfig->standMode.duration;
+    };
 
     void setup() override;
     void render() override;
