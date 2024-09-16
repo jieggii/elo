@@ -11,11 +11,11 @@
 
 class ViewNavigator {
    private:
-    uint8_t viewIndex = 0;
+    uint8_t viewIndex;
     bool viewIndexChanged = false;
 
    public:
-    ViewNavigator() = default;
+    explicit ViewNavigator(uint8_t initialViewIndex) : viewIndex(initialViewIndex) {}
 
     [[nodiscard]] uint8_t getViewIndex() const { return this->viewIndex; }
 
