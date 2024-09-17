@@ -12,7 +12,7 @@
 class ViewNavigator {
    private:
     uint8_t viewIndex;
-    bool viewIndexChanged = false;
+    bool viewIndexChanged = true;
 
    public:
     explicit ViewNavigator(uint8_t initialViewIndex) : viewIndex(initialViewIndex) {}
