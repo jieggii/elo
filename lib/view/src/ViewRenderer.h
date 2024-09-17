@@ -7,32 +7,40 @@
 
 #include "cstdint"
 #include "View.h"
+#include "Timer.h"
 
 class ViewRenderer {
    private:
-    uint16_t renderInterval;
-    uint32_t lastRenderTs = 0;
-    bool renderInstantly = true;
+    Timer renderTimer;
+    bool renderViewInstantly = false;
 
     /**
-     * Returns true if it is time to render view (considering current time, render interval and last render time).
-     * @param now
-     * @return
+     * Renders given view and resets render timer.
+     * @param now - current timestamp in milliseconds.
+     * @param view - view to render.
      */
-    [[nodiscard]] bool isTimeToRender(uint32_t now) const {
-        if (now - this->lastRenderTs >= this->renderInterval) {
-            return true;
-        }
-        return false;
+    void render(uint32_t now, View* view) {
+        view->render();
+        this->setTimer(now); // restart timer to render the next frame
     }
 
    public:
-    ViewRenderer(uint16_t renderInterval) : renderInterval(renderInterval) {}
+    /**
+     *
+     * @param renderInterval - rendering interval in milliseconds
+     */
+    explicit ViewRenderer(uint16_t renderInterval) : renderTimer(renderInterval) {}
+
+    /**
+     * Starts render timer.
+     * @param now - current timestamp in milliseconds.
+     */
+    void setTimer(uint32_t now) { this->renderTimer.set(now); }
 
     /**
      * Render next view instantly, omitting waiting for render interval.
      */
-    void setRenderViewInstantly() { this->renderInstantly = true; }
+    void renderNextFrameInstantly() { this->renderViewInstantly = true; }
 
     /**
      * Conditionally render view.
@@ -40,14 +48,18 @@ class ViewRenderer {
      * @param view
      */
     void conditionallyRender(uint32_t now, View* view) {
-        if (this->renderInstantly) {
-            view->render();
-            this->renderInstantly = false;
-        } else if (this->isTimeToRender(now)) {
-            view->render();
+        // render view if it must be rendered instantly:
+        if (this->renderViewInstantly) {
+            this->renderViewInstantly = false;
+            this->render(now, view);
+            return;
         }
 
-        this->lastRenderTs = now;
+        // render view if renderTimer has expired:
+        if (this->renderTimer.isExpired(now)) {
+            this->render(now, view);
+            return;
+        }
     }
 };
 
