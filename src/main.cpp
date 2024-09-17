@@ -25,7 +25,8 @@ namespace Config {
 }  // namespace Config
 
 namespace UI {
-    ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
+//    ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
+    ViewNavigator VIEW_NAVIGATOR(STAND_VIEW_INDEX);
     ViewController VIEW_CONTROLLER;
     ViewRenderer VIEW_RENDERER(VIEW_RENDER_INTERVAL);
 
@@ -49,6 +50,8 @@ void setup() {
     // register UI views:
     UI::VIEW_CONTROLLER.registerView(IDLE_VIEW_INDEX, &UI::Views::IDLE);
     UI::VIEW_CONTROLLER.registerView(STAND_VIEW_INDEX, &UI::Views::STAND);
+
+    UI::VIEW_RENDERER.setTimer(millis());
 
     debug_println("info: finish setup");
 }
@@ -80,13 +83,15 @@ void loop() {
         UI::VIEW_NAVIGATOR.resetViewIndexChanged();
         currentView->setup();
         UI::VIEW_RENDERER
-            .setRenderViewInstantly();  // the view will be rendered instantly instead of waiting for render interval
+            .renderNextFrameInstantly();  // the view will be rendered instantly instead of waiting for render interval
     }
-
-    // (re)render view (if needed):
-    uint32_t now = millis();
-    UI::VIEW_RENDERER.conditionallyRender(now, currentView);
 
     // run loop() for the current view:
     currentView->loop();
+
+    // (re)render the view (if needed):
+    if (!UI::VIEW_NAVIGATOR.getViewIndexChanged()) { // we do not want to render old view if it has changed
+        uint32_t now = millis();
+        UI::VIEW_RENDERER.conditionallyRender(now, currentView);
+    }
 }

@@ -14,20 +14,11 @@ void IdleView::setup() {
     this->display->clear();
 }
 
-void IdleView::render() {}
+void IdleView::render() {
+    debug_println("render IdleView");
+    this->display->displayText("idle", 0, 0);
+}
 
 void IdleView::loop() {
-    Serial.println("Hello from IdleView loop!");
-
-    //    Icon icon = {
-    //        B00000, B01110, B01110, B00100, B00111, B00100, B00100, B00111,
-    //    };
-
-    //    display->clear();
-    //    display->displayIcon(icon, 0, 0);
-    this->display->clear();
-    this->display->displayText("idle", 0, 0);
-    delay(1);
-
-    this->viewNavigator->navigate(STAND_VIEW_INDEX);
+//    this->viewNavigator->navigate(STAND_VIEW_INDEX);
 }
