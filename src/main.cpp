@@ -1,13 +1,13 @@
 #include <Arduino.h>
 
 #include "LCD1602.h"
-#include "SCD40.h"
+#include "EnvSensor.h"
 #include "ViewIndex.h"
 #include "ViewController.h"
 #include "debug_print.h"
 #include "ViewRenderer.h"
-#include "OperationalConfig.h"
-#include "WiFiConfig.h"
+#include "Settings.h"
+#include "WiFiSettings.h"
 #include "views/IdleView.h"
 #include "views/StandView.h"
 #include "config.h"
@@ -16,12 +16,12 @@
 
 namespace Hardware {
     LCD1602 SCREEN(0x27);
-    SCD40 ENV_SENSOR;
+    EnvSensor ENV_SENSOR;
 }  // namespace Hardware
 
 namespace Config {
-    OperationalConfig OPERATIONAL_CONFIG;
-    WiFiConfig WIFI_CONFIG;
+    Settings OPERATIONAL_CONFIG;
+    WiFiSettings WIFI_CONFIG;
 }  // namespace Config
 
 namespace UI {
@@ -40,11 +40,14 @@ void setup() {
     debug_init(9600);
     debug_println("info: begin setup");
 
-    // initialize hardware:
+    // initialize display:
     Hardware::SCREEN.init();
     Hardware::SCREEN.clear();
 
-    // initialize configuration:
+    // initialize env sensor:
+    Hardware::ENV_SENSOR.init();
+
+    // initialize operational configuration:
     initDefaultOperationalConfig(&Config::OPERATIONAL_CONFIG);
 
     // register UI views:

@@ -18,8 +18,8 @@ class View {
     View(LCD1602* display, ViewNavigator* viewNavigator) : display(display), viewNavigator(viewNavigator) {}
 
     virtual void setup() = 0;
-    virtual void render() = 0;
     virtual void loop() = 0;
+    virtual void render() = 0;
 
     virtual ~View() = default;
 };

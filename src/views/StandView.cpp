@@ -7,11 +7,8 @@
 #include "binary.h"
 #include "Icon.h"
 
-// #include "ViewIndex.h"
 #include "core_esp8266_features.h"
-#include "cstdlib"
 #include "ViewIndex.h"
-//#include "format.h"
 
 #define ICON_PERSON_STAND_SLOT 0
 #define ICON_TABLE_STAND_SLOT 1
@@ -84,7 +81,9 @@ void StandView::render() {
     char time_left_buf[10];
     format_timestamp(time_left, time_left_buf);
 
-    this->display->displayText(time_left_buf, 4, 0);
+//    this->display->displayText(time_left_buf, 4, 0);
+
+    debug_println(this->hardware.env_sensor->read().temperature);
 
     debug_println("inf: standView render end");
 }
@@ -105,7 +104,7 @@ void StandView::loop() {
 //    }
 }
 StandView::StandView(LCD1602 *display, ViewNavigator *navigator, OperationalConfig *const operationalConfig,
-                     SCD40 *env_sensor)
+                     EnvSensor *env_sensor)
     : View(display, navigator),
       hardware({.env_sensor = env_sensor}),
       timers({.mainTimer = Timer(5 * 1000),

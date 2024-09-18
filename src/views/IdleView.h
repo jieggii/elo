@@ -6,7 +6,7 @@
 #define ELO_IDLEVIEW_H
 
 #include "LCD1602.h"
-#include "SCD40.h"
+#include "EnvSensor.h"
 
 #include <utility>
 #include "iostream"
@@ -18,10 +18,10 @@
 
 class IdleView : public View {
    private:
-    SCD40* env_sensor;
+    EnvSensor* env_sensor;
 
    public:
-    IdleView(LCD1602* display, ViewNavigator* navigator, SCD40* env_sensor)
+    IdleView(LCD1602* display, ViewNavigator* navigator, EnvSensor* env_sensor)
         : View(display, navigator), env_sensor(env_sensor) {}
     void setup() override;
     void render() override;

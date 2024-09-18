@@ -1,0 +1,107 @@
+   byte personStand[] = {
+            B01110,
+            B01110,
+            B00100,
+            B00111,
+            B00100,
+            B00100,
+            B00100,
+            B00100,
+    };
+    lcd.createChar(0, personStand);
+
+    byte tableStand[] = {
+            B00000,
+            B00000,
+            B00000,
+            B00000,
+            B11111,
+            B01010,
+            B01010,
+            B01010,
+    };
+    lcd.createChar(1, tableStand);
+
+    byte wifiIcon[] = {
+            B01110,
+            B10001,
+            B00100,
+            B01010,
+            B00000,
+            B00100,
+            B00000,
+            B00000,
+    };
+    lcd.createChar(2, wifiIcon);
+
+    byte apIcon[] = {
+            B00000,
+            B01010,
+            B10001,
+            B10101,
+            B10001,
+            B01010,
+            B00000,
+            B00000,
+    };
+    lcd.createChar(3, apIcon);
+
+    byte personExerciseIcon[] = {
+            B01110,
+            B01110,
+            B00100,
+            B01110,
+            B10101,
+            B00100,
+            B00100,
+            B00100,
+    };
+    lcd.createChar(4, personExerciseIcon);
+
+    byte dumbbellsIcon[] = {
+            B00000,
+            B00000,
+            B00000,
+            B00000,
+            B00000,
+            B10010,
+            B11110,
+            B10010,
+    };
+    lcd.createChar(5, dumbbellsIcon);
+
+    byte noWifiIcon[] = {
+            B01110,
+            B10001,
+            B00100,
+            B01010,
+            B00000,
+            B00101,
+            B00010,
+            B00101,
+    };
+    lcd.createChar(6, noWifiIcon);
+
+    byte personSit[] = {
+            B00000,
+            B01110,
+            B01110,
+            B00100,
+            B00111,
+            B00100,
+            B00100,
+            B00111,
+    };
+    lcd.createChar(0, personSit);
+
+    byte tableSit[] = {
+            B00000,
+            B00000,
+            B00000,
+            B00000,
+            B00000,
+            B11111,
+            B01010,
+            B01010,
+    };
+    lcd.createChar(1, tableSit);

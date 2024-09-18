@@ -20,7 +20,7 @@ enum class WiFiMode {
     CLIENT,
 };
 
-struct WiFiConfig {
+struct WiFiSettings {
     WiFiMode mode;
 
     union {

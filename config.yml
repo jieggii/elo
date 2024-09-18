@@ -1,0 +1,39 @@
+environment:
+  temperature:
+    units: celsius  # celsius/fahrenheit
+    optimal: [20.5, 21.5]
+    acceptable: [20.1, 22.2]
+
+  humidity:
+    optimal: [65, 72]
+    acceptable: [60, 70]
+
+  co2:
+    max-optimal: 800
+    max-acceptable: 1000
+
+sit-mode:
+  enabled: true
+  duration: 20
+
+  exercise-break:
+    enabled: true
+    duration: 3
+    interval: 15
+
+  posture-reminder:
+    enabled: true
+    interval: 5
+
+stand-mode:
+  enabled: true
+  duration: 60
+
+  exercise-break:
+    enabled: true
+    duration: 5
+    interval: 40
+
+  posture-reminder:
+    enabled: false
+    interval: 5
