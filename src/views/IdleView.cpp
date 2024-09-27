@@ -20,5 +20,5 @@ void IdleView::render() {
 }
 
 void IdleView::loop() {
-//    this->viewNavigator->navigate(STAND_VIEW_INDEX);
+    //    this->viewNavigator->navigate(STAND_VIEW_INDEX);
 }

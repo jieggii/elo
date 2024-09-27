@@ -12,6 +12,12 @@
 #include "View.h"
 
 #define MAX_VIEWS 10
+
+/**
+ * ViewController is responsible for managing views.
+ * It allows to register and retrieve views by their indexes.
+ * TODO: rename to ViewRegister?
+ */
 class ViewController {
    private:
     View* views[MAX_VIEWS] = {nullptr};

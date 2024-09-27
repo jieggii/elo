@@ -45,8 +45,8 @@ struct Settings {
             uint16_t interval;  // Exercise interval in seconds
         } exerciseBreak;
 
-        bool enabled;                     // enable work mode
-        uint16_t duration;                // work mode duration in seconds
+        bool enabled;       // enable work mode
+        uint16_t duration;  // work mode duration in seconds
     } sitMode, standMode;
 };
 

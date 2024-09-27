@@ -12,6 +12,13 @@
 
 #define MAX_SLOT 7
 
+struct DisplayCoordinates {
+    uint8_t col;
+    uint8_t row;
+
+    DisplayCoordinates(uint8_t col, uint8_t row) : col(col), row(row) {};
+};
+
 class LCD1602 {
    private:
     const uint8_t cols = 16;
@@ -25,9 +32,11 @@ class LCD1602 {
     void init();
     void clear();
 
+    void setCursor(DisplayCoordinates coordinates);
+
     void cacheIcon(uint8_t slot, const Icon& icon);
-    void displayCachedIcon(uint8_t slot, uint8_t col, uint8_t row);
-    void displayText(const char* text, uint8_t col, uint8_t row);
+    void displayCachedIcon(uint8_t slot, DisplayCoordinates coordinates);
+    void displayText(const char* text, DisplayCoordinates coordinates);
 };
 
 #endif  // ELO_LCD1602_H

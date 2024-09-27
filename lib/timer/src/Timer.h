@@ -11,8 +11,8 @@
 
 class Timer {
    private:
-    uint32_t duration; // timer duration in ms
-    uint32_t startTS = 0; // timestamp of the timer set
+    uint32_t duration;     // timer duration in ms
+    uint32_t startTS = 0;  // timestamp of the timer set
 
    public:
     explicit Timer(uint32_t duration) : duration(duration) {}
@@ -22,9 +22,7 @@ class Timer {
      * @param now - current timestamp in milliseconds.
      * @return number of milliseconds elapsed since last set.
      */
-    [[nodiscard]] uint32_t elapsed(uint32_t now) const {
-        return now - this->startTS;
-    }
+    [[nodiscard]] uint32_t elapsed(uint32_t now) const { return now - this->startTS; }
 
     /**
      * Returns true if the timer has expired.
@@ -56,9 +54,7 @@ class Timer {
      * Start or restart the timer.
      * @param now - current timestamp in ms.
      */
-    void set(uint32_t now) {
-        this->startTS = now;
-    }
+    void set(uint32_t now) { this->startTS = now; }
 };
 
 #endif  // ELO_LIB_TIMER_SRC_TIMER_H_

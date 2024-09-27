@@ -9,6 +9,9 @@
 #include "View.h"
 #include "Timer.h"
 
+/**
+ * ViewRenderer is responsible for peridocally rendering views.
+ */
 class ViewRenderer {
    private:
     Timer renderTimer;
@@ -21,12 +24,11 @@ class ViewRenderer {
      */
     void render(uint32_t now, View* view) {
         view->render();
-        this->setTimer(now); // restart timer to render the next frame
+        this->setTimer(now);  // restart timer to render the next frame
     }
 
    public:
     /**
-     *
      * @param renderInterval - rendering interval in milliseconds
      */
     explicit ViewRenderer(uint16_t renderInterval) : renderTimer(renderInterval) {}
@@ -44,8 +46,8 @@ class ViewRenderer {
 
     /**
      * Conditionally render view.
-     * @param now
-     * @param view
+     * @param now - current timestamp in milliseconds.
+     * @param view - view to render.
      */
     void conditionallyRender(uint32_t now, View* view) {
         // render view if it must be rendered instantly:

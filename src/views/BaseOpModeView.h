@@ -23,8 +23,8 @@ class BaseView : View {
 
     struct MeasurementsLine {
         bool isDisplayingStatuses = false;
-        Timer displayMeasurementsTimer = Timer(3500); // todo: make magic numbers const
-        Timer displayStatusesTimer = Timer(750); // todo: make magic numbers const
+        Timer displayMeasurementsTimer = Timer(3500);  // todo: make magic numbers const
+        Timer displayStatusesTimer = Timer(750);       // todo: make magic numbers const
     } measurementsLine;
 
     uint8_t nextViewIndex;

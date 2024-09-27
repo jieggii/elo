@@ -14,8 +14,7 @@
 #define ICON_TABLE_STAND_SLOT 1
 #define ICON_ENV_OPTIMAL_SLOT 2
 
-
-void format_timestamp(uint32_t timestamp, char* buffer) {
+void format_timestamp(uint32_t timestamp, char *buffer) {
     // convert milliseconds to seconds
     uint32_t total_seconds = timestamp / 1000;
 
@@ -33,7 +32,7 @@ void format_timestamp(uint32_t timestamp, char* buffer) {
     buffer[5] = ':';
     buffer[6] = '0' + (seconds / 10);
     buffer[7] = '0' + (seconds % 10);
-    buffer[8] = '\0'; // Null-terminate the string
+    buffer[8] = '\0';  // Null-terminate the string
 }
 
 void StandView::setup() {
@@ -81,7 +80,7 @@ void StandView::render() {
     char time_left_buf[10];
     format_timestamp(time_left, time_left_buf);
 
-//    this->display->displayText(time_left_buf, 4, 0);
+    //    this->display->displayText(time_left_buf, 4, 0);
 
     debug_println(this->hardware.env_sensor->read().temperature);
 
@@ -89,19 +88,19 @@ void StandView::render() {
 }
 
 void StandView::loop() {
-//    debug_println("loop standView");
+    //    debug_println("loop standView");
     uint32_t now = millis();
     if (this->timers.mainTimer.isExpired(now)) {
         this->viewNavigator->navigate(IDLE_VIEW_INDEX);
     }
 
-//    if (this->timers.exerciseBreakTimer.isExpired(now)) {
-//
-//    }
-//
-//    if (this->timers.postureReminderTimer.isExpired(now)) {
-//
-//    }
+    //    if (this->timers.exerciseBreakTimer.isExpired(now)) {
+    //
+    //    }
+    //
+    //    if (this->timers.postureReminderTimer.isExpired(now)) {
+    //
+    //    }
 }
 StandView::StandView(LCD1602 *display, ViewNavigator *navigator, OperationalConfig *const operationalConfig,
                      EnvSensor *env_sensor)

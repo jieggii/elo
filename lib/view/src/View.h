@@ -9,6 +9,10 @@
 #include "ViewNavigator.h"
 
 class ViewController;
+
+/**
+ * View is an interface for views.
+ */
 class View {
    protected:
     LCD1602* display;

@@ -25,7 +25,7 @@ namespace Config {
 }  // namespace Config
 
 namespace UI {
-//    ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
+    //    ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
     ViewNavigator VIEW_NAVIGATOR(STAND_VIEW_INDEX);
     ViewController VIEW_CONTROLLER;
     ViewRenderer VIEW_RENDERER(VIEW_RENDER_INTERVAL);
@@ -93,7 +93,7 @@ void loop() {
     currentView->loop();
 
     // (re)render the view (if needed):
-    if (!UI::VIEW_NAVIGATOR.getViewIndexChanged()) { // we do not want to render old view if it has changed
+    if (!UI::VIEW_NAVIGATOR.getViewIndexChanged()) {  // we do not want to render old view if it has changed
         uint32_t now = millis();
         UI::VIEW_RENDERER.conditionallyRender(now, currentView);
     }

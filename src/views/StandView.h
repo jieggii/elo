@@ -20,21 +20,22 @@ class StandView : public View {
     } hardware;
 
     struct Timers {
-        Timer mainTimer; // the main timer of the stand work mode. When it's expired, the state is paused and waits for user input to switch to the sit view.
-        Timer exerciseBreakTimer; // timer of the exercise break.
-        Timer postureReminderTimer; // timer for the posture reminder
+        Timer mainTimer;  // the main timer of the stand work mode. When it's expired, the state is paused and waits for
+                          // user input to switch to the sit view.
+        Timer exerciseBreakTimer;    // timer of the exercise break.
+        Timer postureReminderTimer;  // timer for the posture reminder
     } timers;
 
     OperationalConfig* const operationalConfig;
 
     struct MeasurementsLine {
-        enum class State{
-            MEASUREMENTS, // measurements are being displayed
-            STATUSES, // measurement statuses are being displayed.
+        enum class State {
+            MEASUREMENTS,  // measurements are being displayed
+            STATUSES,      // measurement statuses are being displayed.
         };
 
-        State state = State::MEASUREMENTS; // current state of the measurements line
-        Timer displayMeasurementsTimer = Timer(2000); // timer
+        State state = State::MEASUREMENTS;             // current state of the measurements line
+        Timer displayMeasurementsTimer = Timer(2000);  // timer
         Timer displayStatusesTimer = Timer(500);
     } measurementsLine;
 

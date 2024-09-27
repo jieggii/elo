@@ -7,10 +7,10 @@
 
 #include "cstdint"
 
-//struct Context {
-//    uint16_t
-//    //    uint16_t exerciseBreakIn; // elapsing time to exercise break, seconds
-//    //    uint16_t postureReminderIn; // elapsing time to seconds
-//};
+// struct Context {
+//     uint16_t
+//     //    uint16_t exerciseBreakIn; // elapsing time to exercise break, seconds
+//     //    uint16_t postureReminderIn; // elapsing time to seconds
+// };
 
 #endif  // ELO_SRC_CONTEXT_H_

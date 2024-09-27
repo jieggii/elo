@@ -12,6 +12,8 @@ void LCD1602::init() {
 
 void LCD1602::clear() { this->lcd.clear(); }
 
+void LCD1602::setCursor(DisplayCoordinates coordinates) { this->lcd.setCursor(coordinates.col, coordinates.row); }
+
 void LCD1602::cacheIcon(uint8_t slot, const Icon& icon) {
     if (slot > MAX_SLOT) {
         debug_println("err: LCD1602.cacheIcon: slot is out of bounds");
@@ -20,12 +22,12 @@ void LCD1602::cacheIcon(uint8_t slot, const Icon& icon) {
     this->lcd.createChar(slot, reinterpret_cast<const char*>(icon));
 }
 
-void LCD1602::displayCachedIcon(uint8_t slot, uint8_t col, uint8_t row) {
-    this->lcd.setCursor(col, row);
+void LCD1602::displayCachedIcon(uint8_t slot, DisplayCoordinates coordinates) {
+    this->setCursor(coordinates);
     this->lcd.write(slot);
 }
 
-void LCD1602::displayText(const char* text, uint8_t col, uint8_t row) {
-    this->lcd.setCursor(col, row);
+void LCD1602::displayText(const char* text, DisplayCoordinates coordinates) {
+    this->setCursor(coordinates);
     this->lcd.print(text);
 }
