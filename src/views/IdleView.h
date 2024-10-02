@@ -6,26 +6,40 @@
 #define ELO_IDLEVIEW_H
 
 #include "LCD1602.h"
-#include "EnvSensor.h"
+#include "Icon.h"
 
-#include <utility>
-#include "iostream"
-#include "memory"
+#include "base/ModeView/ModeView.h"
+#include "base/ModeView/components/base/ClockComponent.h"
 
-#include "ViewController.h"
+#define IDLE_VIEW_INDICATOR_ICON1_ID 1
+#define IDLE_VIEW_INDICATOR_ICON2_ID 2
 
-#include "ViewController.h"
-
-class IdleView : public View {
-   private:
-    EnvSensor* env_sensor;
-
+class IdleView final : public ModeView {
    public:
-    IdleView(LCD1602* display, ViewNavigator* navigator, EnvSensor* env_sensor)
-        : View(display, navigator), env_sensor(env_sensor) {}
-    void setup() override;
-    void render() override;
-    void loop() override;
+    explicit IdleView(ViewNavigator* viewNavigator)
+        : ModeView(viewNavigator, IDLE_VIEW_INDICATOR_ICON1_ID, IDLE_VIEW_INDICATOR_ICON2_ID, ClockTime(0)) {}
+
+    void setup(LCD1602* display) override {
+        const Icon icon1 = {
+            B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000,
+        };
+
+        const Icon icon2 = {
+            B00000, B00000, B00000, B00000, B11111, B01010, B01010, B01010,
+        };
+
+        display->cacheIcon(IDLE_VIEW_INDICATOR_ICON1_ID, icon1);
+        display->cacheIcon(IDLE_VIEW_INDICATOR_ICON2_ID, icon2);
+    }
+
+    void loop() override {}
+    void render(LCD1602* display) override {
+        this->statusLine.render(display);
+        this->measurementsLine.render(display);
+    };
+    void reset() override{};
+
+    ~IdleView() override = default;
 };
 
 #endif  // ELO_IDLEVIEW_H

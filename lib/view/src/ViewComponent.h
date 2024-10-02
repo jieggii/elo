@@ -1,7 +1,6 @@
 #ifndef ELO_VIEWCOMPONENT_H
 #define ELO_VIEWCOMPONENT_H
 
-#include <cstdint>
 #include "LCD1602.h"
 
 /**
@@ -9,14 +8,16 @@
  */
 class ViewComponent {
    protected:
-    LCD1602* display;                // display on which component is rendered
     DisplayCoordinates coordinates;  // coordinates on the display where component is rendered
 
    public:
-    ViewComponent(LCD1602* display, DisplayCoordinates coordinates) : coordinates(coordinates) {}
+    explicit ViewComponent(const DisplayCoordinates coordinates) : coordinates(coordinates) {}
 
-    virtual void loop(uint32_t now) = 0;
-    virtual void render() = 0;
+    /**
+     * Renders view component on the display.
+     * @param display - display to render on.
+     */
+    virtual void render(LCD1602* display) = 0;
 
     virtual ~ViewComponent() = default;
 };

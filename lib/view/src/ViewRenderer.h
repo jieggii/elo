@@ -5,62 +5,44 @@
 #ifndef ELO_LIB_VIEW_SRC_VIEWRENDERER_H_
 #define ELO_LIB_VIEW_SRC_VIEWRENDERER_H_
 
-#include "cstdint"
+#include <cstdint>
+
+#include "LCD1602.h"
 #include "View.h"
 #include "Timer.h"
 
 /**
- * ViewRenderer is responsible for peridocally rendering views.
+ * ViewRenderer is responsible for rendering views once per a certain interval.
  */
 class ViewRenderer {
-   private:
     Timer renderTimer;
-    bool renderViewInstantly = false;
-
-    /**
-     * Renders given view and resets render timer.
-     * @param now - current timestamp in milliseconds.
-     * @param view - view to render.
-     */
-    void render(uint32_t now, View* view) {
-        view->render();
-        this->setTimer(now);  // restart timer to render the next frame
-    }
+    bool renderImmediately = true;  // render the first frame immediately by default.
 
    public:
     /**
      * @param renderInterval - rendering interval in milliseconds
      */
-    explicit ViewRenderer(uint16_t renderInterval) : renderTimer(renderInterval) {}
+    explicit ViewRenderer(const uint16_t renderInterval) : renderTimer(renderInterval) {
+        // we can set the timer to 0 here, because the first frame shall be rendered immediately anyway.
+        this->renderTimer.set(0);
+    }
 
     /**
-     * Starts render timer.
-     * @param now - current timestamp in milliseconds.
+     * Request to render the next frame immediately.
      */
-    void setTimer(uint32_t now) { this->renderTimer.set(now); }
-
-    /**
-     * Render next view instantly, omitting waiting for render interval.
-     */
-    void renderNextFrameInstantly() { this->renderViewInstantly = true; }
+    void requestImmediateRender() { this->renderImmediately = true; }
 
     /**
      * Conditionally render view.
-     * @param now - current timestamp in milliseconds.
+     * @param display - display to render on.
      * @param view - view to render.
+     * @param now - current timestamp in milliseconds.
      */
-    void conditionallyRender(uint32_t now, View* view) {
-        // render view if it must be rendered instantly:
-        if (this->renderViewInstantly) {
-            this->renderViewInstantly = false;
-            this->render(now, view);
-            return;
-        }
-
-        // render view if renderTimer has expired:
-        if (this->renderTimer.isExpired(now)) {
-            this->render(now, view);
-            return;
+    void renderIfNeeded(LCD1602* display, View* view, const uint32_t now) {
+        if (this->renderImmediately || this->renderTimer.isExpired(now)) {
+            view->render(display);
+            this->renderTimer.set(now);       // restart timer to render the next frame
+            this->renderImmediately = false;  // reset immediate render flag
         }
     }
 };

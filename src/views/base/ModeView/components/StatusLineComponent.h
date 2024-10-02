@@ -20,20 +20,19 @@ class StatusLineComponent final : public ViewComponent {
     IconComponent envMeasurementsStatusIcon;
 
    public:
-    StatusLineComponent(LCD1602* display, DisplayCoordinates coordinates, uint8_t modeIndicatorIcon1ID,
-                        uint8_t modeIndicatorIcon2ID, ClockComponent clock)
-        : ViewComponent(display, coordinates),
-          modeIndicators(display, DisplayCoordinates(0, 0), modeIndicatorIcon1ID, modeIndicatorIcon2ID),
-          clock(clock),  // todo: init clock not from provided instance, but from initial time values
-          envMeasurementsStatusIcon(display, coordinates, 0) {}
+    StatusLineComponent(const DisplayCoordinates coordinates, const uint8_t modeIndicatorIcon1ID,
+                        const uint8_t modeIndicatorIcon2ID, const ClockTime clockTime)
+        : ViewComponent(coordinates),
+          modeIndicators(DisplayCoordinates(0, 0), modeIndicatorIcon1ID, modeIndicatorIcon2ID),
+          clock(ClockComponent(DisplayCoordinates(4, coordinates.row), clockTime)),
+          envMeasurementsStatusIcon(DisplayCoordinates(15, coordinates.row), 0) {}
 
     void setEnvMeasurementsIcon(const uint8_t iconID) { this->envMeasurementsStatusIcon.setIconID(iconID); }
 
-    void loop(uint32_t now) override {};
-    void render() override {
-        this->modeIndicators.render();
-        this->clock.render();
-        this->envMeasurementsStatusIcon.render();
+    void render(LCD1602* display) override {
+        this->modeIndicators.render(display);
+        this->clock.render(display);
+        this->envMeasurementsStatusIcon.render(display);
     };
 };
 

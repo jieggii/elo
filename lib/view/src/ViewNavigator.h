@@ -13,41 +13,42 @@
  * ViewNavigator is responsible for navigating between views.
  */
 class ViewNavigator {
-   private:
-    uint8_t viewIndex;
-    bool viewIndexChanged = true;
+    uint8_t currentViewIndex;             // index of the current view
+    bool currentViewIndexChanged = true;  // flag indicating that view index has been changed
 
    public:
-    explicit ViewNavigator(uint8_t initialViewIndex) : viewIndex(initialViewIndex) {}
+    explicit ViewNavigator(const uint8_t initialViewIndex) : currentViewIndex(initialViewIndex) {}
 
     /**
+     * Returns index of the current view.
      * @return current view index.
      */
-    [[nodiscard]] uint8_t getViewIndex() const { return this->viewIndex; }
+    [[nodiscard]] uint8_t getCurrentViewIndex() const { return this->currentViewIndex; }
 
     /**
-     * @return true if view index has been changed, false otherwise.
+     * Returns true if view index has been changed.
+     * @return true if view index has been changed.
      */
-    [[nodiscard]] bool getViewIndexChanged() const { return this->viewIndexChanged; }
+    [[nodiscard]] bool hasViewIndexChanged() const { return this->currentViewIndexChanged; }
 
     /**
      * Resets view index changed flag.
      */
-    void resetViewIndexChanged() { this->viewIndexChanged = false; }
+    void resetViewIndexChangedFlag() { this->currentViewIndexChanged = false; }
 
     /**
      * Navigates to the next view.
-     * @param nextViewIndex - index of the next view.
+     * @param viewIndex - index of the view to navigate to.
      */
-    void navigate(uint8_t nextViewIndex) {
+    void navigateTo(uint8_t viewIndex) {
 #ifdef DEBUG
-        if (nextViewIndex == this->viewIndex) {
+        if (viewIndex == this->currentViewIndex) {
             debug_print("err: ViewNavigator.navigate: navigating to the current view ");
-            debug_println(nextViewIndex);
+            debug_println(viewIndex);
         }
 #endif
-        this->viewIndexChanged = true;
-        this->viewIndex = nextViewIndex;
+        this->currentViewIndexChanged = true;
+        this->currentViewIndex = viewIndex;
     }
 };
 

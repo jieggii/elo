@@ -16,16 +16,16 @@
 /**
  * ViewController is responsible for managing views.
  * It allows to register and retrieve views by their indexes.
- * TODO: rename to ViewRegister?
+ * TODO: rename to ViewRegister or better to ViewRegistry?
+ * TODO: change terms: view index -> view ID
  */
 class ViewController {
-   private:
     View* views[MAX_VIEWS] = {nullptr};
 
    public:
     ViewController() = default;
 
-    void registerView(uint8_t index, View* view) {
+    void registerView(const uint8_t index, View* view) {
         if (index > MAX_VIEWS - 1) {
             debug_println("err: ViewController.registerView: view index is out of bounds");
             return;
@@ -41,7 +41,7 @@ class ViewController {
         this->views[index] = view;
     }
 
-    [[nodiscard]] View* getView(uint8_t index) {
+    [[nodiscard]] View* getView(const uint8_t index) const {
         if (index > MAX_VIEWS - 1) {
             debug_println("err: ViewController.getView: view index is out of bounds");
             return nullptr;

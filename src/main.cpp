@@ -20,19 +20,18 @@ namespace Hardware {
 }  // namespace Hardware
 
 namespace Config {
-    Settings OPERATIONAL_CONFIG;
-    WiFiSettings WIFI_CONFIG;
+    // Settings OPERATIONAL_CONFIG;
+    // WiFiSettings WIFI_CONFIG;
 }  // namespace Config
 
 namespace UI {
-    //    ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
-    ViewNavigator VIEW_NAVIGATOR(STAND_VIEW_INDEX);
+    ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
     ViewController VIEW_CONTROLLER;
     ViewRenderer VIEW_RENDERER(VIEW_RENDER_INTERVAL);
 
     namespace Views {
-        IdleView IDLE(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Hardware::ENV_SENSOR);
-        StandView STAND(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Config::OPERATIONAL_CONFIG, &Hardware::ENV_SENSOR);
+        IdleView IDLE(&VIEW_NAVIGATOR);
+        // StandView STAND(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Config::OPERATIONAL_CONFIG, &Hardware::ENV_SENSOR);
     }  // namespace Views
 }  // namespace UI
 
@@ -48,13 +47,23 @@ void setup() {
     Hardware::ENV_SENSOR.init();
 
     // initialize operational configuration:
-    initDefaultOperationalConfig(&Config::OPERATIONAL_CONFIG);
+    // initDefaultOperationalConfig(&Config::OPERATIONAL_CONFIG);
 
     // register UI views:
     UI::VIEW_CONTROLLER.registerView(IDLE_VIEW_INDEX, &UI::Views::IDLE);
-    UI::VIEW_CONTROLLER.registerView(STAND_VIEW_INDEX, &UI::Views::STAND);
+    // UI::VIEW_CONTROLLER.registerView(STAND_VIEW_INDEX, &UI::Views::STAND);
 
-    UI::VIEW_RENDERER.setTimer(millis());
+    // UI::VIEW_RENDERER.setTimer(millis());
+
+    // const Icon icon1 = {
+    // B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000,
+    // };
+
+    // const Icon icon2 = {
+    // B00000, B00000, B00000, B00000, B11111, B01010, B01010, B01010,
+    // };
+
+    // Hardware::SCREEN.cacheIcon(1, icon1);
 
     debug_println("info: finish setup");
 }
@@ -66,11 +75,11 @@ void loop() {
     //    debug_println(" bytes");
 
     // get current view:
-    uint8_t currentViewIndex = UI::VIEW_NAVIGATOR.getViewIndex();
+    const uint8_t currentViewIndex = UI::VIEW_NAVIGATOR.getCurrentViewIndex();
     View* currentView = UI::VIEW_CONTROLLER.getView(currentViewIndex);
 
     // run set up current view if it's been switched recently:
-    if (UI::VIEW_NAVIGATOR.getViewIndexChanged()) {
+    if (UI::VIEW_NAVIGATOR.hasViewIndexChanged()) {
         // check whether the current view exist (debugging):
         if (currentView == nullptr) {
             debug_print("err: loop: target view with index ");
@@ -83,18 +92,18 @@ void loop() {
             return;
         }
 
-        UI::VIEW_NAVIGATOR.resetViewIndexChanged();
-        currentView->setup();
+        UI::VIEW_NAVIGATOR.resetViewIndexChangedFlag();
+        currentView->setup(&Hardware::SCREEN);
         UI::VIEW_RENDERER
-            .renderNextFrameInstantly();  // the view will be rendered instantly instead of waiting for render interval
+            .requestImmediateRender();  // the view will be rendered instantly instead of waiting for render interval
     }
 
     // run loop() for the current view:
     currentView->loop();
 
     // (re)render the view (if needed):
-    if (!UI::VIEW_NAVIGATOR.getViewIndexChanged()) {  // we do not want to render old view if it has changed
-        uint32_t now = millis();
-        UI::VIEW_RENDERER.conditionallyRender(now, currentView);
+    if (!UI::VIEW_NAVIGATOR.hasViewIndexChanged()) {  // we do not want to render old view if it has changed
+        const uint32_t now = millis();
+        UI::VIEW_RENDERER.renderIfNeeded(&Hardware::SCREEN, currentView, now);
     }
 }

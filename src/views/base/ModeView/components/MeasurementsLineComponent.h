@@ -27,9 +27,9 @@ class MeasurementsLineComponent final : public ViewComponent {
     EnvSensorMeasurements measurements = {.temperature = 0, .humidity = 0, .co2 = 0};
 
    public:
-    MeasurementsLineComponent(LCD1602* display, DisplayCoordinates coordinates,
-                              const uint16_t displayMeasurementsDuration, const uint16_t displayStatusesDuration)
-        : ViewComponent(display, coordinates),
+    MeasurementsLineComponent(const DisplayCoordinates coordinates, const uint16_t displayMeasurementsDuration,
+                              const uint16_t displayStatusesDuration)
+        : ViewComponent(coordinates),
           displayMeasurementsTimer(Timer(displayMeasurementsDuration)),
           displayStatusesTimer((Timer(displayStatusesDuration))) {}
 
@@ -39,32 +39,28 @@ class MeasurementsLineComponent final : public ViewComponent {
         this->measurementStatusIcons = measurementStatusIcons;
     }
 
-    void loop(const uint32_t now) override {
+    void render(LCD1602* display) override {
+        const uint32_t now = millis();
+
         switch (this->state) {
             case State::DISPLAY_MEASUREMENTS:
+                // todo: display actual measurements
+                display->displayText("00*C 00% 0000ppm", this->coordinates);
+
                 if (this->displayMeasurementsTimer.isExpired(now)) {
                     this->state = State::DISPLAY_STATUSES;
                     this->displayStatusesTimer.set(now);
                 }
                 break;
+
             case State::DISPLAY_STATUSES:
+                // todo: display actual statuses
+                display->displayText(" :)   :)    :)  ", this->coordinates);
+
                 if (this->displayStatusesTimer.isExpired(now)) {
                     this->state = State::DISPLAY_MEASUREMENTS;
                     this->displayMeasurementsTimer.set(now);
                 }
-                break;
-        }
-    }
-
-    void render() override {
-        switch (this->state) {
-            case State::DISPLAY_MEASUREMENTS:
-                // todo: display measurements
-                display->displayText("00*C 00% 0000ppm", this->coordinates);
-                break;
-            case State::DISPLAY_STATUSES:
-                // todo: display statuses
-                display->displayText(" :)   :)    :)  ", this->coordinates);
                 break;
         }
     }

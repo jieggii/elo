@@ -10,24 +10,30 @@
 #include "Icon.h"
 #include "cstdint"
 
-#define MAX_SLOT 7
+#define DISPLAY_MAX_CGRAM_SLOT 7           // the last available CGRAM slot for storing custom characters (icons)
+#define DISPLAY_DEFAULT_ICON_CGRAM_SLOT 0  // CGRAM slot which is reserved for storing the default icon
+
+#define DISPLAY_COLS 16
+#define DISPLAY_ROWS 2
 
 struct DisplayCoordinates {
     uint8_t col;
     uint8_t row;
 
-    DisplayCoordinates(uint8_t col, uint8_t row) : col(col), row(row) {};
+    DisplayCoordinates(const uint8_t col, const uint8_t row) : col(col), row(row){};
 };
 
 class LCD1602 {
-   private:
-    const uint8_t cols = 16;
-    const uint8_t rows = 2;
-
     LiquidCrystal_I2C lcd;
 
+    /**
+     * Cache icon in the CGRAM of the LCD.
+     */
+    void cacheIconInternal(uint8_t slot, const Icon& icon);
+    void cacheDefaultIcon(const Icon& icon);
+
    public:
-    explicit LCD1602(uint8_t addr) : lcd(addr, cols, rows) {};
+    explicit LCD1602(const uint8_t addr) : lcd(addr, DISPLAY_COLS, DISPLAY_ROWS){};
 
     void init();
     void clear();
@@ -35,7 +41,7 @@ class LCD1602 {
     void setCursor(DisplayCoordinates coordinates);
 
     void cacheIcon(uint8_t slot, const Icon& icon);
-    void displayCachedIcon(uint8_t slot, DisplayCoordinates coordinates);
+    void displayIcon(uint8_t slot, DisplayCoordinates coordinates);
     void displayText(const char* text, DisplayCoordinates coordinates);
 };
 
