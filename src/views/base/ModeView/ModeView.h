@@ -39,7 +39,8 @@ class ModeView : public View {
           measurementStatusIconIDs(measurementStatusIconIDs),
           measurementsTimer(Timer(measurementsUpdateInterval)),
           components(
-              {.statusLine = StatusLineComponent({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID, clockTime),
+              {.statusLine = StatusLineComponent({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID, clockTime,
+                                                 measurementStatusIconIDs.optimal),
                .measurementsLine = MeasurementsLineComponent({0, 1}, 3000, 1000, measurementStatusIconIDs.optimal)}) {}
 
     void setup(LCD1602* display) override {

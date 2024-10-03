@@ -24,7 +24,7 @@ class IdleView final : public ModeView {
                    MeasurementStatusIconIDs{.optimal = IDLE_VIEW_MEASUREMENT_STATUS_OPTIMAL_ICON_ID,
                                             .acceptable = IDLE_VIEW_MEASUREMENT_STATUS_ACCEPTABLE_ICON_ID,
                                             .bad = IDLE_VIEW_MEASUREMENT_STATUS_BAD_ICON_ID},
-                   IDLE_VIEW_INDICATOR_ICON1_ID, IDLE_VIEW_INDICATOR_ICON2_ID, ClockTime(65), 1000) {}
+                   IDLE_VIEW_INDICATOR_ICON1_ID, IDLE_VIEW_INDICATOR_ICON2_ID, ClockTime(0), 1000) {}
 
     void setup(LCD1602* display) override {
         const Icon modeIcon1 = {
