@@ -3,7 +3,7 @@
 #include "LCD1602.h"
 #include "EnvSensor.h"
 #include "ViewIndex.h"
-#include "ViewController.h"
+#include "ViewRegistry.h"
 #include "debug_print.h"
 #include "ViewRenderer.h"
 #include "Settings.h"
@@ -15,8 +15,8 @@
 #define VIEW_RENDER_INTERVAL 1000
 
 namespace Hardware {
-    LCD1602 SCREEN(0x27);
-    EnvSensor ENV_SENSOR;
+    LCD1602 display(0x27);
+    EnvSensor envSensor;
 }  // namespace Hardware
 
 namespace Config {
@@ -25,13 +25,14 @@ namespace Config {
 }  // namespace Config
 
 namespace UI {
-    ViewNavigator VIEW_NAVIGATOR(IDLE_VIEW_INDEX);
-    ViewController VIEW_CONTROLLER;
-    ViewRenderer VIEW_RENDERER(VIEW_RENDER_INTERVAL);
+    ViewNavigator viewNavigator(IDLE_VIEW_INDEX);
+    ViewRegistry viewRegistry;
+    ViewRenderer viewRenderer(VIEW_RENDER_INTERVAL);
 
     namespace Views {
-        IdleView IDLE(&VIEW_NAVIGATOR);
-        // StandView STAND(&Hardware::SCREEN, &VIEW_NAVIGATOR, &Config::OPERATIONAL_CONFIG, &Hardware::ENV_SENSOR);
+        IdleView idle({.envSensor = &Hardware::envSensor}, &viewNavigator);
+        // StandView STAND(&Hardware::display, &viewNavigator, &Config::OPERATIONAL_CONFIG,
+        // &Hardware::envSensor);
     }  // namespace Views
 }  // namespace UI
 
@@ -40,30 +41,18 @@ void setup() {
     debug_println("info: begin setup");
 
     // initialize display:
-    Hardware::SCREEN.init();
-    Hardware::SCREEN.clear();
+    Hardware::display.init();
+    Hardware::display.clear();
 
     // initialize env sensor:
-    Hardware::ENV_SENSOR.init();
+    Hardware::envSensor.init();
 
     // initialize operational configuration:
     // initDefaultOperationalConfig(&Config::OPERATIONAL_CONFIG);
 
     // register UI views:
-    UI::VIEW_CONTROLLER.registerView(IDLE_VIEW_INDEX, &UI::Views::IDLE);
-    // UI::VIEW_CONTROLLER.registerView(STAND_VIEW_INDEX, &UI::Views::STAND);
-
-    // UI::VIEW_RENDERER.setTimer(millis());
-
-    // const Icon icon1 = {
-    // B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000,
-    // };
-
-    // const Icon icon2 = {
-    // B00000, B00000, B00000, B00000, B11111, B01010, B01010, B01010,
-    // };
-
-    // Hardware::SCREEN.cacheIcon(1, icon1);
+    UI::viewRegistry.registerView(IDLE_VIEW_INDEX, &UI::Views::idle);
+    // UI::viewRegistry.registerView(STAND_VIEW_INDEX, &UI::Views::STAND);
 
     debug_println("info: finish setup");
 }
@@ -75,26 +64,23 @@ void loop() {
     //    debug_println(" bytes");
 
     // get current view:
-    const uint8_t currentViewIndex = UI::VIEW_NAVIGATOR.getCurrentViewIndex();
-    View* currentView = UI::VIEW_CONTROLLER.getView(currentViewIndex);
+    const uint8_t currentViewIndex = UI::viewNavigator.getCurrentViewIndex();
+    View* currentView = UI::viewRegistry.getView(currentViewIndex);
 
     // run set up current view if it's been switched recently:
-    if (UI::VIEW_NAVIGATOR.hasViewIndexChanged()) {
-        // check whether the current view exist (debugging):
+    if (UI::viewNavigator.hasViewIndexChanged()) {
+#ifdef DEBUG
+        // check whether the current view exist:
         if (currentView == nullptr) {
             debug_print("err: loop: target view with index ");
             debug_print(currentViewIndex);
             debug_println(" was not found");
-
-            // todo: display error on the display2
-            // ...
-
-            return;
         }
+#endif
 
-        UI::VIEW_NAVIGATOR.resetViewIndexChangedFlag();
-        currentView->setup(&Hardware::SCREEN);
-        UI::VIEW_RENDERER
+        UI::viewNavigator.resetViewIndexChangedFlag();
+        currentView->setup(&Hardware::display);
+        UI::viewRenderer
             .requestImmediateRender();  // the view will be rendered instantly instead of waiting for render interval
     }
 
@@ -102,8 +88,8 @@ void loop() {
     currentView->loop();
 
     // (re)render the view (if needed):
-    if (!UI::VIEW_NAVIGATOR.hasViewIndexChanged()) {  // we do not want to render old view if it has changed
+    if (!UI::viewNavigator.hasViewIndexChanged()) {  // we do not want to render old view if it has changed
         const uint32_t now = millis();
-        UI::VIEW_RENDERER.renderIfNeeded(&Hardware::SCREEN, currentView, now);
+        UI::viewRenderer.renderIfNeeded(&Hardware::display, currentView, now);
     }
 }

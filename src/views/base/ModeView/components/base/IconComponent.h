@@ -20,12 +20,7 @@ class IconComponent final : public ViewComponent {
 
     void setIconID(const uint8_t iconID) { this->iconID = iconID; };
 
-    void render(LCD1602* display) override {
-        debug_print("displaying icon on slot ");
-        debug_print(this->iconID);
-        debug_println();
-        display->displayIcon(this->iconID, this->coordinates);
-    };
+    void render(LCD1602* display) override { display->displayIcon(this->iconID, this->coordinates); };
 };
 
 #endif  // BASEDISPLAYVIEW_ICONCOMPONENT_H

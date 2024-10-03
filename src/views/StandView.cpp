@@ -2,13 +2,13 @@
 // Created by jieggii on 9/4/24.
 //
 
-#include "StandView.h"
-#include "debug_print.h"
-#include "binary.h"
-#include "Icon.h"
-
-#include "core_esp8266_features.h"
-#include "ViewIndex.h"
+// #include "StandView.h"
+// #include "debug_print.h"
+// #include "binary.h"
+// #include "Icon.h"
+//
+// #include "core_esp8266_features.h"
+// #include "ViewIndex.h"
 
 // #define ICON_PERSON_STAND_SLOT 0
 // #define ICON_TABLE_STAND_SLOT 1

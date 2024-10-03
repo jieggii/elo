@@ -19,39 +19,83 @@
  * Has status line and measurements line; is capable of switching to another view.
  */
 class ModeView : public View {
-    uint8_t modeIndicatorIcon1ID;
-    uint8_t modeIndicatorIcon2ID;
-
-   protected:
-    ViewNavigator* viewNavigator;  // view navigator used to navigate to another view
-
-    StatusLineComponent statusLine;
-    MeasurementsLineComponent measurementsLine;
-
    public:
-    ModeView(ViewNavigator* viewNavigator, const uint8_t modeIndicatorIcon1ID, const uint8_t modeIndicatorIcon2ID,
-             const ClockTime clockTime)
+    struct MeasurementStatusIconIDs {  // icons reflecting the status of measurements
+        uint8_t optimal;               // id of the icon representing optimal measurement status
+        uint8_t acceptable;            // id of the icon representing acceptable measurement status
+        uint8_t bad;                   // id of the icon representing bad measurement status
+    };
+
+    struct Hardware {
+        EnvSensor* envSensor;
+    };
+
+    ModeView(const Hardware hardware, ViewNavigator* viewNavigator,
+             const MeasurementStatusIconIDs measurementStatusIconIDs, const uint8_t modeIndicatorIcon1ID,
+             const uint8_t modeIndicatorIcon2ID, const ClockTime clockTime, const uint32_t measurementsUpdateInterval)
         : View(),
-          modeIndicatorIcon1ID(modeIndicatorIcon1ID),
-          modeIndicatorIcon2ID(modeIndicatorIcon2ID),
+          hardware(hardware),
           viewNavigator(viewNavigator),
-          statusLine({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID, clockTime),
-          measurementsLine({0, 1}, 3000, 1000) {}
+          measurementStatusIconIDs(measurementStatusIconIDs),
+          measurementsTimer(Timer(measurementsUpdateInterval)),
+          components(
+              {.statusLine = StatusLineComponent({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID, clockTime),
+               .measurementsLine = MeasurementsLineComponent({0, 1}, 3000, 1000, measurementStatusIconIDs.optimal)}) {}
 
-    [[nodiscard]] uint8_t getModeIndicatorIcon1ID() const { return this->modeIndicatorIcon1ID; }
-    [[nodiscard]] uint8_t getModeIndicatorIcon2ID() const { return this->modeIndicatorIcon2ID; }
+    void setup(LCD1602* display) override {
+        const uint32_t now = millis();
+        this->measurementsTimer.set(now);
+    };
 
-    // void render_components(LCD1602* display) {
-    // this->statusLine.render(display);
-    // this->measurementsLine.render(display);
-    // };
+    /**
+     * Main view loop.
+     * It is responsible for reading environment measurements, assessing them, and displaying the results.
+     */
+    void loop() override {
+        if (const uint32_t now = millis(); this->measurementsTimer.isExpired(now)) {
+            this->measurementsTimer.set(now);
+            const EnvSensorMeasurements measurements = this->hardware.envSensor->read();
+            this->components.measurementsLine.setMeasurements(measurements);
 
-    void setup(LCD1602* display) override = 0;
-    void loop() override = 0;
-    void render(LCD1602* display) override = 0;
+            // TODO: assess measurements and choose suitable icons:
+            const MeasurementsLineComponent::MeasurementStatusIconIDs measurementStatusIconIDs = {
+                .temperature = this->measurementStatusIconIDs.optimal,
+                .humidity = this->measurementStatusIconIDs.acceptable,
+                .co2 = this->measurementStatusIconIDs.bad};
+            this->components.measurementsLine.setMeasurementStatusIconIDs(measurementStatusIconIDs);
+        }
+    };
+
+    /**
+     * Renders status line and measurements line.
+     * @param display - pointer to the display.
+     */
+    void render(LCD1602* display) override {
+        this->components.statusLine.render(display);
+        this->components.measurementsLine.render(display);
+    };
+
     void reset() override = 0;
 
     ~ModeView() override = default;
+
+   protected:
+    /**
+     * Navigates to the specified view.
+     * @param viewID - ID of the view to navigate to.
+     */
+    // void navigateTo(const uint8_t viewID) const { this->viewNavigator->navigateTo(viewID); }
+
+   private:
+    Hardware hardware;                                  // hardware dependencies
+    ViewNavigator* viewNavigator;                       // view navigator used to navigate to another view
+    MeasurementStatusIconIDs measurementStatusIconIDs;  // icons reflecting the status of measurements
+
+    Timer measurementsTimer;  // timer used to track measurements update interval
+    struct Components {
+        StatusLineComponent statusLine;
+        MeasurementsLineComponent measurementsLine;
+    } components;  // view components
 };
 
 #endif  // MODEVIEW_H

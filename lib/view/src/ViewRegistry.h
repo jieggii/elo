@@ -16,14 +16,13 @@
 /**
  * ViewController is responsible for managing views.
  * It allows to register and retrieve views by their indexes.
- * TODO: rename to ViewRegister or better to ViewRegistry?
  * TODO: change terms: view index -> view ID
  */
-class ViewController {
+class ViewRegistry {
     View* views[MAX_VIEWS] = {nullptr};
 
    public:
-    ViewController() = default;
+    ViewRegistry() = default;
 
     void registerView(const uint8_t index, View* view) {
         if (index > MAX_VIEWS - 1) {

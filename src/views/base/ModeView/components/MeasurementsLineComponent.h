@@ -11,32 +11,32 @@
  * MeasurementsLineComponent line displaying environmental measurements and their statuses.
  */
 class MeasurementsLineComponent final : public ViewComponent {
-    Timer displayMeasurementsTimer;
-    Timer displayStatusesTimer;
-
-    enum class State {
-        DISPLAY_MEASUREMENTS,
-        DISPLAY_STATUSES,
-    } state = State::DISPLAY_MEASUREMENTS;
-
-    struct MeasurementStatusIcons {
+   public:
+    struct MeasurementStatusIconIDs {
         uint8_t temperature;
         uint8_t humidity;
         uint8_t co2;
-    } measurementStatusIcons = {.temperature = 0, .humidity = 0, .co2 = 0};
-    EnvSensorMeasurements measurements = {.temperature = 0, .humidity = 0, .co2 = 0};
+    };
 
-   public:
     MeasurementsLineComponent(const DisplayCoordinates coordinates, const uint16_t displayMeasurementsDuration,
-                              const uint16_t displayStatusesDuration)
+                              const uint16_t displayStatusesDuration, const uint8_t defaultMeasurementStatusIconID)
         : ViewComponent(coordinates),
           displayMeasurementsTimer(Timer(displayMeasurementsDuration)),
-          displayStatusesTimer((Timer(displayStatusesDuration))) {}
+          displayStatusesTimer(Timer(displayStatusesDuration)),
+          measurementStatusIconIDs({.temperature = defaultMeasurementStatusIconID,
+                                    .humidity = defaultMeasurementStatusIconID,
+                                    .co2 = defaultMeasurementStatusIconID}) {}
 
+    /**
+     * Set measurements to be displayed.
+     */
     void setMeasurements(const EnvSensorMeasurements measurements) { this->measurements = measurements; }
 
-    void setMeasurementStatusIcons(const MeasurementStatusIcons measurementStatusIcons) {
-        this->measurementStatusIcons = measurementStatusIcons;
+    /**
+     * Set icon IDs representing statuses of each measurement.
+     */
+    void setMeasurementStatusIconIDs(const MeasurementStatusIconIDs iconIDs) {
+        this->measurementStatusIconIDs = iconIDs;
     }
 
     void render(LCD1602* display) override {
@@ -44,18 +44,22 @@ class MeasurementsLineComponent final : public ViewComponent {
 
         switch (this->state) {
             case State::DISPLAY_MEASUREMENTS:
-                // todo: display actual measurements
+                // TODO: display actual measurements
                 display->displayText("00*C 00% 0000ppm", this->coordinates);
 
                 if (this->displayMeasurementsTimer.isExpired(now)) {
-                    this->state = State::DISPLAY_STATUSES;
+                    this->state = State::DISPLAY_MEASUREMENT_STATUS_ICONS;
                     this->displayStatusesTimer.set(now);
                 }
                 break;
 
-            case State::DISPLAY_STATUSES:
-                // todo: display actual statuses
-                display->displayText(" :)   :)    :)  ", this->coordinates);
+            case State::DISPLAY_MEASUREMENT_STATUS_ICONS:
+                display->displayText("  *C   %     ppm",
+                                     {0, 1});  // todo: is there a better way to do this? For
+                                               // example, just remove/replace with " " reading values from the line
+                display->displayIcon(this->measurementStatusIconIDs.temperature, {1, 1});
+                display->displayIcon(this->measurementStatusIconIDs.humidity, {6, 1});
+                display->displayIcon(this->measurementStatusIconIDs.co2, {12, 1});
 
                 if (this->displayStatusesTimer.isExpired(now)) {
                     this->state = State::DISPLAY_MEASUREMENTS;
@@ -64,6 +68,19 @@ class MeasurementsLineComponent final : public ViewComponent {
                 break;
         }
     }
+
+   private:
+    Timer displayMeasurementsTimer;
+    Timer displayStatusesTimer;
+
+    MeasurementStatusIconIDs measurementStatusIconIDs;  // icon IDs representing statuses of each measurement
+
+    enum class State {
+        DISPLAY_MEASUREMENTS,               // actual measurements are displayed
+        DISPLAY_MEASUREMENT_STATUS_ICONS,   // icons representing measurement statuses are displayed
+    } state = State::DISPLAY_MEASUREMENTS;  // current state of the component
+
+    EnvSensorMeasurements measurements = {.temperature = 0, .humidity = 0, .co2 = 0};  // current measurements
 };
 
 #endif  // MEASUREMENTSLINECOMPONENT_H
