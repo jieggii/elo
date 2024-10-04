@@ -14,6 +14,7 @@ class RenderBuffer {
     /**
      * Format the buffer with the given measurements.
      * If no measurements are provided, the buffer will be formatted as a template with no measurements displayed.
+     * I.e formats buffer as "99°C 99% 9999ppm" if measurements provided, otherwise as "  °C  %    ppm".
      * TODO: rename this method to something more descriptive.
      */
     void format(const EnvSensorMeasurements* measurements = nullptr) {
@@ -61,6 +62,9 @@ class RenderBuffer {
         buffer[16] = '\0';  // Null-terminate the string
     }
 
+    /**
+     * Get the buffer.
+     */
     [[nodiscard]] const char* getBuffer() const { return this->buffer; }
 
    private:
