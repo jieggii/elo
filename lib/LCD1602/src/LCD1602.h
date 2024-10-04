@@ -24,14 +24,6 @@ struct DisplayCoordinates {
 };
 
 class LCD1602 {
-    LiquidCrystal_I2C lcd;
-
-    /**
-     * Cache icon in the CGRAM of the LCD.
-     */
-    void cacheIconInternal(uint8_t slot, const Icon& icon);
-    void cacheDefaultIcon(const Icon& icon);
-
    public:
     explicit LCD1602(const uint8_t addr) : lcd(addr, DISPLAY_COLS, DISPLAY_ROWS){};
 
@@ -43,6 +35,15 @@ class LCD1602 {
     void cacheIcon(uint8_t slot, const Icon& icon);
     void displayIcon(uint8_t slot, DisplayCoordinates coordinates);
     void displayText(const char* text, DisplayCoordinates coordinates);
+
+   private:
+    LiquidCrystal_I2C lcd;
+
+    /**
+     * Cache icon in the CGRAM of the LCD.
+     */
+    void cacheIconInternal(uint8_t slot, const Icon& icon);
+    void cacheDefaultIcon(const Icon& icon);
 };
 
 #endif  // ELO_LCD1602_H
