@@ -16,6 +16,9 @@
 #define DISPLAY_COLS 16
 #define DISPLAY_ROWS 2
 
+/**
+ * Represents the coordinates of the display.
+ */
 struct DisplayCoordinates {
     uint8_t col;
     uint8_t row;
@@ -23,6 +26,10 @@ struct DisplayCoordinates {
     DisplayCoordinates(const uint8_t col, const uint8_t row) : col(col), row(row){};
 };
 
+/**
+ * LCD1602 class encapsulates the LiquidCrystal_I2C library and provides an interface for working with the LCD1602
+ * display.
+ */
 class LCD1602 {
    public:
     explicit LCD1602(const uint8_t addr) : lcd(addr, DISPLAY_COLS, DISPLAY_ROWS){};
