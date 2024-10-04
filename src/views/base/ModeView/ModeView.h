@@ -14,6 +14,8 @@
 #include "components/MeasurementsLineComponent.h"
 #include "components/StatusLineComponent.h"
 
+#define MODE_VIEW_MEASUREMENTS_UPDATE_INTERVAL 1000  // interval between measurements updates
+
 /**
  * Base class for all mode views.
  * Has status line and measurements line; is capable of switching to another view.
@@ -32,14 +34,14 @@ class ModeView : public View {
 
     ModeView(const Hardware hardware, ViewNavigator* viewNavigator,
              const MeasurementStatusIconIDs measurementStatusIconIDs, const uint8_t modeIndicatorIcon1ID,
-             const uint8_t modeIndicatorIcon2ID, const ClockTime clockTime, const uint32_t measurementsUpdateInterval)
+             const uint8_t modeIndicatorIcon2ID, const ClockTime initialClockTime)
         : View(),
           hardware(hardware),
           viewNavigator(viewNavigator),
           measurementStatusIconIDs(measurementStatusIconIDs),
-          measurementsTimer(Timer(measurementsUpdateInterval)),
+          measurementsTimer(Timer(MODE_VIEW_MEASUREMENTS_UPDATE_INTERVAL)),
           components(
-              {.statusLine = StatusLineComponent({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID, clockTime,
+              {.statusLine = StatusLineComponent({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID, initialClockTime,
                                                  measurementStatusIconIDs.optimal),
                .measurementsLine = MeasurementsLineComponent({0, 1}, 3000, 1000, measurementStatusIconIDs.optimal)}) {}
 
@@ -82,10 +84,10 @@ class ModeView : public View {
 
    protected:
     /**
-     * Navigates to the specified view.
-     * @param viewID - ID of the view to navigate to.
+     * Sets the clock time displayed in the status line.
+     * @param time - clock time to set.
      */
-    // void navigateTo(const uint8_t viewID) const { this->viewNavigator->navigateTo(viewID); }
+    void setStatusLineClockTime(const ClockTime time) { this->components.statusLine.setClockTime(time); }
 
    private:
     Hardware hardware;                                  // hardware dependencies

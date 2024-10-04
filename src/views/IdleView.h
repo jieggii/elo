@@ -24,7 +24,7 @@ class IdleView final : public ModeView {
                    MeasurementStatusIconIDs{.optimal = IDLE_VIEW_MEASUREMENT_STATUS_OPTIMAL_ICON_ID,
                                             .acceptable = IDLE_VIEW_MEASUREMENT_STATUS_ACCEPTABLE_ICON_ID,
                                             .bad = IDLE_VIEW_MEASUREMENT_STATUS_BAD_ICON_ID},
-                   IDLE_VIEW_INDICATOR_ICON1_ID, IDLE_VIEW_INDICATOR_ICON2_ID, ClockTime(0), 1000) {}
+                   IDLE_VIEW_INDICATOR_ICON1_ID, IDLE_VIEW_INDICATOR_ICON2_ID, ClockTime(65)) {}
 
     void setup(LCD1602* display) override {
         const Icon modeIcon1 = {
@@ -41,23 +41,25 @@ class IdleView final : public ModeView {
         display->cacheIcon(IDLE_VIEW_INDICATOR_ICON2_ID, modeIcon2);
 
         const Icon statusOptimalIcon = {
-            // :)
+            // icon representing face :)
             B00000, B01010, B01010, B00000, B10001, B01110, B00000, B00000,
         };
 
         const Icon statusAcceptableIcon = {
-            // :|
+            // icon representing face :|
             B00000, B01010, B01010, B00000, B00000, B11111, B00000, B00000,
         };
 
         const Icon statusBadIcon = {
-            // :(
+            // icon representing face :(
             B00000, B01010, B01010, B00000, B00000, B01110, B10001, B00000,
         };
 
         display->cacheIcon(IDLE_VIEW_MEASUREMENT_STATUS_OPTIMAL_ICON_ID, statusOptimalIcon);
         display->cacheIcon(IDLE_VIEW_MEASUREMENT_STATUS_ACCEPTABLE_ICON_ID, statusAcceptableIcon);
         display->cacheIcon(IDLE_VIEW_MEASUREMENT_STATUS_BAD_ICON_ID, statusBadIcon);
+
+        this->setStatusLineClockTime(ClockTime(65));
     }
 
     void loop() override { ModeView::loop(); }

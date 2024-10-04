@@ -26,6 +26,8 @@ class StatusLineComponent final : public ViewComponent {
 
     void setEnvMeasurementsStatusIconID(const uint8_t iconID) { this->envMeasurementsStatusIcon.setIconID(iconID); }
 
+    void setClockTime(const ClockTime clockTime) { this->clock.setTime(clockTime); }
+
     void render(LCD1602* display) override {
         this->modeIndicators.render(display);
         this->clock.render(display);
