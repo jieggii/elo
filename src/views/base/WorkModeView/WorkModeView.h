@@ -19,7 +19,7 @@ class WorkModeView : public TimedModeView {
      * @param viewNavigator
      * @param modeIndicatorIcon1ID
      * @param modeIndicatorIcon2ID
-     * @param duration
+     * @param duration - duration of the view in seconds
      * @param measurementsUpdateInterval
      * @param nextViewID
      * @param postureReminderInterval - posture reminder interval in seconds

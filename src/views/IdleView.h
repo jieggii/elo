@@ -19,12 +19,12 @@
 
 class IdleView final : public ModeView {
    public:
-    explicit IdleView(const Hardware hardware, ViewNavigator* viewNavigator)
+    IdleView(const Hardware hardware, ViewNavigator* viewNavigator)
         : ModeView(hardware, viewNavigator,
                    MeasurementStatusIconIDs{.optimal = IDLE_VIEW_MEASUREMENT_STATUS_OPTIMAL_ICON_ID,
                                             .acceptable = IDLE_VIEW_MEASUREMENT_STATUS_ACCEPTABLE_ICON_ID,
                                             .bad = IDLE_VIEW_MEASUREMENT_STATUS_BAD_ICON_ID},
-                   IDLE_VIEW_INDICATOR_ICON1_ID, IDLE_VIEW_INDICATOR_ICON2_ID, ClockTime(65)) {}
+                   IDLE_VIEW_INDICATOR_ICON1_ID, IDLE_VIEW_INDICATOR_ICON2_ID) {}
 
     void setup(Display* display) override {
         const Icon modeIcon1 = {
@@ -59,12 +59,18 @@ class IdleView final : public ModeView {
         display->cacheIcon(IDLE_VIEW_MEASUREMENT_STATUS_ACCEPTABLE_ICON_ID, statusAcceptableIcon);
         display->cacheIcon(IDLE_VIEW_MEASUREMENT_STATUS_BAD_ICON_ID, statusBadIcon);
 
-        this->setStatusLineClockTime(ClockTime(65));
+        display->clear();
     }
 
     void loop() override { ModeView::loop(); }
-    void render(Display* display) override { ModeView::render(display); };
-    void reset() override{};
+    void render(Display* display) override {
+        // todo: get actual current time from the actual RTC
+        const ClockTime currentTime = {23, 59, 59};
+        this->setStatusLineClockTime(currentTime);
+
+        ModeView::render(display);
+    }
+    void reset() override {}
 
     ~IdleView() override = default;
 };

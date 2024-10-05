@@ -16,12 +16,17 @@
  */
 class StatusLineComponent final : public ViewComponent {
    public:
+    /**
+     * @param coordinates - coordinates of the component
+     * @param modeIndicatorIcon1ID - id of the first mode indicator icon
+     * @param modeIndicatorIcon2ID - id of the second mode indicator icon
+     * @param defaultMeasurementStatusIconID - id of the default environmental measurements status icon
+     */
     StatusLineComponent(const DisplayCoordinates coordinates, const uint8_t modeIndicatorIcon1ID,
-                        const uint8_t modeIndicatorIcon2ID, const ClockTime clockTime,
-                        const uint8_t defaultMeasurementStatusIconID)
+                        const uint8_t modeIndicatorIcon2ID, const uint8_t defaultMeasurementStatusIconID)
         : ViewComponent(coordinates),
           modeIndicators({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID),
-          clock(ClockComponent({4, coordinates.row}, clockTime)),
+          clock(ClockComponent({4, coordinates.row})),
           envMeasurementsStatusIcon({15, coordinates.row}, defaultMeasurementStatusIconID) {}
 
     void setEnvMeasurementsStatusIconID(const uint8_t iconID) { this->envMeasurementsStatusIcon.setIconID(iconID); }

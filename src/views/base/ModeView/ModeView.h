@@ -14,7 +14,9 @@
 #include "components/MeasurementsLineComponent.h"
 #include "components/StatusLineComponent.h"
 
-#define MODE_VIEW_MEASUREMENTS_UPDATE_INTERVAL 1000  // interval between measurements updates
+#define MODE_VIEW_MEASUREMENTS_UPDATE_INTERVAL 1000          // interval between measurements updates
+#define MODE_VIEW_MEASUREMENTS_DISPLAY_DURATION 6000         // duration of displaying measurements
+#define MODE_VIEW_MEASUREMENTS_STATUS_DISPLAY_DURATION 2000  // duration of displaying measurement statuses
 
 /**
  * Base class for all mode views.
@@ -34,16 +36,17 @@ class ModeView : public View {
 
     ModeView(const Hardware hardware, ViewNavigator* viewNavigator,
              const MeasurementStatusIconIDs measurementStatusIconIDs, const uint8_t modeIndicatorIcon1ID,
-             const uint8_t modeIndicatorIcon2ID, const ClockTime initialClockTime)
+             const uint8_t modeIndicatorIcon2ID)
         : View(),
           hardware(hardware),
           viewNavigator(viewNavigator),
           measurementStatusIconIDs(measurementStatusIconIDs),
           measurementsTimer(Timer(MODE_VIEW_MEASUREMENTS_UPDATE_INTERVAL)),
-          components(
-              {.statusLine = StatusLineComponent({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID, initialClockTime,
-                                                 measurementStatusIconIDs.optimal),
-               .measurementsLine = MeasurementsLineComponent({0, 1}, 3000, 1000, measurementStatusIconIDs.optimal)}) {}
+          components({.statusLine = StatusLineComponent({0, 0}, modeIndicatorIcon1ID, modeIndicatorIcon2ID,
+                                                        measurementStatusIconIDs.optimal),
+                      .measurementsLine = MeasurementsLineComponent({0, 1}, MODE_VIEW_MEASUREMENTS_DISPLAY_DURATION,
+                                                                    MODE_VIEW_MEASUREMENTS_STATUS_DISPLAY_DURATION,
+                                                                    measurementStatusIconIDs.optimal)}) {}
 
     void setup(Display* display) override {
         const uint32_t now = millis();
@@ -76,7 +79,7 @@ class ModeView : public View {
     void render(Display* display) override {
         this->components.statusLine.render(display);
         this->components.measurementsLine.render(display);
-    };
+    }
 
     void reset() override = 0;
 

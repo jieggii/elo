@@ -11,19 +11,15 @@ struct ClockTime {
     uint8_t minutes;
     uint8_t seconds;
 
-    ClockTime(const uint8_t hours, const uint8_t minutes, const uint8_t seconds)
-        : hours(hours), minutes(minutes), seconds(seconds){};
-
     /**
-     * Creates ClockTime with the given time value provided as a timestamp in seconds.
-     * For example, timestamp=65 will set hours to 0, minutes to 1 and seconds to 5.
-     *
-     * Note: the methods supports only uint16_t timestamps in seconds, meaning, that maximum value is ~18 hours.
+     * Creates a ClockTime object from the given timestamp in seconds.
+     * @param timestamp - timestamp in seconds
+     * Note: The timestamp is expected to be in the range [0, 86399], meaning that the maximum value is around 18 hours.
      */
-    explicit ClockTime(const uint16_t timestamp)
-        : hours(static_cast<uint8_t>(timestamp / 3600)),
-          minutes(static_cast<uint8_t>(timestamp % 3600 / 60)),
-          seconds(static_cast<uint8_t>(timestamp % 60)) {}
+    static ClockTime fromTimestamp(const uint16_t timestamp) {
+        return ClockTime{static_cast<uint8_t>(timestamp / 3600), static_cast<uint8_t>(timestamp % 3600 / 60),
+                         static_cast<uint8_t>(timestamp % 60)};
+    }
 };
 
 /**
@@ -34,8 +30,7 @@ class ClockComponent final : public ViewComponent {
     /**
      * Creates a clock component with the given coordinates and time.
      */
-    ClockComponent(const DisplayCoordinates coordinates, const ClockTime time)
-        : ViewComponent(coordinates), time(time) {}
+    explicit ClockComponent(const DisplayCoordinates coordinates) : ViewComponent(coordinates) {}
 
     /**
      * Sets clock to the given time provided as hours, minutes and seconds.
@@ -59,7 +54,7 @@ class ClockComponent final : public ViewComponent {
     };
 
    private:
-    ClockTime time;
+    ClockTime time = {0, 0, 0};
 };
 
 #endif

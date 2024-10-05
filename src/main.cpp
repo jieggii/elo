@@ -39,6 +39,7 @@ void setup() {
     // initialize display:
     Hardware::display.init();
     Hardware::display.clear();
+    Hardware::display.displayText("Booting elo...", {0, 0});
 
     // initialize env sensor:
     Hardware::envSensor.init();
@@ -55,9 +56,9 @@ void setup() {
 
 void loop() {
     // debug print free RAM:
-    //    debug_print("inf: free heap: ");
-    //    debug_print(ESP.getFreeHeap());
-    //    debug_println(" bytes");
+    // debug_print("info: free heap: ");
+    // debug_print(ESP.getFreeHeap());
+    // debug_println(" bytes");
 
     // get current view:
     const uint8_t currentViewIndex = UI::viewNavigator.getCurrentViewIndex();
