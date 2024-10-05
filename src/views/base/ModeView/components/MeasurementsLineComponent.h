@@ -2,7 +2,7 @@
 #define MEASUREMENTSLINECOMPONENT_H
 
 #include <cstdint>
-#include "LCD1602.h"
+#include "Display.h"
 #include "ViewComponent.h"
 #include "Timer.h"
 #include "EnvSensor.h"
@@ -44,7 +44,7 @@ class MeasurementsLineComponent final : public ViewComponent {
     /**
      * Render the component.
      */
-    void render(LCD1602* display) override;
+    void render(Display* display) override;
 
    private:
     Timer displayMeasurementsTimer;  // timer controlling how long measurements are displayed
@@ -62,12 +62,12 @@ class MeasurementsLineComponent final : public ViewComponent {
     /**
      * Render measurements.
      */
-    void renderMeasurements(LCD1602* display) const;
+    void renderMeasurements(Display* display) const;
 
     /**
      * Render measurement status icons.
      */
-    void renderStatusIcons(LCD1602* display) const;
+    void renderStatusIcons(Display* display) const;
 };
 
 #endif  // MEASUREMENTSLINECOMPONENT_H

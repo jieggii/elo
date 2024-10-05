@@ -9,7 +9,7 @@
 
 #include "View.h"
 #include "EnvSensor.h"
-#include "LCD1602.h"
+#include "Display.h"
 #include "ViewNavigator.h"
 #include "components/MeasurementsLineComponent.h"
 #include "components/StatusLineComponent.h"
@@ -45,7 +45,7 @@ class ModeView : public View {
                                                  measurementStatusIconIDs.optimal),
                .measurementsLine = MeasurementsLineComponent({0, 1}, 3000, 1000, measurementStatusIconIDs.optimal)}) {}
 
-    void setup(LCD1602* display) override {
+    void setup(Display* display) override {
         const uint32_t now = millis();
         this->measurementsTimer.set(now);
     };
@@ -73,7 +73,7 @@ class ModeView : public View {
      * Renders status line and measurements line.
      * @param display - pointer to the display.
      */
-    void render(LCD1602* display) override {
+    void render(Display* display) override {
         this->components.statusLine.render(display);
         this->components.measurementsLine.render(display);
     };

@@ -1,7 +1,7 @@
 #ifndef ELO_VIEWCOMPONENT_H
 #define ELO_VIEWCOMPONENT_H
 
-#include "LCD1602.h"
+#include "Display.h"
 
 /**
  * ViewComponent is an interface for view components.
@@ -17,7 +17,7 @@ class ViewComponent {
      * Renders view component on the display.
      * @param display - display to render on.
      */
-    virtual void render(LCD1602* display) = 0;
+    virtual void render(Display* display) = 0;
 
     virtual ~ViewComponent() = default;
 };

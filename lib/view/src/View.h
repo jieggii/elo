@@ -5,7 +5,7 @@
 #ifndef ELO_VIEW_H_
 #define ELO_VIEW_H_
 
-#include "LCD1602.h"
+#include "Display.h"
 
 class ViewController;
 
@@ -19,7 +19,7 @@ class View {
     /**
      * Setup view.
      */
-    virtual void setup(LCD1602* display) = 0;
+    virtual void setup(Display* display) = 0;
 
     /*
      * Update view state.
@@ -29,7 +29,7 @@ class View {
     /*
      * Render view on the display.
      */
-    virtual void render(LCD1602* display) = 0;
+    virtual void render(Display* display) = 0;
 
     /**
      * Reset view state.

@@ -2,7 +2,7 @@
 #define STATUSLINECOMPONENT_H
 
 #include <cstdint>
-#include "LCD1602.h"
+#include "Display.h"
 #include "ViewComponent.h"
 
 #include "base/ClockComponent.h"
@@ -28,7 +28,7 @@ class StatusLineComponent final : public ViewComponent {
 
     void setClockTime(const ClockTime clockTime) { this->clock.setTime(clockTime); }
 
-    void render(LCD1602* display) override {
+    void render(Display* display) override {
         this->modeIndicators.render(display);
         this->clock.render(display);
         this->envMeasurementsStatusIcon.render(display);

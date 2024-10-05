@@ -1,21 +1,17 @@
 #include <Arduino.h>
 
-#include "LCD1602.h"
+#include "Display.h"
 #include "EnvSensor.h"
 #include "ViewIndex.h"
 #include "ViewRegistry.h"
 #include "debug_print.h"
 #include "ViewRenderer.h"
-#include "Settings.h"
-#include "WiFiSettings.h"
 #include "views/IdleView.h"
-#include "views/StandView.h"
-#include "config.h"
 
 #define VIEW_RENDER_INTERVAL 1000
 
 namespace Hardware {
-    LCD1602 display(0x27);
+    Display display(0x27);
     EnvSensor envSensor;
 }  // namespace Hardware
 

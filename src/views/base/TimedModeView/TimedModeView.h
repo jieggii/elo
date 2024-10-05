@@ -38,9 +38,9 @@ class TimedModeView : public ModeView {
     // [[nodiscard]] bool getIsPaused() const { return this->isPaused; }
     // [[nodiscard]] bool isExpired(const uint32_t now) const { return this->viewTimer.isExpired(now); }
 
-    void setup(LCD1602* display) override = 0;
+    void setup(Display* display) override = 0;
     void loop() override { ModeView::loop(); };
-    void render(LCD1602* display) override { ModeView::render(display); };
+    void render(Display* display) override { ModeView::render(display); };
     void reset() override = 0;
 
    private:

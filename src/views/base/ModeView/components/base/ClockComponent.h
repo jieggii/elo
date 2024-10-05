@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-#include "LCD1602.h"
+#include "Display.h"
 #include "ViewComponent.h"
 
 struct ClockTime {
@@ -42,7 +42,7 @@ class ClockComponent final : public ViewComponent {
      */
     void setTime(const ClockTime time) { this->time = time; }
 
-    void render(LCD1602* display) override {
+    void render(Display* display) override {
         char buffer[9];  // buffer for the string representation of the time ("00:00:00")
 
         buffer[0] = static_cast<char>('0' + this->time.hours / 10);

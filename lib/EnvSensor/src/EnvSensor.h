@@ -8,6 +8,12 @@
 #include "SparkFun_SCD4x_Arduino_Library.h"
 #include "cstdint"
 
+/**
+ * Measurements from the environmental sensor.
+ * Datatypes are chosen to match the inaccuracy of the sensor according to the datasheet
+ * (https://cdn.sparkfun.com/assets/d/4/9/a/d/Sensirion_CO2_Sensors_SCD4x_Datasheet.pdf).
+ * Temperature: +-
+ */
 struct EnvSensorMeasurements {
     uint8_t temperature;
     uint8_t humidity;
@@ -15,8 +21,6 @@ struct EnvSensorMeasurements {
 };
 
 class EnvSensor {
-    SCD4x scd40;
-
    public:
     EnvSensor() = default;
 
@@ -33,6 +37,9 @@ class EnvSensor {
         //     .co2 = this->scd40.getCO2(),
         // };
     }
+
+   private:
+    SCD4x scd40;
 };
 
 #endif  // ELO_ENVSENSOR_H

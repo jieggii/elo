@@ -102,7 +102,7 @@
 //
 //    }
 // }
-// StandView::StandView(LCD1602 *display, ViewNavigator *navigator, OperationalConfig *const operationalConfig,
+// StandView::StandView(Display *display, ViewNavigator *navigator, OperationalConfig *const operationalConfig,
 //                      EnvSensor *env_sensor)
 //     : View(display, navigator),
 //       hardware({.env_sensor = env_sensor}),

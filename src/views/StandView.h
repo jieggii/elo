@@ -5,7 +5,7 @@
 #ifndef ELO_STANDVIEW_H
 #define ELO_STANDVIEW_H
 
-// #include "LCD1602.h"
+// #include "Display.h"
 // #include "EnvSensor.h"
 // #include "ViewRegistry.h"
 // #include "Settings.h"
@@ -20,7 +20,7 @@
 //  // OperationalConfig* const operationalConfig;
 //
 // public:
-//  StandView(LCD1602* display, ViewNavigator* navigator, OperationalConfig* operationalConfig, EnvSensor*
+//  StandView(Display* display, ViewNavigator* navigator, OperationalConfig* operationalConfig, EnvSensor*
 //  env_sensor);
 //
 //  void setup() override;

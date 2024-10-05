@@ -4,7 +4,7 @@
 #include <cstdint>
 
 #include "debug_print.h"
-#include "LCD1602.h"
+#include "Display.h"
 
 #include "ViewComponent.h"
 
@@ -20,7 +20,7 @@ class IconComponent final : public ViewComponent {
 
     void setIconID(const uint8_t iconID) { this->iconID = iconID; };
 
-    void render(LCD1602* display) override { display->displayIcon(this->iconID, this->coordinates); };
+    void render(Display* display) override { display->displayIcon(this->iconID, this->coordinates); };
 };
 
 #endif  // BASEDISPLAYVIEW_ICONCOMPONENT_H

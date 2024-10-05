@@ -5,7 +5,7 @@
 #ifndef ELO_IDLEVIEW_H
 #define ELO_IDLEVIEW_H
 
-#include "LCD1602.h"
+#include "Display.h"
 #include "Icon.h"
 
 #include "base/ModeView/ModeView.h"
@@ -26,7 +26,7 @@ class IdleView final : public ModeView {
                                             .bad = IDLE_VIEW_MEASUREMENT_STATUS_BAD_ICON_ID},
                    IDLE_VIEW_INDICATOR_ICON1_ID, IDLE_VIEW_INDICATOR_ICON2_ID, ClockTime(65)) {}
 
-    void setup(LCD1602* display) override {
+    void setup(Display* display) override {
         const Icon modeIcon1 = {
             // empty icon
             B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000,
@@ -63,7 +63,7 @@ class IdleView final : public ModeView {
     }
 
     void loop() override { ModeView::loop(); }
-    void render(LCD1602* display) override { ModeView::render(display); };
+    void render(Display* display) override { ModeView::render(display); };
     void reset() override{};
 
     ~IdleView() override = default;

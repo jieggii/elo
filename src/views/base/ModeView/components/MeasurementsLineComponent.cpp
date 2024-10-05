@@ -81,7 +81,7 @@ void MeasurementsLineComponent::setMeasurementStatusIconIDs(const MeasurementSta
     this->measurementStatusIconIDs = iconIDs;
 }
 
-void MeasurementsLineComponent::render(LCD1602* display) {
+void MeasurementsLineComponent::render(Display* display) {
     const uint32_t now = millis();
 
     switch (this->state) {
@@ -104,14 +104,14 @@ void MeasurementsLineComponent::render(LCD1602* display) {
     }
 }
 
-void MeasurementsLineComponent::renderMeasurements(LCD1602* display) const {
+void MeasurementsLineComponent::renderMeasurements(Display* display) const {
     RenderBuffer renderBuffer;
     renderBuffer.format(&this->measurements);
 
     display->displayText(renderBuffer.getBuffer(), this->coordinates);
 }
 
-void MeasurementsLineComponent::renderStatusIcons(LCD1602* display) const {
+void MeasurementsLineComponent::renderStatusIcons(Display* display) const {
     RenderBuffer renderBuffer;
     renderBuffer.format();
 

@@ -2,8 +2,8 @@
 // Created by jieggii on 8/31/24.
 //
 
-#ifndef ELO_LCD1602_H
-#define ELO_LCD1602_H
+#ifndef ELO_Display_H
+#define ELO_Display_H
 
 #include <LiquidCrystal_I2C.h>
 
@@ -27,12 +27,12 @@ struct DisplayCoordinates {
 };
 
 /**
- * LCD1602 class encapsulates the LiquidCrystal_I2C library and provides an interface for working with the LCD1602
+ * Display class encapsulates the LiquidCrystal_I2C library and provides an interface for working with the Display
  * display.
  */
-class LCD1602 {
+class Display {
    public:
-    explicit LCD1602(const uint8_t addr) : lcd(addr, DISPLAY_COLS, DISPLAY_ROWS){};
+    explicit Display(const uint8_t addr) : lcd(addr, DISPLAY_COLS, DISPLAY_ROWS){};
 
     void init();
     void clear();
@@ -53,4 +53,4 @@ class LCD1602 {
     void cacheDefaultIcon(const Icon& icon);
 };
 
-#endif  // ELO_LCD1602_H
+#endif  // ELO_Display_H

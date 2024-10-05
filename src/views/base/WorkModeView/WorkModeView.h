@@ -5,7 +5,7 @@
 #ifndef WORKMODEVIEW_H
 #define WORKMODEVIEW_H
 
-#include "LCD1602.h"
+#include "Display.h"
 #include "ViewNavigator.h"
 #include "views/base/TimedModeView/TimedModeView.h"
 
@@ -33,9 +33,9 @@ class WorkModeView : public TimedModeView {
           postureReminderTimer(Timer(static_cast<uint32_t>(postureReminderInterval * 1000))),
           exerciseTimer(Timer(static_cast<uint32_t>(exerciseInterval * 1000))) {}
 
-    void setup(LCD1602* display) override = 0;
+    void setup(Display* display) override = 0;
     void loop() override { TimedModeView::loop(); };
-    void render(LCD1602* display) override { TimedModeView::render(display); };
+    void render(Display* display) override { TimedModeView::render(display); };
     void reset() override = 0;
 
     ~WorkModeView() override;

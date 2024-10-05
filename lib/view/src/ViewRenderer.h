@@ -7,7 +7,7 @@
 
 #include <cstdint>
 
-#include "LCD1602.h"
+#include "Display.h"
 #include "View.h"
 #include "Timer.h"
 
@@ -38,7 +38,7 @@ class ViewRenderer {
      * @param view - view to render.
      * @param now - current timestamp in milliseconds.
      */
-    void renderIfNeeded(LCD1602* display, View* view, const uint32_t now) {
+    void renderIfNeeded(Display* display, View* view, const uint32_t now) {
         if (this->renderImmediately || this->renderTimer.isExpired(now)) {
             view->render(display);
             this->renderTimer.set(now);       // restart timer to render the next frame
