@@ -24,16 +24,24 @@
  */
 class ModeView : public View {
    public:
-    struct MeasurementStatusIconIDs {  // icons reflecting the status of measurements
-        uint8_t optimal;               // id of the icon representing optimal measurement status
-        uint8_t acceptable;            // id of the icon representing acceptable measurement status
-        uint8_t bad;                   // id of the icon representing bad measurement status
+    /**
+     * Icons representing the status of measurements.
+     */
+    struct MeasurementStatusIconIDs {
+        uint8_t optimal;     // id of the icon representing optimal measurement status
+        uint8_t acceptable;  // id of the icon representing acceptable measurement status
+        uint8_t bad;         // id of the icon representing bad measurement status
     };
 
+    /**
+     * Hardware dependencies of the mode view.
+     * Contains an environment sensor.
+     */
     struct Hardware {
         EnvSensor* envSensor;
     };
 
+    // TODO: move constructor implementation to the .cpp file
     ModeView(const Hardware hardware, ViewNavigator* viewNavigator,
              const MeasurementStatusIconIDs measurementStatusIconIDs, const uint8_t modeIndicatorIcon1ID,
              const uint8_t modeIndicatorIcon2ID)
@@ -48,38 +56,23 @@ class ModeView : public View {
                                                                     MODE_VIEW_MEASUREMENTS_STATUS_DISPLAY_DURATION,
                                                                     measurementStatusIconIDs.optimal)}) {}
 
-    void setup(Display* display) override {
-        const uint32_t now = millis();
-        this->measurementsTimer.set(now);
-    };
+    /**
+     * Initializes the view.
+     * @param display pointer to the display.
+     */
+    void setup(Display* display) override;
 
     /**
      * Main view loop.
      * It is responsible for reading environment measurements, assessing them, and displaying the results.
      */
-    void loop() override {
-        if (const uint32_t now = millis(); this->measurementsTimer.isExpired(now)) {
-            this->measurementsTimer.set(now);
-            const EnvSensorMeasurements measurements = this->hardware.envSensor->read();
-            this->components.measurementsLine.setMeasurements(measurements);
-
-            // TODO: assess measurements and choose suitable icons:
-            const MeasurementsLineComponent::MeasurementStatusIconIDs measurementStatusIconIDs = {
-                .temperature = this->measurementStatusIconIDs.optimal,
-                .humidity = this->measurementStatusIconIDs.acceptable,
-                .co2 = this->measurementStatusIconIDs.bad};
-            this->components.measurementsLine.setMeasurementStatusIconIDs(measurementStatusIconIDs);
-        }
-    };
+    void loop() override;
 
     /**
      * Renders status line and measurements line.
      * @param display - pointer to the display.
      */
-    void render(Display* display) override {
-        this->components.statusLine.render(display);
-        this->components.measurementsLine.render(display);
-    }
+    void render(Display* display) override;
 
     void reset() override = 0;
 
@@ -88,20 +81,39 @@ class ModeView : public View {
    protected:
     /**
      * Sets the clock time displayed in the status line.
-     * @param time - clock time to set.
+     * @param time clock time to set.
      */
-    void setStatusLineClockTime(const ClockTime time) { this->components.statusLine.setClockTime(time); }
+    void setStatusLineClockTime(ClockTime time);
 
    private:
-    Hardware hardware;                                  // hardware dependencies
-    ViewNavigator* viewNavigator;                       // view navigator used to navigate to another view
-    MeasurementStatusIconIDs measurementStatusIconIDs;  // icons reflecting the status of measurements
+    /**
+     * Hardware dependencies of the mode view.
+     * Contains an environment sensor.
+     */
+    Hardware hardware;
 
-    Timer measurementsTimer;  // timer used to track measurements update interval
+    /**
+     * View navigator used to navigate to another view.
+     */
+    ViewNavigator* viewNavigator;
+
+    /**
+     * Icons representing the status of measurements.
+     */
+    MeasurementStatusIconIDs measurementStatusIconIDs;
+
+    /**
+     * Timer used to track measurements update interval.
+     */
+    Timer measurementsTimer;
+
+    /**
+     * View components.
+     */
     struct Components {
         StatusLineComponent statusLine;
         MeasurementsLineComponent measurementsLine;
-    } components;  // view components
+    } components;
 };
 
 #endif  // MODEVIEW_H

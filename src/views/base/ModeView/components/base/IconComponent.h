@@ -3,24 +3,32 @@
 
 #include <cstdint>
 
-#include "debug_print.h"
 #include "Display.h"
 
 #include "ViewComponent.h"
 
 /**
- * IconComponent represents an icon component, which has its position and its icon ID.
+ * IconComponent represents a component which renders an icon, which has its position and its icon ID.
  */
 class IconComponent final : public ViewComponent {
-    uint8_t iconID;
-
    public:
     IconComponent(const DisplayCoordinates coordinates, const uint8_t iconID)
-        : ViewComponent(coordinates), iconID(iconID){};
+        : ViewComponent(coordinates), iconID(iconID) {}
 
-    void setIconID(const uint8_t iconID) { this->iconID = iconID; };
+    /**
+     * Set the icon ID of the icon component.
+     * @param iconID The icon ID to set.
+     */
+    void setIconID(uint8_t iconID);
 
-    void render(Display* display) override { display->displayIcon(this->iconID, this->coordinates); };
+    /**
+     * Render the icon component on the display.
+     * @param display The display to render the icon component on.
+     */
+    void render(Display* display) override;
+
+   private:
+    uint8_t iconID;  // The icon ID of the icon component.
 };
 
 #endif  // BASEDISPLAYVIEW_ICONCOMPONENT_H

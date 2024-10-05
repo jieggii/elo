@@ -21,7 +21,7 @@ class MeasurementsLineComponent final : public ViewComponent {
         uint8_t co2;
     };
 
-    // TODO: move constructor to the cpp file.
+    // TODO: move constructor implementation to cpp file.
     MeasurementsLineComponent(const DisplayCoordinates coordinates, const uint16_t displayMeasurementsDuration,
                               const uint16_t displayStatusesDuration, const uint8_t defaultMeasurementStatusIconID)
         : ViewComponent(coordinates),

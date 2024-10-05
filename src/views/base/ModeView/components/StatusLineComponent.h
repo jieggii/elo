@@ -17,10 +17,10 @@
 class StatusLineComponent final : public ViewComponent {
    public:
     /**
-     * @param coordinates - coordinates of the component
-     * @param modeIndicatorIcon1ID - id of the first mode indicator icon
-     * @param modeIndicatorIcon2ID - id of the second mode indicator icon
-     * @param defaultMeasurementStatusIconID - id of the default environmental measurements status icon
+     * @param coordinates coordinates of the component
+     * @param modeIndicatorIcon1ID id of the first mode indicator icon
+     * @param modeIndicatorIcon2ID id of the second mode indicator icon
+     * @param defaultMeasurementStatusIconID id of the default environmental measurements status icon
      */
     StatusLineComponent(const DisplayCoordinates coordinates, const uint8_t modeIndicatorIcon1ID,
                         const uint8_t modeIndicatorIcon2ID, const uint8_t defaultMeasurementStatusIconID)
@@ -29,20 +29,29 @@ class StatusLineComponent final : public ViewComponent {
           clock(ClockComponent({4, coordinates.row})),
           envMeasurementsStatusIcon({15, coordinates.row}, defaultMeasurementStatusIconID) {}
 
-    void setEnvMeasurementsStatusIconID(const uint8_t iconID) { this->envMeasurementsStatusIcon.setIconID(iconID); }
+    /**
+     * Sets environmental measurements status icon.
+     * @param iconID icon ID.
+     */
+    void setEnvMeasurementsStatusIconID(uint8_t iconID);
 
-    void setClockTime(const ClockTime clockTime) { this->clock.setTime(clockTime); }
+    /**
+     * Sets clock time.
+     * @param clockTime clock time.
+     */
+    void setClockTime(ClockTime clockTime);
 
-    void render(Display* display) override {
-        this->modeIndicators.render(display);
-        this->clock.render(display);
-        this->envMeasurementsStatusIcon.render(display);
-    };
+    /**
+     * Renders the component.
+     * @param display to render on.
+     */
+    void render(Display* display) override;
 
    private:
-    ModeIndicatorsComponent modeIndicators;
-    ClockComponent clock;
-    IconComponent envMeasurementsStatusIcon;
+    ModeIndicatorsComponent modeIndicators;   // Mode indicators (displayed on the left side of the status line)
+    ClockComponent clock;                     // Clock (displayed in the middle of the status line)
+    IconComponent envMeasurementsStatusIcon;  // Environmental measurements status icon (displayed on the right side of
+                                              // the status line)
 };
 
 #endif  // STATUSLINECOMPONENT_H
