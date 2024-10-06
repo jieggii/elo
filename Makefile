@@ -14,3 +14,7 @@ fmt:
 		clang-format -style=file -i $$file; \
 	done
 	@echo "Done!"
+
+.PHONY: run-debug
+run-debug:
+	pio run -e debug -t upload && pio device monitor
