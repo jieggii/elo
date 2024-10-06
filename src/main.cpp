@@ -2,13 +2,13 @@
 
 #include "Display.h"
 #include "EnvSensor.h"
-#include "ViewIndex.h"
+#include "view_index.h"
 #include "ViewRegistry.h"
 #include "debug_print.h"
 #include "ViewRenderer.h"
 #include "views/IdleView.h"
 
-#define VIEW_RENDER_INTERVAL 1000
+constexpr uint16_t VIEW_RENDER_INTERVAL = 1000;
 
 namespace Hardware {
     Display display(0x27);

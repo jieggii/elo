@@ -70,7 +70,7 @@ class RenderBuffer {
    private:
     static constexpr char DEGREE_SYMBOL = static_cast<char>(223);  // degree symbol ('°')
 
-    char buffer[DISPLAY_COLS + 1] = {};  // the actual buffer for rendering
+    char buffer[DisplayDimensions::cols + 1] = {};  // the actual buffer for rendering
 };
 
 void MeasurementsLineComponent::setMeasurements(const EnvSensorMeasurements measurements) {

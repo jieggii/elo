@@ -19,19 +19,12 @@ class TimedModeView : public ModeView {
     /**
      * @param hardware
      * @param viewNavigator - pointer to the ViewNavigator.
-     * @param modeIndicatorIcon1ID - ID of the first mode indicator icon.
-     * @param modeIndicatorIcon2ID - ID of the second mode indicator icon.
      * @param duration - duration of the view in seconds.
-     * @param measurementsUpdateInterval - interval in milliseconds between measurements updates.
      * @param nextViewID - ID of the next view.
      */
-    TimedModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t modeIndicatorIcon1ID,
-                  const uint8_t modeIndicatorIcon2ID, const uint16_t duration,
-                  const uint32_t measurementsUpdateInterval, const uint8_t nextViewID)
-        : ModeView(hardware, viewNavigator, modeIndicatorIcon1ID, modeIndicatorIcon2ID, ClockTime(duration),
-                   measurementsUpdateInterval),
-          nextViewID(nextViewID),
-          viewTimer(static_cast<uint32_t>(duration * 1000)) {}
+    TimedModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint16_t duration,
+                  const uint8_t nextViewID)
+        : ModeView(hardware, viewNavigator), viewTimer(Timer::fromSeconds(duration)), nextViewID(nextViewID) {}
 
     // void pause() { this->isPaused = true; }
 
@@ -39,13 +32,13 @@ class TimedModeView : public ModeView {
     // [[nodiscard]] bool isExpired(const uint32_t now) const { return this->viewTimer.isExpired(now); }
 
     void setup(Display* display) override = 0;
-    void loop() override { ModeView::loop(); };
-    void render(Display* display) override { ModeView::render(display); };
+    void loop() override { ModeView::loop(); }
+    void render(Display* display) override { ModeView::render(display); }
     void reset() override = 0;
 
    private:
-    uint8_t nextViewID;  // ID of the next view to navigate to after expiration
     Timer viewTimer;     // timer used to track view expiration
+    uint8_t nextViewID;  // ID of the next view to navigate to after expiration
 
     bool isPaused = false;
 };

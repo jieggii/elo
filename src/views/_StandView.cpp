@@ -8,7 +8,7 @@
 // #include "Icon.h"
 //
 // #include "core_esp8266_features.h"
-// #include "ViewIndex.h"
+// #include "view_index.h"
 
 // #define ICON_PERSON_STAND_SLOT 0
 // #define ICON_TABLE_STAND_SLOT 1
