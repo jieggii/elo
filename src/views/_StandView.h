@@ -6,7 +6,7 @@
 #define ELO_STANDVIEW_H
 
 // #include "Display.h"
-// #include "EnvSensor.h"
+// #include "env_sensor.h"
 // #include "ViewRegistry.h"
 // #include "Settings.h"
 // #include "Timer.h"
@@ -14,13 +14,13 @@
 
 // class StandView : public WorkModeView {
 //  struct Hardware {
-//      EnvSensor* env_sensor;
+//      env_sensor* env_sensor;
 //  } hardware;
 //
 //  // OperationalConfig* const operationalConfig;
 //
 // public:
-//  StandView(Display* display, ViewNavigator* navigator, OperationalConfig* operationalConfig, EnvSensor*
+//  StandView(Display* display, ViewNavigator* navigator, OperationalConfig* operationalConfig, env_sensor*
 //  env_sensor);
 //
 //  void setup() override;

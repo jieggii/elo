@@ -103,7 +103,7 @@
 //    }
 // }
 // StandView::StandView(Display *display, ViewNavigator *navigator, OperationalConfig *const operationalConfig,
-//                      EnvSensor *env_sensor)
+//                      env_sensor *env_sensor)
 //     : View(display, navigator),
 //       hardware({.env_sensor = env_sensor}),
 //       timers({.mainTimer = Timer(5 * 1000),
