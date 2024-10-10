@@ -13,17 +13,48 @@ void ModeView::setup(Display* display, const Icon* indicatorIcon1, const Icon* i
 }
 
 void ModeView::loop() {
-    if (const uint32_t now = millis(); this->measurementsTimer.isExpired(now)) {
-        this->measurementsTimer.set(now);
-        const EnvSensorMeasurements measurements = this->hardware.envSensor->read();
-        this->components.measurementsLine.setMeasurements(measurements);
+    const uint32_t now = millis();  // todo: get from loop param
 
-        // TODO: assess measurements and choose suitable icons:
-        const MeasurementsLineComponent::MeasurementStatusIconIDs measurementStatusIconIDs = {
-            .temperature = ModeViewIconIDs::measurementStatusOptimal,
-            .humidity = ModeViewIconIDs::measurementStatusAcceptable,
-            .co2 = ModeViewIconIDs::measurementStatusBad};
-        this->components.measurementsLine.setMeasurementStatusIconIDs(measurementStatusIconIDs);
+    // update measurements if it is time to do so:
+    if (this->measurementsTimer.isExpired(now)) {
+        // reset measurements timer
+        this->measurementsTimer.set(now);
+
+        // perform measurements and update information about measurements availability:
+        if (this->hardware.envSensor->performMeasurements()) {  // if sensor could perform measurements
+            const EnvSensorMeasurements measurements = this->hardware.envSensor->getMeasurements();
+
+            // update the measurements on the measurements line:
+            this->components.measurementsLine.setMeasurements(
+                MeasurementsLineComponent::Measurements::fromEnvSensorMeasurements(&measurements));
+
+            // assess measurements:
+            // TODO: assess measurements and choose suitable icons:
+            const MeasurementsLineComponent::MeasurementStatusIconIDs measurementStatusIconIDs = {
+                .temperature = ModeViewIconIDs::measurementStatusOptimal,
+                .humidity = ModeViewIconIDs::measurementStatusAcceptable,
+                .co2 = ModeViewIconIDs::measurementStatusBad};
+
+            // update overall measurement status icon on the status line:
+            this->components.statusLine.setEnvMeasurementsStatusIconID(ModeViewIconIDs::measurementStatusBad);
+
+            // update measurement status icons on the measurements line:
+            this->components.measurementsLine.setMeasurementStatusIconIDs(measurementStatusIconIDs);
+
+            // update ModeView state if necessary:
+            if (!this->measurementsAvailable) {
+                this->measurementsAvailable = true;
+                this->components.statusLine.enableMeasurementsStatusIcon();
+                this->components.measurementsLine.enableMeasurementStatusIcons(now);
+            }
+        } else {  // if sensor could not perform measurements
+            // update ModeView state if necessary:
+            if (this->measurementsAvailable) {
+                this->measurementsAvailable = false;
+                this->components.statusLine.disableMeasurementsStatusIcon();
+                this->components.measurementsLine.disableMeasurementStatusIcons();
+            }
+        }
     }
 }
 

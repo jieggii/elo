@@ -30,6 +30,9 @@ namespace ModeViewIconIDs {
     // id of the icon representing bad measurement status.
     constexpr uint8_t measurementStatusBad = 5;
 
+    // id of the icon representing placeholder for measurements.
+    constexpr uint8_t measurementsPlaceholder = 6;
+
 }  // namespace ModeViewIconIDs
 
 namespace ModeViewSettings {
@@ -37,7 +40,7 @@ namespace ModeViewSettings {
     constexpr uint16_t measurementsUpdateInterval = 1000;
 
     // duration of displaying measurements in milliseconds.
-    constexpr uint16_t measurementsDisplayDuration = 1000;
+    constexpr uint16_t measurementsDisplayDuration = 4000;
 
     // duration of displaying measurement statuses in milliseconds.
     constexpr uint16_t measurementsStatusDisplayDuration = 1000;
@@ -128,6 +131,8 @@ class ModeView : public View {
         StatusLineComponent statusLine;
         MeasurementsLineComponent measurementsLine;
     } components;
+
+    bool measurementsAvailable = false;
 
     /**
      * Caches mode indicator icons.

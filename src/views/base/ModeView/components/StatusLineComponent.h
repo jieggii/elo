@@ -42,6 +42,16 @@ class StatusLineComponent final : public ViewComponent {
     void setClockTime(ClockTime clockTime);
 
     /**
+     * Enables environmental measurements status icon.
+     */
+    void enableMeasurementsStatusIcon();
+
+    /**
+     * Disables environmental measurements status icon.
+     */
+    void disableMeasurementsStatusIcon();
+
+    /**
      * Renders the component.
      * @param display to render on.
      */
@@ -52,6 +62,11 @@ class StatusLineComponent final : public ViewComponent {
     ClockComponent clock;                     // Clock (displayed in the middle of the status line)
     IconComponent envMeasurementsStatusIcon;  // Environmental measurements status icon (displayed on the right side of
                                               // the status line)
+
+    /**
+     * Flag indicating whether to display environmental measurements status icon.
+     */
+    bool displayMeasurementsStatusIcon = false;
 };
 
 #endif  // STATUSLINECOMPONENT_H

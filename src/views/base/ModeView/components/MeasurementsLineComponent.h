@@ -6,12 +6,30 @@
 #include "ViewComponent.h"
 #include "Timer.h"
 #include "EnvSensor.h"
+#include <cmath>
 
 /**
  * MeasurementsLineComponent line displaying environmental measurements and their statuses.
  */
 class MeasurementsLineComponent final : public ViewComponent {
    public:
+    struct Measurements {
+        uint8_t temperature;
+        uint8_t humidity;
+        uint16_t co2;
+
+        Measurements() = default;
+
+        /**
+         * Create Measurements from EnvSensorMeasurements.
+         */
+        static Measurements fromEnvSensorMeasurements(const EnvSensorMeasurements* envSensorMeasurements) {
+            return Measurements{.temperature = static_cast<uint8_t>(round(envSensorMeasurements->temperature)),
+                                .humidity = static_cast<uint8_t>(round(envSensorMeasurements->humidity)),
+                                .co2 = envSensorMeasurements->co2};
+        }
+    };
+
     /**
      * Icon IDs representing statuses of each measurement.
      */
@@ -34,12 +52,22 @@ class MeasurementsLineComponent final : public ViewComponent {
     /**
      * Set measurements to be displayed.
      */
-    void setMeasurements(EnvSensorMeasurements measurements);
+    void setMeasurements(Measurements measurements);
 
     /**
      * Set icon IDs representing statuses of each measurement.
      */
     void setMeasurementStatusIconIDs(MeasurementStatusIconIDs iconIDs);
+
+    /**
+     * Enable displaying measurement status icons.
+     */
+    void enableMeasurementStatusIcons(uint32_t now);
+
+    /**
+     * Disable displaying measurement status icons.
+     */
+    void disableMeasurementStatusIcons();
 
     /**
      * Render the component.
@@ -53,11 +81,16 @@ class MeasurementsLineComponent final : public ViewComponent {
     MeasurementStatusIconIDs measurementStatusIconIDs;  // icon IDs representing statuses of each measurement
 
     enum class State {
-        DISPLAY_MEASUREMENTS,               // actual measurements are displayed
-        DISPLAY_STATUS_ICONS,               // icons representing measurement statuses are displayed
-    } state = State::DISPLAY_MEASUREMENTS;  // current state of the component
+        DISPLAYING_MEASUREMENTS,               // measurements are displayed
+        DISPLAYING_STATUSES,                   // icons representing measurement statuses are displayed
+    } state = State::DISPLAYING_MEASUREMENTS;  // current state of the component
 
-    EnvSensorMeasurements measurements = {.temperature = 0, .humidity = 0, .co2 = 0};  // current measurements
+    Measurements measurements = {.temperature = 0, .humidity = 0, .co2 = 0};  // current measurements
+
+    /**
+     * Whether to display measurement status icons.
+     */
+    bool displayMeasurementStatusIcons = false;
 
     /**
      * Render measurements.
@@ -67,7 +100,9 @@ class MeasurementsLineComponent final : public ViewComponent {
     /**
      * Render measurement status icons.
      */
-    void renderStatusIcons(Display* display) const;
+    void renderMeasurementStatusIcons(Display* display) const;
 };
+
+// todo: change this code and the logic!!!
 
 #endif  // MEASUREMENTSLINECOMPONENT_H

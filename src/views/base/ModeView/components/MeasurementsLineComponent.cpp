@@ -17,7 +17,7 @@ class RenderBuffer {
      * I.e formats buffer as "99°C 99% 9999ppm" if measurements provided, otherwise as "  °C  %    ppm".
      * TODO: rename this method to something more descriptive.
      */
-    void format(const EnvSensorMeasurements* measurements = nullptr) {
+    void format(const MeasurementsLineComponent::Measurements* measurements = nullptr) {
         // display temperature if measurements provided:
         if (measurements) {
             buffer[0] = static_cast<char>('0' + measurements->temperature / 10);
@@ -70,34 +70,43 @@ class RenderBuffer {
    private:
     static constexpr char DEGREE_SYMBOL = static_cast<char>(223);  // degree symbol ('°')
 
-    char buffer[DisplayDimensions::cols + 1] = {};  // the actual buffer for rendering
+    char buffer[DisplayDimensions::cols + 1] = {};  // the underlying buffer for rendering
 };
 
-void MeasurementsLineComponent::setMeasurements(const EnvSensorMeasurements measurements) {
-    this->measurements = measurements;
-}
+void MeasurementsLineComponent::setMeasurements(const Measurements measurements) { this->measurements = measurements; }
 
 void MeasurementsLineComponent::setMeasurementStatusIconIDs(const MeasurementStatusIconIDs iconIDs) {
     this->measurementStatusIconIDs = iconIDs;
 }
 
+void MeasurementsLineComponent::enableMeasurementStatusIcons(const uint32_t now) {
+    this->displayMeasurementStatusIcons = true;
+
+    // set displayMeasurementsTimer so that measurements are displayed once again:
+    this->displayMeasurementsTimer.set(now);
+}
+
+void MeasurementsLineComponent::disableMeasurementStatusIcons() { this->displayMeasurementStatusIcons = false; }
+
 void MeasurementsLineComponent::render(Display* display) {
     const uint32_t now = millis();
 
     switch (this->state) {
-        case State::DISPLAY_MEASUREMENTS:
+        case State::DISPLAYING_MEASUREMENTS:
             this->renderMeasurements(display);
-            if (this->displayMeasurementsTimer.isExpired(now)) {
-                this->state = State::DISPLAY_STATUS_ICONS;
-                this->displayStatusesTimer.set(now);
+
+            if (this->displayMeasurementStatusIcons) {
+                if (this->displayMeasurementsTimer.isExpired(now)) {
+                    this->state = State::DISPLAYING_STATUSES;
+                    this->displayStatusesTimer.set(now);
+                }
             }
             break;
 
-        case State::DISPLAY_STATUS_ICONS:
-            this->renderStatusIcons(display);
-
+        case State::DISPLAYING_STATUSES:
+            this->renderMeasurementStatusIcons(display);
             if (this->displayStatusesTimer.isExpired(now)) {
-                this->state = State::DISPLAY_MEASUREMENTS;
+                this->state = State::DISPLAYING_MEASUREMENTS;
                 this->displayMeasurementsTimer.set(now);
             }
             break;
@@ -111,13 +120,13 @@ void MeasurementsLineComponent::renderMeasurements(Display* display) const {
     display->displayText(renderBuffer.getBuffer(), this->coordinates);
 }
 
-void MeasurementsLineComponent::renderStatusIcons(Display* display) const {
+void MeasurementsLineComponent::renderMeasurementStatusIcons(Display* display) const {
     RenderBuffer renderBuffer;
     renderBuffer.format();
 
-    display->displayText(renderBuffer.getBuffer(), {0, 1});
+    display->displayText(renderBuffer.getBuffer(), {0, this->coordinates.row});
 
-    display->displayIcon(this->measurementStatusIconIDs.temperature, {1, 1});
-    display->displayIcon(this->measurementStatusIconIDs.humidity, {6, 1});
-    display->displayIcon(this->measurementStatusIconIDs.co2, {12, 1});
+    display->displayIcon(this->measurementStatusIconIDs.temperature, {1, this->coordinates.row});
+    display->displayIcon(this->measurementStatusIconIDs.humidity, {6, this->coordinates.row});
+    display->displayIcon(this->measurementStatusIconIDs.co2, {12, this->coordinates.row});
 }

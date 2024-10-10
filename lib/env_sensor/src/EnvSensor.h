@@ -8,34 +8,57 @@
 #include "SparkFun_SCD4x_Arduino_Library.h"
 #include "cstdint"
 
+#include <debug_print.h>
+
 /**
  * Measurements from the environmental sensor.
- * Datatypes are chosen to match the inaccuracy of the sensor according to the datasheet
- * (https://cdn.sparkfun.com/assets/d/4/9/a/d/Sensirion_CO2_Sensors_SCD4x_Datasheet.pdf).
- * Temperature: +-
  */
 struct EnvSensorMeasurements {
-    uint8_t temperature;
-    uint8_t humidity;
+    bool areFresh;  // indicates whether readings are fresh
+    float temperature;
+    float humidity;
     uint16_t co2;
 };
 
+/**
+ * EnvSensor
+ */
 class EnvSensor {
    public:
     EnvSensor() = default;
 
-    void init() { this->scd40.begin(); }
+    bool init() {
+        if (!this->scd40.begin()) {
+            debug_println("EnvSensor.init: begin failed");
+            return false;
+        }
+        if (!this->scd40.startPeriodicMeasurement()) {
+            debug_println("EnvSensor.init: start measurements failed");
+            return false;
+        }
 
-    EnvSensorMeasurements read() {
-        // TODO: actual implementation
+        return true;
+    }
 
-        return EnvSensorMeasurements{.temperature = 20, .humidity = 60, .co2 = 6000};
-        // this->scd40.readMeasurement();
-        // return EnvSensorMeasurements{
-        //     .temperature = static_cast<uint8_t>(this->scd40.getTemperature()),
-        //     .humidity = static_cast<uint8_t>(this->scd40.getHumidity()),
-        //     .co2 = this->scd40.getCO2(),
-        // };
+    /**
+     * Perform measurements.
+     * NOTE: it takes some time for the sensor to start reporting measurements,
+     * so during the first few seconds after powering up the sensor, this function will be returning false.
+     * @return true if measurements were performed successfully, false otherwise.
+     */
+    bool performMeasurements() { return this->scd40.readMeasurement(); }
+
+    /**
+     * Get measurements after they have been performed. You should call @performMeasurements first and make sure, that
+     * it returned true in order to get valid and fresh measurements.
+     * @return measurements.
+     */
+    EnvSensorMeasurements getMeasurements() {
+        return EnvSensorMeasurements{
+            .temperature = this->scd40.getTemperature(),
+            .humidity = this->scd40.getHumidity(),
+            .co2 = this->scd40.getCO2(),
+        };
     }
 
    private:
