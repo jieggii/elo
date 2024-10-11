@@ -4,10 +4,12 @@
 
 #include "ClockComponent.h"
 
-ClockTime ClockTime::fromTimestamp(const uint16_t timestamp) {
+ClockTime ClockTime::fromSTimestamp(const uint16_t timestamp) {
     return ClockTime{static_cast<uint8_t>(timestamp / 3600), static_cast<uint8_t>(timestamp % 3600 / 60),
                      static_cast<uint8_t>(timestamp % 60)};
 }
+
+ClockTime ClockTime::fromMsTimestamp(const uint32_t timestamp) { return fromSTimestamp(timestamp / 1000); }
 
 void ClockComponent::setTime(const ClockTime time) { this->time = time; }
 

@@ -19,28 +19,27 @@ class TimedModeView : public ModeView {
     /**
      * @param hardware
      * @param viewNavigator - pointer to the ViewNavigator.
-     * @param duration - duration of the view in seconds.
      * @param nextViewID - ID of the next view.
+     * @param duration - duration of the view in seconds.
      */
-    TimedModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint16_t duration,
-                  const uint8_t nextViewID)
-        : ModeView(hardware, viewNavigator), viewTimer(Timer::fromSeconds(duration)), nextViewID(nextViewID) {}
+    TimedModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID,
+                  const uint16_t duration)
+        : ModeView(hardware, viewNavigator, nextViewID), viewTimer(Timer::fromSeconds(duration)) {}
 
-    // void pause() { this->isPaused = true; }
+    void setup(Display* display) override { this->ModeView::setup(display); }
+    void loop() override { this->ModeView::loop(); }
+    void render(Display* display) override {
+        const uint32_t now = millis();  // TODO get now from param
+        this->setStatusLineClockTime(ClockTime::fromMsTimestamp(this->viewTimer.left(now)));
+        this->ModeView::render(display);
+    }
+    void reset() override { this->ModeView::reset(); }
 
-    // [[nodiscard]] bool getIsPaused() const { return this->isPaused; }
-    // [[nodiscard]] bool isExpired(const uint32_t now) const { return this->viewTimer.isExpired(now); }
-
-    void setup(Display* display) override = 0;
-    void loop() override { ModeView::loop(); }
-    void render(Display* display) override { ModeView::render(display); }
-    void reset() override = 0;
+   protected:
+    [[nodiscard]] bool isExpired(const uint32_t now) const { return this->viewTimer.isExpired(now); }
 
    private:
-    Timer viewTimer;     // timer used to track view expiration
-    uint8_t nextViewID;  // ID of the next view to navigate to after expiration
-
-    bool isPaused = false;
+    Timer viewTimer;  // timer used to track view expiration
 };
 
 #endif  // EXPIREABLEMODEVIEW_H

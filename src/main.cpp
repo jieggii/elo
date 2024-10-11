@@ -7,6 +7,7 @@
 #include "debug_print.h"
 #include "ViewRenderer.h"
 #include "views/IdleView.h"
+#include "views/StandView.h"
 
 constexpr uint16_t VIEW_RENDER_INTERVAL = 1000;
 
@@ -21,14 +22,13 @@ namespace Config {
 }  // namespace Config
 
 namespace UI {
-    ViewNavigator viewNavigator(IDLE_VIEW_INDEX);
+    ViewNavigator viewNavigator(STAND_VIEW_INDEX);
     ViewRegistry viewRegistry;
     ViewRenderer viewRenderer(VIEW_RENDER_INTERVAL);
 
     namespace Views {
-        IdleView idle({.envSensor = &Hardware::envSensor}, &viewNavigator);
-        // StandView STAND(&Hardware::display, &viewNavigator, &Config::OPERATIONAL_CONFIG,
-        // &Hardware::envSensor);
+        IdleView idle({.envSensor = &Hardware::envSensor}, &viewNavigator, STAND_VIEW_INDEX);
+        StandView stand({.envSensor = &Hardware::envSensor}, &viewNavigator, IDLE_VIEW_INDEX, 10);
     }  // namespace Views
 }  // namespace UI
 
@@ -49,7 +49,7 @@ void setup() {
 
     // register UI views:
     UI::viewRegistry.registerView(IDLE_VIEW_INDEX, &UI::Views::idle);
-    // UI::viewRegistry.registerView(STAND_VIEW_INDEX, &UI::Views::STAND);
+    UI::viewRegistry.registerView(STAND_VIEW_INDEX, &UI::Views::stand);
 
     debug_println("info: finish setup");
 }

@@ -6,13 +6,13 @@
 #define ELO_IDLEVIEW_H
 
 #include "Display.h"
-#include "Icon.h"
 
 #include "base/ModeView/ModeView.h"
 
 class IdleView final : public ModeView {
    public:
-    IdleView(const Hardware hardware, ViewNavigator* viewNavigator) : ModeView(hardware, viewNavigator) {}
+    IdleView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID)
+        : ModeView(hardware, viewNavigator, nextViewID) {}
 
     void setup(Display* display) override;
     void loop() override;

@@ -19,7 +19,13 @@ struct ClockTime {
      * @param timestamp - timestamp in seconds
      * Note: timestamp is expected to be in the range of uint16_t, meaning that the maximum value is around 18 hours.
      */
-    static ClockTime fromTimestamp(uint16_t timestamp);
+    static ClockTime fromSTimestamp(uint16_t timestamp);
+
+    /**
+     * Creates a ClockTime object from the given timestamp in milliseconds.
+     * @param timestamp - timestamp in milliseconds
+     */
+    static ClockTime fromMsTimestamp(uint32_t timestamp);
 };
 
 /**

@@ -4,12 +4,13 @@
 
 #include "ModeView.h"
 
-void ModeView::setup(Display* display, const Icon* indicatorIcon1, const Icon* indicatorIcon2) {
-    cacheModeIndicatorIcons(display, indicatorIcon1, indicatorIcon2);
+void ModeView::setup(Display* display) {
     cacheMeasurementStatusIcons(display);
 
     const uint32_t now = millis();  // TODO: get current time from param provided to the method
     this->measurementsTimer.set(now);
+
+    display->clear();
 }
 
 void ModeView::loop() {
@@ -90,3 +91,5 @@ void ModeView::cacheMeasurementStatusIcons(Display* display) {
     display->cacheIcon(ModeViewIconIDs::measurementStatusAcceptable, &statusAcceptableIcon);
     display->cacheIcon(ModeViewIconIDs::measurementStatusBad, &statusBadIcon);
 }
+
+void ModeView::reset() {}

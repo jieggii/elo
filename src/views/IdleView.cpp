@@ -13,9 +13,9 @@ void IdleView::setup(Display* display) {
         B00000, B00000, B00000, B00000, B11111, B01010, B01010, B01010,
     };
 
-    ModeView::setup(display, &modeIcon1, &modeIcon2);
+    cacheModeIndicatorIcons(display, &modeIcon1, &modeIcon2);
 
-    display->clear();
+    this->ModeView::setup(display);
 }
 
 void IdleView::loop() { ModeView::loop(); }

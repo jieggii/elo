@@ -14,6 +14,8 @@
 #include "components/MeasurementsLineComponent.h"
 #include "components/StatusLineComponent.h"
 
+// TODO: shall I move those constants to the .cpp file?
+
 namespace ModeViewIconIDs {
     // id of the first mode indicator icon.
     constexpr uint8_t indicator1 = 1;
@@ -62,10 +64,11 @@ class ModeView : public View {
     };
 
     // TODO: move constructor implementation to the .cpp file
-    ModeView(const Hardware hardware, ViewNavigator* viewNavigator)
+    ModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID)
         : View(),
           hardware(hardware),
           viewNavigator(viewNavigator),
+          nextViewID(nextViewID),
           measurementsTimer(ModeViewSettings::measurementsDisplayDuration),
           components(
               {.statusLine = StatusLineComponent({0, 0}, ModeViewIconIDs::indicator1, ModeViewIconIDs::indicator2,
@@ -74,29 +77,25 @@ class ModeView : public View {
                                                              ModeViewSettings::measurementsStatusDisplayDuration,
                                                              ModeViewIconIDs::measurementStatusOptimal)}) {}
 
-    void setup(Display* display) override = 0;
-
     /**
      * Initializes the view.
      * @param display pointer to the display.
-     * @param indicatorIcon1 pointer to the first mode indicator icon.
-     * @param indicatorIcon2 pointer to the second mode indicator icon.
      */
-    void setup(Display* display, const Icon* indicatorIcon1, const Icon* indicatorIcon2);
+    void setup(Display* display) override;
 
     /**
      * Main view loop.
      * It is responsible for reading environment measurements, assessing them, and displaying the results.
      */
-    void loop() override = 0;
+    void loop() override;
 
     /**
      * Renders status line and measurements line.
      * @param display - pointer to the display.
      */
-    void render(Display* display) override = 0;
+    void render(Display* display) override;
 
-    void reset() override = 0;
+    void reset() override;
 
     ~ModeView() override = default;
 
@@ -106,6 +105,14 @@ class ModeView : public View {
      * @param time clock time to set.
      */
     void setStatusLineClockTime(ClockTime time);
+
+    /**
+     * Caches mode indicator icons.
+     * @param display pointer to the display.
+     * @param icon1
+     * @param icon2
+     */
+    static void cacheModeIndicatorIcons(Display* display, const Icon* icon1, const Icon* icon2);
 
    private:
     /**
@@ -118,6 +125,11 @@ class ModeView : public View {
      * View navigator used to navigate to another view.
      */
     ViewNavigator* viewNavigator;
+
+    /**
+     * ID of the view to switch to.
+     */
+    uint8_t nextViewID;
 
     /**
      * Timer used to track measurements update interval.
@@ -133,14 +145,6 @@ class ModeView : public View {
     } components;
 
     bool measurementsAvailable = false;
-
-    /**
-     * Caches mode indicator icons.
-     * @param display pointer to the display.
-     * @param icon1
-     * @param icon2
-     */
-    static void cacheModeIndicatorIcons(Display* display, const Icon* icon1, const Icon* icon2);
 
     /**
      * Caches measurement status icons.

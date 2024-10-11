@@ -22,18 +22,34 @@ class WorkModeView : public TimedModeView {
      * @param postureReminderInterval - posture reminder interval in seconds
      * @param exerciseInterval - exercise interval in seconds
      */
-    WorkModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint16_t duration,
-                 const uint8_t nextViewID, const uint16_t postureReminderInterval, const uint16_t exerciseInterval)
-        : TimedModeView(hardware, viewNavigator, duration, nextViewID),
+    WorkModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID,
+                 const uint16_t duration, const uint16_t postureReminderInterval, const uint16_t exerciseInterval)
+        : TimedModeView(hardware, viewNavigator, nextViewID, duration),
           postureReminderTimer(Timer::fromSeconds(postureReminderInterval)),
           exerciseTimer(Timer::fromSeconds(exerciseInterval)) {}
 
-    void setup(Display* display) override = 0;
-    void loop() override { TimedModeView::loop(); }
-    void render(Display* display) override { TimedModeView::render(display); }
-    void reset() override = 0;
+    void setup(Display* display) override { this->TimedModeView::setup(display); }
+    void loop() override {
+        const uint32_t now = millis();  // TODO: get now from param
 
-    ~WorkModeView() override;
+        if (this->postureReminderTimer.isExpired(now)) {
+            // TODO
+        }
+
+        if (this->exerciseTimer.isExpired(now)) {
+            // TODO
+        }
+
+        if (this->isExpired(now)) {
+            // TODO
+        }
+
+        this->TimedModeView::loop();
+    }
+    void render(Display* display) override { this->TimedModeView::render(display); }
+    void reset() override { this->TimedModeView::reset(); }
+
+    // ~WorkModeView() override = default;
 
    private:
     Timer postureReminderTimer;
