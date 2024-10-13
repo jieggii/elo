@@ -6,26 +6,21 @@
 /**
  * ViewComponent is an interface for view components.
  */
+
+template <typename ViewComponentStateType>
 class ViewComponent {
    protected:
-    DisplayCoordinates coordinates;  // coordinates on the display where component is rendered
+    const DisplayCoordinates coordinates;  // coordinates on the display where component is rendered
 
    public:
-    explicit ViewComponent(const DisplayCoordinates coordinates) : coordinates(coordinates) {}
+    ViewComponent(ViewComponentStateType state, const DisplayCoordinates coordinates)
+        : coordinates(coordinates), state(state) {}
 
     /**
-     * Sets up view component.
-     * @param display - display to set up on.
+     * Returns state of the component.
      */
-    // virtual void setup(Display* display) = 0;
+    [[nodiscard]] ViewComponentStateType getState() const { return this->state; }
 
-    /**
-     * Checks if view component needs to be rendered.
-     * The first render is always needed, even if this method returns false. ??? should this statement be true? or
-     * should needsRerender be renamed to needsRender and checked even before the first render?
-     * @return true if it needs to be rerender.
-     */
-    // virtual bool needsRerender() = 0;
     /**
      * Renders view component on the display.
      * @param display - display to render on.
@@ -33,6 +28,9 @@ class ViewComponent {
     virtual void render(Display* display) = 0;
 
     virtual ~ViewComponent() = default;
+
+   private:
+    ViewComponentStateType state;  // state of the component
 };
 
 #endif  // ELO_VIEWCOMPONENT_H

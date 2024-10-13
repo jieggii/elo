@@ -3,6 +3,7 @@
 //
 
 #include "MeasurementsLineComponent.h"
+#include "MeasurementsLineComponentState.h"
 
 /**
  * Buffer for rendering measurements line on the display.
@@ -17,7 +18,7 @@ class RenderBuffer {
      * I.e formats buffer as "99°C 99% 9999ppm" if measurements provided, otherwise as "  °C  %    ppm".
      * TODO: rename this method to something more descriptive.
      */
-    void format(const MeasurementsLineComponent::Measurements* measurements = nullptr) {
+    void format(const MeasurementsLineComponentState::Measurements* measurements = nullptr) {
         // display temperature if measurements provided:
         if (measurements) {
             buffer[0] = static_cast<char>('0' + measurements->temperature / 10);
@@ -68,65 +69,60 @@ class RenderBuffer {
     [[nodiscard]] const char* getBuffer() const { return this->buffer; }
 
    private:
+    // TODO: add methods for formatting individual measurements (temperature, humidity, co2)
+
     static constexpr char DEGREE_SYMBOL = static_cast<char>(223);  // degree symbol ('°')
 
     char buffer[DisplayDimensions::cols + 1] = {};  // the underlying buffer for rendering
 };
 
-void MeasurementsLineComponent::setMeasurements(const Measurements measurements) { this->measurements = measurements; }
-
-void MeasurementsLineComponent::setMeasurementStatusIconIDs(const MeasurementStatusIconIDs iconIDs) {
-    this->measurementStatusIconIDs = iconIDs;
-}
-
-void MeasurementsLineComponent::enableMeasurementStatusIcons(const uint32_t now) {
-    this->displayMeasurementStatusIcons = true;
-
-    // set displayMeasurementsTimer so that measurements are displayed once again:
-    this->displayMeasurementsTimer.set(now);
-}
-
-void MeasurementsLineComponent::disableMeasurementStatusIcons() { this->displayMeasurementStatusIcons = false; }
-
 void MeasurementsLineComponent::render(Display* display) {
     const uint32_t now = millis();
 
-    switch (this->state) {
-        case State::DISPLAYING_MEASUREMENTS:
+    const auto componentState = this->getState();
+    // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
+
+    switch (componentState->getState()) {
+        case MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS:
             this->renderMeasurements(display);
 
-            if (this->displayMeasurementStatusIcons) {
-                if (this->displayMeasurementsTimer.isExpired(now)) {
-                    this->state = State::DISPLAYING_STATUSES;
-                    this->displayStatusesTimer.set(now);
+            if (componentState->isDisplayMeasurementStatusIcons()) {
+                if (auto timer = componentState->getDisplayMeasurementsTimer(); timer.isExpired(now)) {
+                    componentState->setState(MeasurementsLineComponentState::State::DISPLAYING_STATUSES);
+                    timer.set(now);
                 }
             }
             break;
 
-        case State::DISPLAYING_STATUSES:
+        case MeasurementsLineComponentState::State::DISPLAYING_STATUSES:
             this->renderMeasurementStatusIcons(display);
-            if (this->displayStatusesTimer.isExpired(now)) {
-                this->state = State::DISPLAYING_MEASUREMENTS;
-                this->displayMeasurementsTimer.set(now);
+
+            if (auto timer = componentState->getDisplayMeasurementsTimer(); timer.isExpired(now)) {
+                componentState->setState(MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS);
+                timer.set(now);
             }
+            break;
+
+        default:
             break;
     }
 }
 
 void MeasurementsLineComponent::renderMeasurements(Display* display) const {
-    RenderBuffer renderBuffer;
-    renderBuffer.format(&this->measurements);
+    const auto measurements = this->getState()->getMeasurements();
 
+    RenderBuffer renderBuffer;
+    renderBuffer.format(&measurements);
     display->displayText(renderBuffer.getBuffer(), this->coordinates);
 }
 
 void MeasurementsLineComponent::renderMeasurementStatusIcons(Display* display) const {
     RenderBuffer renderBuffer;
     renderBuffer.format();
-
     display->displayText(renderBuffer.getBuffer(), {0, this->coordinates.row});
 
-    display->displayIcon(this->measurementStatusIconIDs.temperature, {1, this->coordinates.row});
-    display->displayIcon(this->measurementStatusIconIDs.humidity, {6, this->coordinates.row});
-    display->displayIcon(this->measurementStatusIconIDs.co2, {12, this->coordinates.row});
+    const auto [temperature, humidity, co2] = this->getState()->getMeasurementStatusIconIDs();
+    display->displayIcon(temperature, {1, this->coordinates.row});
+    display->displayIcon(humidity, {6, this->coordinates.row});
+    display->displayIcon(co2, {12, this->coordinates.row});
 }

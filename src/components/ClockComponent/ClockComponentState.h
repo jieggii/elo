@@ -1,10 +1,11 @@
-#ifndef BASE_DISPLAY_VIEW_COMPONENTS
-#define BASE_DISPLAY_VIEW_COMPONENTS
+//
+// Created by jieggii on 10/12/24.
+//
+
+#ifndef CLOCKCOMPONENTSTATE_H
+#define CLOCKCOMPONENTSTATE_H
 
 #include <cstdint>
-
-#include "Display.h"
-#include "ViewComponent.h"
 
 /**
  * ClockTime represents a time in hours, minutes and seconds, which is displayed by the @ClockComponent.
@@ -15,28 +16,32 @@ struct ClockTime {
     uint8_t seconds;
 
     /**
+     * Creates a ClockTime object with the zero time (00:00:00).
+     */
+    static ClockTime zero();
+
+    /**
      * Creates a ClockTime object from the given timestamp in seconds.
      * @param timestamp - timestamp in seconds
      * Note: timestamp is expected to be in the range of uint16_t, meaning that the maximum value is around 18 hours.
-     */
+      TODO: rename to fromSeconds.
+    */
     static ClockTime fromSTimestamp(uint16_t timestamp);
 
     /**
      * Creates a ClockTime object from the given timestamp in milliseconds.
      * @param timestamp - timestamp in milliseconds
+     * TODO: rename to fromMilliseconds.
      */
     static ClockTime fromMsTimestamp(uint32_t timestamp);
 };
 
-/**
- * ClockComponent represents a clock which displays hours, minutes and seconds.
- */
-class ClockComponent final : public ViewComponent {
+class ClockComponentState {
    public:
     /**
-     * Creates a clock component with the given coordinates and time.
+     * Creates a ClockComponentState object with the given time.
      */
-    explicit ClockComponent(const DisplayCoordinates coordinates) : ViewComponent(coordinates) {}
+    explicit ClockComponentState(const ClockTime time) : time(time){};
 
     /**
      * Sets clock to the given time provided as hours, minutes and seconds.
@@ -44,12 +49,12 @@ class ClockComponent final : public ViewComponent {
     void setTime(ClockTime time);
 
     /**
-     * Renders the clock on the display.
+     * Returns the time currently set.
      */
-    void render(Display* display) override;
+    [[nodiscard]] ClockTime getTime() const;
 
    private:
     ClockTime time = {0, 0, 0};
 };
 
-#endif
+#endif  // CLOCKCOMPONENTSTATE_H

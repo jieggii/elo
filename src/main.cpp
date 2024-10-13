@@ -2,18 +2,23 @@
 
 #include "Display.h"
 #include "EnvSensor.h"
+#include "Button.h"
 #include "view_index.h"
 #include "ViewRegistry.h"
 #include "debug_print.h"
 #include "ViewRenderer.h"
 #include "views/IdleView.h"
 #include "views/StandView.h"
+#include "components/MeasurementsLineComponent/MeasurementsLineComponent.h"
+#include "components/MeasurementsLineComponent/MeasurementsLineComponentState.h"
 
 constexpr uint16_t VIEW_RENDER_INTERVAL = 1000;
 
 namespace Hardware {
     Display display(0x27);
     EnvSensor envSensor;
+    Button selectButton(D5);
+
 }  // namespace Hardware
 
 namespace Config {
@@ -22,16 +27,22 @@ namespace Config {
 }  // namespace Config
 
 namespace UI {
-    ViewNavigator viewNavigator(STAND_VIEW_INDEX);
     ViewRegistry viewRegistry;
+    ViewNavigator viewNavigator(IDLE_VIEW_INDEX);
     ViewRenderer viewRenderer(VIEW_RENDER_INTERVAL);
 
-    namespace Views {
-        IdleView idle({.envSensor = &Hardware::envSensor}, &viewNavigator, STAND_VIEW_INDEX);
-        StandView stand({.envSensor = &Hardware::envSensor}, &viewNavigator, IDLE_VIEW_INDEX, 10);
-    }  // namespace Views
-}  // namespace UI
+    namespace StaticComponentStates {
+        MeasurementsLineComponentState measurementsLineComponentState(1000, 1000);
+    }  // namespace StaticComponentStates
 
+    namespace Views {
+        IdleView idle({.envSensor = &Hardware::envSensor, .selectButton = &Hardware::selectButton}, &viewNavigator,
+                      STAND_VIEW_INDEX, &StaticComponentStates::measurementsLineComponentState);
+        StandView stand({.envSensor = &Hardware::envSensor, .selectButton = &Hardware::selectButton}, &viewNavigator,
+                        IDLE_VIEW_INDEX, &StaticComponentStates::measurementsLineComponentState, 61);
+    }  // namespace Views
+
+}  // namespace UI
 void setup() {
     debug_init(9600);
     debug_println("info: begin setup");
@@ -43,6 +54,7 @@ void setup() {
 
     // initialize env sensor:
     Hardware::envSensor.init();
+    Hardware::selectButton.init();
 
     // initialize operational configuration:
     // initDefaultOperationalConfig(&Config::OPERATIONAL_CONFIG);
@@ -59,6 +71,7 @@ void loop() {
     // debug_print("info: free heap: ");
     // debug_print(ESP.getFreeHeap());
     // debug_println(" bytes");
+    // Hardware::selectButton.update();
 
     // get current view:
     const uint8_t currentViewIndex = UI::viewNavigator.getCurrentViewIndex();
@@ -81,12 +94,19 @@ void loop() {
             .requestImmediateRender();  // the view will be rendered instantly instead of waiting for render interval
     }
 
-    // run loop() for the current view:
+    // run handleInputs() for the current view:
+    currentView->handleInputs();
+    if (UI::viewNavigator.hasViewIndexChanged()) {  // we do not want to render old view if it has changed
+        return;
+    }
+
+    // run loop() for the current view (if needed):
     currentView->loop();
+    if (UI::viewNavigator.hasViewIndexChanged()) {  // we do not want to render old view if it has changed
+        return;
+    }
 
     // (re)render the view (if needed):
-    if (!UI::viewNavigator.hasViewIndexChanged()) {  // we do not want to render old view if it has changed
-        const uint32_t now = millis();
-        UI::viewRenderer.renderIfNeeded(&Hardware::display, currentView, now);
-    }
+    const uint32_t now = millis();
+    UI::viewRenderer.renderIfNeeded(&Hardware::display, currentView, now);
 }

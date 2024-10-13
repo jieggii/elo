@@ -6,27 +6,34 @@
 
 #include "Button.h"
 
-Button::Button(const uint8_t addr, const uint32_t longPressDuration) : pin(addr), longPressDuration(longPressDuration) {
-    pinMode(addr, INPUT);
-}
+Button::Button(const uint8_t pin) : pin(pin) {}
 
-bool Button::isPressed() const { return this->state == ButtonState::PRESS; }
+void Button::init() const { pinMode(this->pin, INPUT); }
 
-bool Button::isLongPressed() const { return this->state == ButtonState::LONG_PRESS; }
-
-void Button::updateState(const uint32_t now) {
+void Button::update() {
     const bool isPressed = digitalRead(this->pin) == HIGH;
 
-    if (isPressed && this->state == ButtonState::RELEASE) {
-        this->state = ButtonState::PRESS;
-        this->longPressStart = now;
-
-    } else if (isPressed && this->state == ButtonState::PRESS) {
-        if (now - this->longPressStart >= this->longPressDuration) {
-            this->state = ButtonState::LONG_PRESS;
-        }
-
-    } else if (!isPressed && this->state != ButtonState::RELEASE) {
-        this->state = ButtonState::RELEASE;
+    switch (this->state) {
+        case ButtonState::IS_RELEASED:
+            if (isPressed) {
+                this->state = ButtonState::IS_ACTUATED;
+            }
+            break;
+        case ButtonState::IS_ACTUATED:
+            if (isPressed) {
+                this->state = ButtonState::IS_PRESSED;
+            } else {
+                this->state = ButtonState::IS_RELEASED;
+            }
+            break;
+        case ButtonState::IS_PRESSED:
+            if (!isPressed) {
+                this->state = ButtonState::IS_RELEASED;
+            }
+            break;
     }
 }
+
+bool Button::isActuated() const { return this->state == ButtonState::IS_ACTUATED; }
+bool Button::isPressed() const { return this->state == ButtonState::IS_PRESSED; }
+bool Button::isReleased() const { return this->state == ButtonState::IS_RELEASED; }

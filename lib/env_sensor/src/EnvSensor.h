@@ -14,7 +14,7 @@
  * Measurements from the environmental sensor.
  */
 struct EnvSensorMeasurements {
-    bool areFresh;  // indicates whether readings are fresh
+    bool fresh;  // fresh indicates whether the measurements are fresh or not.
     float temperature;
     float humidity;
     uint16_t co2;
@@ -41,20 +41,15 @@ class EnvSensor {
     }
 
     /**
-     * Perform measurements.
-     * NOTE: it takes some time for the sensor to start reporting measurements,
-     * so during the first few seconds after powering up the sensor, this function will be returning false.
-     * @return true if measurements were performed successfully, false otherwise.
-     */
-    bool performMeasurements() { return this->scd40.readMeasurement(); }
-
-    /**
-     * Get measurements after they have been performed. You should call @performMeasurements first and make sure, that
+     * Get measurements after they have been read. You should call @performMeasurements first and make sure, that
      * it returned true in order to get valid and fresh measurements.
      * @return measurements.
      */
-    EnvSensorMeasurements getMeasurements() {
+    EnvSensorMeasurements readMeasurements() {
+        const bool fresh = this->scd40.readMeasurement();
+
         return EnvSensorMeasurements{
+            .fresh = fresh,
             .temperature = this->scd40.getTemperature(),
             .humidity = this->scd40.getHumidity(),
             .co2 = this->scd40.getCO2(),

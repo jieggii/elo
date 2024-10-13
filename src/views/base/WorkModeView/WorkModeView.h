@@ -23,12 +23,16 @@ class WorkModeView : public TimedModeView {
      * @param exerciseInterval - exercise interval in seconds
      */
     WorkModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID,
-                 const uint16_t duration, const uint16_t postureReminderInterval, const uint16_t exerciseInterval)
-        : TimedModeView(hardware, viewNavigator, nextViewID, duration),
+                 MeasurementsLineComponentState* measurementsLineComponentState, const uint16_t duration,
+                 const uint16_t postureReminderInterval, const uint16_t exerciseInterval)
+        : TimedModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, duration),
           postureReminderTimer(Timer::fromSeconds(postureReminderInterval)),
           exerciseTimer(Timer::fromSeconds(exerciseInterval)) {}
 
     void setup(Display* display) override { this->TimedModeView::setup(display); }
+
+    void handleInputs() override { TimedModeView::handleInputs(); }
+
     void loop() override {
         const uint32_t now = millis();  // TODO: get now from param
 

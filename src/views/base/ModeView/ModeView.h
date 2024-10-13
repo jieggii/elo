@@ -9,10 +9,13 @@
 
 #include "View.h"
 #include "EnvSensor.h"
+#include "Button.h"
 #include "Display.h"
 #include "ViewNavigator.h"
-#include "components/MeasurementsLineComponent.h"
-#include "components/StatusLineComponent.h"
+#include "components/MeasurementsLineComponent/MeasurementsLineComponent.h"
+#include "components/MeasurementsLineComponent/MeasurementsLineComponentState.h"
+#include "components/StatusLineComponent/StatusLineComponent.h"
+#include "components/StatusLineComponent/StatusLineComponentState.h"
 
 // TODO: shall I move those constants to the .cpp file?
 
@@ -61,27 +64,36 @@ class ModeView : public View {
      */
     struct Hardware {
         EnvSensor* envSensor;
+        Button* selectButton;
     };
-
-    // TODO: move constructor implementation to the .cpp file
-    ModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID)
+    /**
+     * Constructor.
+     * @param hardware hardware dependencies of the mode view.
+     * @param viewNavigator view navigator used to navigate to another view.
+     * @param nextViewID ID of the view to switch to.
+     * @param clockTime the initial clock time to display in the status line.
+     * @param measurementsLineComponentState measurements line state.
+     * TODO: move constructor implementation to the .cpp file
+     */
+    ModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID, const ClockTime clockTime,
+             MeasurementsLineComponentState* measurementsLineComponentState)
         : View(),
           hardware(hardware),
           viewNavigator(viewNavigator),
           nextViewID(nextViewID),
           measurementsTimer(ModeViewSettings::measurementsDisplayDuration),
-          components(
-              {.statusLine = StatusLineComponent({0, 0}, ModeViewIconIDs::indicator1, ModeViewIconIDs::indicator2,
-                                                 ModeViewIconIDs::measurementStatusOptimal),
-               .measurementsLine = MeasurementsLineComponent({0, 1}, ModeViewSettings::measurementsDisplayDuration,
-                                                             ModeViewSettings::measurementsStatusDisplayDuration,
-                                                             ModeViewIconIDs::measurementStatusOptimal)}) {}
+          components({.statusLine = StatusLineComponent(
+                          StatusLineComponentState(ModeViewIconIDs::indicator1, ModeViewIconIDs::indicator2, clockTime),
+                          {0, 0}),
+                      .measurementsLine = MeasurementsLineComponent(measurementsLineComponentState, {0, 1})}) {}
 
     /**
      * Initializes the view.
      * @param display pointer to the display.
      */
     void setup(Display* display) override;
+
+    void handleInputs() override;
 
     /**
      * Main view loop.
@@ -104,7 +116,12 @@ class ModeView : public View {
      * Sets the clock time displayed in the status line.
      * @param time clock time to set.
      */
-    void setStatusLineClockTime(ClockTime time);
+    void setStatusLineClockTime(ClockTime time) const;
+
+    /**
+     * Navigates to the next view.
+     */
+    void navigateToNextView() const;
 
     /**
      * Caches mode indicator icons.
@@ -129,7 +146,7 @@ class ModeView : public View {
     /**
      * ID of the view to switch to.
      */
-    uint8_t nextViewID;
+    const uint8_t nextViewID;
 
     /**
      * Timer used to track measurements update interval.
@@ -144,7 +161,10 @@ class ModeView : public View {
         MeasurementsLineComponent measurementsLine;
     } components;
 
-    bool measurementsAvailable = false;
+    // bool measurementsAvailable = false;
+
+    void updateMeasurementsLineState(const EnvSensorMeasurements& measurements) const;
+    void updateStatusLineState(const EnvSensorMeasurements& measurements) const;
 
     /**
      * Caches measurement status icons.

@@ -8,7 +8,7 @@
 #include <cstdint>
 #include "Timer.h"
 #include "views/base/ModeView/ModeView.h"
-#include "views/base/ModeView/components/base/ClockComponent.h"
+#include "components/ClockComponent/ClockComponent.h"
 
 /**
  * TimedModeView is a base class for all mode views that have a duration, i.e. can be paused, expire, and navigate to
@@ -23,10 +23,13 @@ class TimedModeView : public ModeView {
      * @param duration - duration of the view in seconds.
      */
     TimedModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID,
-                  const uint16_t duration)
-        : ModeView(hardware, viewNavigator, nextViewID), viewTimer(Timer::fromSeconds(duration)) {}
+                  MeasurementsLineComponentState* measurementsLineComponentState, const uint16_t duration)
+        : ModeView(hardware, viewNavigator, nextViewID, ClockTime::fromSTimestamp(duration),
+                   measurementsLineComponentState),
+          viewTimer(Timer::fromSeconds(duration)) {}
 
     void setup(Display* display) override { this->ModeView::setup(display); }
+    void handleInputs() override { ModeView::handleInputs(); }
     void loop() override { this->ModeView::loop(); }
     void render(Display* display) override {
         const uint32_t now = millis();  // TODO get now from param
