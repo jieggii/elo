@@ -8,10 +8,11 @@
 #include <cstdint>
 
 #include "debug_print.h"
+
 #include "Display.h"
 #include "ViewNavigator.h"
-#include "ViewRegistry.h"
-#include "ViewRenderer.h"
+#include "internal/ViewRegistry.h"
+#include "internal/ViewRenderer.h"
 
 class App {
    public:
