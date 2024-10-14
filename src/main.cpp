@@ -11,6 +11,8 @@
 #include "components/MeasurementsLineComponent/MeasurementsLineComponentState.h"
 #include "App.h"
 
+constexpr uint16_t SERIAL_BAUD_RATE = 9600;
+
 namespace Hardware {
     Display display(0x27);
     EnvSensor envSensor;
@@ -58,7 +60,7 @@ void registerAppViews() {
 }
 
 void setup() {
-    debug_init(9600);
+    debug_init(SERIAL_BAUD_RATE);
     debug_println("info: begin setup");
 
     initHardware();
