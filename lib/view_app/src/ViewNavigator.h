@@ -11,11 +11,12 @@
 
 /**
  * ViewNavigator is responsible for navigating between views.
+ * It basically holds the index of the current view.
+ * TODO: split into two classess:
+ * 1. Public one, which is capable only of changing view index.
+ * 2. Internal one, which has some useful methods and a flag (currentViewIndexChanged).
  */
 class ViewNavigator {
-    uint8_t currentViewIndex;             // index of the current view
-    bool currentViewIndexChanged = true;  // flag indicating that view index has been changed
-
    public:
     explicit ViewNavigator(const uint8_t initialViewIndex) : currentViewIndex(initialViewIndex) {}
 
@@ -38,9 +39,9 @@ class ViewNavigator {
 
     /**
      * Navigates to the next view.
-     * @param viewIndex - index of the view to navigate to.
+     * @param viewIndex index of the view to navigate to.
      */
-    void navigateTo(uint8_t viewIndex) {
+    void navigateTo(const uint8_t viewIndex) {
 #ifdef DEBUG
         if (viewIndex == this->currentViewIndex) {
             debug_print("err: ViewNavigator.navigate: navigating to the current view ");
@@ -50,6 +51,10 @@ class ViewNavigator {
         this->currentViewIndexChanged = true;
         this->currentViewIndex = viewIndex;
     }
+
+   private:
+    uint8_t currentViewIndex;             // index of the current view
+    bool currentViewIndexChanged = true;  // flag indicating that view index has been changed
 };
 
 #endif  // ELO_VIEWNAVIGATOR_H_
