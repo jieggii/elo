@@ -19,7 +19,7 @@ class View {
     /**
      * Setup view.
      */
-    virtual void setup(Display* display) = 0;
+    virtual void setup(Display& display) = 0;
 
     /*
      * Update view state.
@@ -39,7 +39,7 @@ class View {
      * Render view on the display.
      * This method should be called after @loop and @handleInputs are called.
      */
-    virtual void render(Display* display) = 0;
+    virtual void render(Display& display) = 0;
 
     /**
      * Reset view state.

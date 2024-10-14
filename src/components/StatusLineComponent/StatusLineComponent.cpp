@@ -4,7 +4,7 @@
 
 #include "StatusLineComponent.h"
 
-void StatusLineComponent::render(Display* display) {
+void StatusLineComponent::render(Display& display) {
     this->modeIndicatorsComponent.render(display);
     this->clockComponent.render(display);
 

@@ -41,10 +41,10 @@ class RenderBuffer {
     void formatNullTerm() { buffer[BUFFER_SIZE - 1] = '\0'; }
 };
 
-void ClockComponent::render(Display* display) {
+void ClockComponent::render(Display& display) {
     const auto [hours, minutes, seconds] = this->getState().getTime();
 
     RenderBuffer renderBuffer;
     renderBuffer.format(hours, minutes, seconds);
-    display->displayText(renderBuffer.getBuffer(), this->coordinates);
+    display.displayText(renderBuffer.getBuffer(), this->coordinates);
 }

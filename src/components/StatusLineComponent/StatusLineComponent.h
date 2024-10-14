@@ -31,7 +31,7 @@ class StatusLineComponent final : public ViewComponent<StatusLineComponentState>
      * Renders the component.
      * @param display to render on.
      */
-    void render(Display* display) override;
+    void render(Display& display) override;
 
    private:
     ModeIndicatorsComponent modeIndicatorsComponent;

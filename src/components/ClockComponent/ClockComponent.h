@@ -19,7 +19,7 @@ class ClockComponent final : public ViewComponent<ClockComponentState> {
     /**
      * Renders the clock on the display.
      */
-    void render(Display* display) override;
+    void render(Display& display) override;
 };
 
 #endif

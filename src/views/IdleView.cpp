@@ -1,6 +1,6 @@
 #include "IdleView.h"
 
-void IdleView::setup(Display* display) {
+void IdleView::setup(Display& display) {
     constexpr Icon modeIcon1 = {
         // empty icon
         B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000,
@@ -18,7 +18,7 @@ void IdleView::setup(Display* display) {
 
 void IdleView::loop() { ModeView::loop(); }
 
-void IdleView::render(Display* display) {
+void IdleView::render(Display& display) {
     // todo: get actual current time from the actual RTC
     constexpr ClockTime currentTime = {23, 59, 59};
     this->setStatusLineClockTime(currentTime);

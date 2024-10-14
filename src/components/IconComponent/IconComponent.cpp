@@ -4,7 +4,7 @@
 
 #include "IconComponent.h"
 
-void IconComponent::render(Display* display) {
+void IconComponent::render(Display& display) {
     const auto iconID = this->getState().getIconID();
-    display->displayIcon(iconID, this->coordinates);
+    display.displayIcon(iconID, this->coordinates);
 }

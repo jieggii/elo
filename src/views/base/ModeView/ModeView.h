@@ -75,7 +75,7 @@ class ModeView : public View {
      * @param measurementsLineComponentState measurements line state.
      * TODO: move constructor implementation to the .cpp file
      */
-    ModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID, const ClockTime clockTime,
+    ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID, const ClockTime clockTime,
              MeasurementsLineComponentState* measurementsLineComponentState)
         : View(),
           hardware(hardware),
@@ -91,7 +91,7 @@ class ModeView : public View {
      * Initializes the view.
      * @param display pointer to the display.
      */
-    void setup(Display* display) override;
+    void setup(Display& display) override;
 
     void handleInputs() override;
 
@@ -105,7 +105,7 @@ class ModeView : public View {
      * Renders status line and measurements line.
      * @param display - pointer to the display.
      */
-    void render(Display* display) override;
+    void render(Display& display) override;
 
     void reset() override;
 
@@ -129,7 +129,7 @@ class ModeView : public View {
      * @param icon1
      * @param icon2
      */
-    static void cacheModeIndicatorIcons(Display* display, const Icon* icon1, const Icon* icon2);
+    static void cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2);
 
    private:
     /**
@@ -141,7 +141,7 @@ class ModeView : public View {
     /**
      * View navigator used to navigate to another view.
      */
-    ViewNavigator* viewNavigator;
+    ViewNavigator& viewNavigator;
 
     /**
      * ID of the view to switch to.
@@ -170,7 +170,7 @@ class ModeView : public View {
      * Caches measurement status icons.
      * @param display pointer to the display.
      */
-    static void cacheMeasurementStatusIcons(Display* display);
+    static void cacheMeasurementStatusIcons(Display& display);
 };
 
 #endif  // MODEVIEW_H

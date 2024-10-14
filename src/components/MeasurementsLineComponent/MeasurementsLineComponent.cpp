@@ -76,7 +76,7 @@ class RenderBuffer {
     char buffer[DisplayDimensions::cols + 1] = {};  // the underlying buffer for rendering
 };
 
-void MeasurementsLineComponent::render(Display* display) {
+void MeasurementsLineComponent::render(Display& display) {
     const uint32_t now = millis();
 
     const auto componentState = this->getState();
@@ -108,21 +108,21 @@ void MeasurementsLineComponent::render(Display* display) {
     }
 }
 
-void MeasurementsLineComponent::renderMeasurements(Display* display) const {
+void MeasurementsLineComponent::renderMeasurements(Display& display) const {
     const auto measurements = this->getState()->getMeasurements();
 
     RenderBuffer renderBuffer;
     renderBuffer.format(&measurements);
-    display->displayText(renderBuffer.getBuffer(), this->coordinates);
+    display.displayText(renderBuffer.getBuffer(), this->coordinates);
 }
 
-void MeasurementsLineComponent::renderMeasurementStatusIcons(Display* display) const {
+void MeasurementsLineComponent::renderMeasurementStatusIcons(Display& display) const {
     RenderBuffer renderBuffer;
     renderBuffer.format();
-    display->displayText(renderBuffer.getBuffer(), {0, this->coordinates.row});
+    display.displayText(renderBuffer.getBuffer(), {0, this->coordinates.row});
 
     const auto [temperature, humidity, co2] = this->getState()->getMeasurementStatusIconIDs();
-    display->displayIcon(temperature, {1, this->coordinates.row});
-    display->displayIcon(humidity, {6, this->coordinates.row});
-    display->displayIcon(co2, {12, this->coordinates.row});
+    display.displayIcon(temperature, {1, this->coordinates.row});
+    display.displayIcon(humidity, {6, this->coordinates.row});
+    display.displayIcon(co2, {12, this->coordinates.row});
 }

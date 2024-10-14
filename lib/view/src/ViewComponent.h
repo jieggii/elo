@@ -25,7 +25,7 @@ class ViewComponent {
      * Renders view component on the display.
      * @param display - display to render on.
      */
-    virtual void render(Display* display) = 0;
+    virtual void render(Display& display) = 0;
 
     virtual ~ViewComponent() = default;
 

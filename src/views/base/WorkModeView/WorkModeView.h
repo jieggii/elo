@@ -22,14 +22,14 @@ class WorkModeView : public TimedModeView {
      * @param postureReminderInterval - posture reminder interval in seconds
      * @param exerciseInterval - exercise interval in seconds
      */
-    WorkModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID,
+    WorkModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
                  MeasurementsLineComponentState* measurementsLineComponentState, const uint16_t duration,
                  const uint16_t postureReminderInterval, const uint16_t exerciseInterval)
         : TimedModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, duration),
           postureReminderTimer(Timer::fromSeconds(postureReminderInterval)),
           exerciseTimer(Timer::fromSeconds(exerciseInterval)) {}
 
-    void setup(Display* display) override { this->TimedModeView::setup(display); }
+    void setup(Display& display) override { this->TimedModeView::setup(display); }
 
     void handleInputs() override { TimedModeView::handleInputs(); }
 
@@ -50,7 +50,7 @@ class WorkModeView : public TimedModeView {
 
         this->TimedModeView::loop();
     }
-    void render(Display* display) override { this->TimedModeView::render(display); }
+    void render(Display& display) override { this->TimedModeView::render(display); }
     void reset() override { this->TimedModeView::reset(); }
 
     // ~WorkModeView() override = default;

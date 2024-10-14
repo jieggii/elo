@@ -23,7 +23,7 @@ class ModeIndicatorsComponent final : public ViewComponent<ModeIndicatorsCompone
      * Renders the component.
      * @param display Display to render on.
      */
-    void render(Display* display) override;
+    void render(Display& display) override;
 
    private:
     IconComponent icon1;

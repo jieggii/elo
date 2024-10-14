@@ -17,18 +17,18 @@ class MeasurementsLineComponent final : public ViewComponent<MeasurementsLineCom
     /**
      * Render the component.
      */
-    void render(Display* display) override;
+    void render(Display& display) override;
 
    private:
     /**
      * Render measurements.
      */
-    void renderMeasurements(Display* display) const;
+    void renderMeasurements(Display& display) const;
 
     /**
      * Render measurement status icons.
      */
-    void renderMeasurementStatusIcons(Display* display) const;
+    void renderMeasurementStatusIcons(Display& display) const;
 };
 
 #endif  // MEASUREMENTSLINECOMPONENT_H

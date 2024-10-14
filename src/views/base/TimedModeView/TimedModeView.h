@@ -22,16 +22,16 @@ class TimedModeView : public ModeView {
      * @param nextViewID - ID of the next view.
      * @param duration - duration of the view in seconds.
      */
-    TimedModeView(const Hardware hardware, ViewNavigator* viewNavigator, const uint8_t nextViewID,
+    TimedModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
                   MeasurementsLineComponentState* measurementsLineComponentState, const uint16_t duration)
         : ModeView(hardware, viewNavigator, nextViewID, ClockTime::fromSTimestamp(duration),
                    measurementsLineComponentState),
           viewTimer(Timer::fromSeconds(duration)) {}
 
-    void setup(Display* display) override { this->ModeView::setup(display); }
+    void setup(Display& display) override { this->ModeView::setup(display); }
     void handleInputs() override { ModeView::handleInputs(); }
     void loop() override { this->ModeView::loop(); }
-    void render(Display* display) override {
+    void render(Display& display) override {
         const uint32_t now = millis();  // TODO get now from param
         this->setStatusLineClockTime(ClockTime::fromMsTimestamp(this->viewTimer.left(now)));
         this->ModeView::render(display);

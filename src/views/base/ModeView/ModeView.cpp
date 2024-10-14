@@ -4,13 +4,13 @@
 
 #include "ModeView.h"
 
-void ModeView::setup(Display* display) {
+void ModeView::setup(Display& display) {
     cacheMeasurementStatusIcons(display);
 
     const uint32_t now = millis();  // TODO: get current time from param provided to the method
     this->measurementsTimer.set(now);
 
-    display->clear();
+    display.clear();
 }
 
 void ModeView::handleInputs() {
@@ -38,7 +38,7 @@ void ModeView::loop() {
     }
 }
 
-void ModeView::render(Display* display) {
+void ModeView::render(Display& display) {
     this->components.statusLine.render(display);
     this->components.measurementsLine.render(display);
 }
@@ -48,14 +48,14 @@ void ModeView::setStatusLineClockTime(const ClockTime time) const {
     statusLineState.getClockComponentState().setTime(time);
 }
 
-void ModeView::navigateToNextView() const { this->viewNavigator->navigateTo(this->nextViewID); }
+void ModeView::navigateToNextView() const { this->viewNavigator.navigateTo(this->nextViewID); }
 
-void ModeView::cacheModeIndicatorIcons(Display* display, const Icon* icon1, const Icon* icon2) {
-    display->cacheIcon(ModeViewIconIDs::indicator1, icon1);
-    display->cacheIcon(ModeViewIconIDs::indicator2, icon2);
+void ModeView::cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2) {
+    display.cacheIcon(ModeViewIconIDs::indicator1, icon1);
+    display.cacheIcon(ModeViewIconIDs::indicator2, icon2);
 }
 
-void ModeView::cacheMeasurementStatusIcons(Display* display) {
+void ModeView::cacheMeasurementStatusIcons(Display& display) {
     constexpr Icon statusOptimalIcon = {
         // icon representing face :)
         B00000, B01010, B01010, B00000, B10001, B01110, B00000, B00000,
@@ -71,9 +71,9 @@ void ModeView::cacheMeasurementStatusIcons(Display* display) {
         B00000, B01010, B01010, B00000, B00000, B01110, B10001, B00000,
     };
 
-    display->cacheIcon(ModeViewIconIDs::measurementStatusOptimal, &statusOptimalIcon);
-    display->cacheIcon(ModeViewIconIDs::measurementStatusAcceptable, &statusAcceptableIcon);
-    display->cacheIcon(ModeViewIconIDs::measurementStatusBad, &statusBadIcon);
+    display.cacheIcon(ModeViewIconIDs::measurementStatusOptimal, &statusOptimalIcon);
+    display.cacheIcon(ModeViewIconIDs::measurementStatusAcceptable, &statusAcceptableIcon);
+    display.cacheIcon(ModeViewIconIDs::measurementStatusBad, &statusBadIcon);
 }
 
 void ModeView::reset() {}
