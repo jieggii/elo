@@ -44,9 +44,8 @@ class WorkModeView : public TimedModeView {
             // TODO
         }
 
-        if (this->isExpired(now)) {
-            // TODO
-        }
+        // if (this->isExpired(now)) {
+        // }
 
         this->TimedModeView::loop();
     }

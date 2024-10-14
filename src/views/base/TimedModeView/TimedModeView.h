@@ -29,20 +29,56 @@ class TimedModeView : public ModeView {
           viewTimer(Timer::fromSeconds(duration)) {}
 
     void setup(Display& display) override { this->ModeView::setup(display); }
+
     void handleInputs() override { ModeView::handleInputs(); }
-    void loop() override { this->ModeView::loop(); }
+
+    void serveExpired() {
+        // TODO: blink timer
+    }
+
+    void serveNonExpired() {
+        // TODO get now from param
+        const uint32_t now = millis();
+        if (this->viewTimer.isExpired(now)) {
+            // TODO: beep
+            this->isExpired = true;
+        }
+    }
+
+    void loop() override {
+        if (!this->isExpired) {
+            this->serveNonExpired();
+        } else {
+            this->serveExpired();
+        }
+
+        this->ModeView::loop();
+    }
+
     void render(Display& display) override {
         const uint32_t now = millis();  // TODO get now from param
         this->setStatusLineClockTime(ClockTime::fromMsTimestamp(this->viewTimer.left(now)));
         this->ModeView::render(display);
     }
+
     void reset() override { this->ModeView::reset(); }
 
    protected:
-    [[nodiscard]] bool isExpired(const uint32_t now) const { return this->viewTimer.isExpired(now); }
+    void pause() { this->isPaused = true; };
+
+    void resume(const uint32_t now) {
+        this->isPaused = false;
+        // TODO: do something with timer
+    };
 
    private:
-    Timer viewTimer;  // timer used to track view expiration
+    /**
+     * Timer used to track view expiration.
+     */
+    Timer viewTimer;
+
+    bool isPaused = false;
+    bool isExpired = false;
 };
 
 #endif  // EXPIREABLEMODEVIEW_H
