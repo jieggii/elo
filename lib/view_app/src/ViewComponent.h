@@ -22,6 +22,12 @@ class ViewComponent {
     [[nodiscard]] ViewComponentStateType getState() const { return this->state; }
 
     /**
+     * Updates state of the component.
+     * TODO: rename to something like "update state".
+     */
+    virtual void loop(const uint32_t now){};
+
+    /**
      * Renders view component on the display.
      * @param display - display to render on.
      */

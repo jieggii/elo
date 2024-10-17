@@ -27,7 +27,7 @@ namespace UI {
     App APP(Hardware::display, Settings::VIEW_RENDER_INTERVAL);
 
     namespace StaticComponentStates {
-        MeasurementsLineComponentState measurementsLineComponentState(1000, 1000);
+        MeasurementsLineComponentState measurementsLineComponentState(2000, 1000);
     };
 
     namespace Views {

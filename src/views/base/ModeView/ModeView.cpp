@@ -25,10 +25,11 @@ void ModeView::handleInputs() {
 }
 
 void ModeView::loop() {
-    // update measurements if it is time to do so:
     const uint32_t now = millis();  // todo: get from loop param
 
+    // perform measurements if it is time to do so:
     if (this->measurementsTimer.isExpired(now)) {
+        // debug_println("performing measurements...");
         this->measurementsTimer.set(now);
 
         if (const auto measurements = this->hardware.envSensor->readMeasurements(); measurements.fresh) {
@@ -36,6 +37,9 @@ void ModeView::loop() {
             this->updateMeasurementsLineState(measurements);
         }
     }
+
+    // update measurements line
+    this->components.measurementsLine.loop(now);
 }
 
 void ModeView::render(Display& display) {

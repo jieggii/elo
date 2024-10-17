@@ -2,6 +2,7 @@
 // Created by jieggii on 10/4/24.
 //
 
+#include "debug_print.h"
 #include "MeasurementsLineComponent.h"
 #include "MeasurementsLineComponentState.h"
 
@@ -76,34 +77,50 @@ class RenderBuffer {
     char buffer[DisplayDimensions::cols + 1] = {};  // the underlying buffer for rendering
 };
 
-void MeasurementsLineComponent::render(Display& display) {
-    const uint32_t now = millis();
+void MeasurementsLineComponent::loop(const uint32_t now) {
+    const auto componentState = this->getState();
+    // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
 
+    switch (componentState->getState()) {
+        case MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS:
+            if (componentState->isDisplayMeasurementStatusIcons()) {  // if statuses should be displayed
+                if (const Timer& displayMeasurementsTimer = componentState->getDisplayMeasurementsTimer();
+                    displayMeasurementsTimer.isExpired(now)) {  // if measurements display time expired
+
+                    // update state to display statuses:
+                    componentState->setState(MeasurementsLineComponentState::State::DISPLAYING_STATUSES);
+
+                    // set display statuses timer:
+                    componentState->getDisplayStatusesTimer().set(now);
+                }
+            }
+            break;
+
+        case MeasurementsLineComponentState::State::DISPLAYING_STATUSES:
+            if (const Timer& displayStatusesTimer = componentState->getDisplayStatusesTimer();
+                displayStatusesTimer.isExpired(now)) {  // if statuses display time expired
+
+                // update state to display measurements:
+                componentState->setState(MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS);
+
+                // set display measurements timer:
+                componentState->getDisplayMeasurementsTimer().set(now);
+            }
+            break;
+    }
+}
+
+void MeasurementsLineComponent::render(Display& display) {
     const auto componentState = this->getState();
     // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
 
     switch (componentState->getState()) {
         case MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS:
             this->renderMeasurements(display);
-
-            if (componentState->isDisplayMeasurementStatusIcons()) {
-                if (auto timer = componentState->getDisplayMeasurementsTimer(); timer.isExpired(now)) {
-                    componentState->setState(MeasurementsLineComponentState::State::DISPLAYING_STATUSES);
-                    timer.set(now);
-                }
-            }
             break;
 
         case MeasurementsLineComponentState::State::DISPLAYING_STATUSES:
             this->renderMeasurementStatusIcons(display);
-
-            if (auto timer = componentState->getDisplayMeasurementsTimer(); timer.isExpired(now)) {
-                componentState->setState(MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS);
-                timer.set(now);
-            }
-            break;
-
-        default:
             break;
     }
 }

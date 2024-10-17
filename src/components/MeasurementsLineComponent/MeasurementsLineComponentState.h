@@ -43,7 +43,12 @@ class MeasurementsLineComponentState final {
         uint8_t co2;
     };
 
-    MeasurementsLineComponentState(const uint16_t displayMeasurementsDuration, const uint16_t displayStatusesDuration)
+    /**
+     * Create a new MeasurementsLineComponentState.
+     * @param displayMeasurementsDuration how long to display measurements in milliseconds.
+     * @param displayStatusesDuration how long to display measurement statuses in milliseconds.
+     */
+    MeasurementsLineComponentState(const uint32_t displayMeasurementsDuration, const uint32_t displayStatusesDuration)
         : measurementStatusIconIDs({.temperature = DisplayCGRAMInfo::defaultIconSlot,
                                     .humidity = DisplayCGRAMInfo::defaultIconSlot,
                                     .co2 = DisplayCGRAMInfo::defaultIconSlot}),
