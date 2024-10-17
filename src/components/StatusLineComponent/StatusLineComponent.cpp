@@ -8,7 +8,7 @@ void StatusLineComponent::render(Display& display) {
     this->modeIndicatorsComponent.render(display);
     this->clockComponent.render(display);
 
-    if (const auto state = this->getState(); state.isDisplayMeasurementsStatusIcon()) {
+    if (const auto& state = this->getState(); state.isDisplayMeasurementsStatusIcon()) {
         this->measurementsStatusIconComponent.render(display);
     }
 }

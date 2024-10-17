@@ -5,7 +5,7 @@
 #include "ModeIndicatorsComponent.h"
 #include "ModeIndicatorsComponentState.h"
 
-ModeIndicatorsComponent::ModeIndicatorsComponent(const ModeIndicatorsComponentState state,
+ModeIndicatorsComponent::ModeIndicatorsComponent(ModeIndicatorsComponentState& state,
                                                  const DisplayCoordinates coordinates)
     : ViewComponent(state, coordinates),
       icon1(IconComponent(this->getState().getIcon1State(), coordinates)),

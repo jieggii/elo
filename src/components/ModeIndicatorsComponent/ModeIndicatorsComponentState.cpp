@@ -4,5 +4,5 @@
 
 #include "ModeIndicatorsComponentState.h"
 
-IconComponentState ModeIndicatorsComponentState::getIcon1State() const { return this->icon1State; }
-IconComponentState ModeIndicatorsComponentState::getIcon2State() const { return this->icon2State; }
+IconComponentState& ModeIndicatorsComponentState::getIcon1State() { return this->icon1State; }
+IconComponentState& ModeIndicatorsComponentState::getIcon2State() { return this->icon2State; }

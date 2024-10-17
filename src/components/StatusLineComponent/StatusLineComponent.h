@@ -13,13 +13,13 @@
  * StatusLineComponent encapsulates mode indicator icons, clock, and overall environmental measurements status icon
  * and represents status line.
  */
-class StatusLineComponent final : public ViewComponent<StatusLineComponentState> {
+class StatusLineComponent final : public ViewComponent<StatusLineComponentState&> {
    public:
     /**
      * @param state state.
      * @param coordinates coordinates of the component.
      */
-    StatusLineComponent(const StatusLineComponentState state, const DisplayCoordinates coordinates)
+    StatusLineComponent(StatusLineComponentState& state, const DisplayCoordinates coordinates)
         : ViewComponent(state, coordinates),
           modeIndicatorsComponent(
               ModeIndicatorsComponent(this->getState().getModeIndicatorsComponentState(), {0, coordinates.row})),

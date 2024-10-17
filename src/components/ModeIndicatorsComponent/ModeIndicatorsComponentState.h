@@ -15,12 +15,12 @@ class ModeIndicatorsComponentState final {
     /**
      * Get the icon 1 state of the mode indicators component.
      */
-    [[nodiscard]] IconComponentState getIcon1State() const;
+    [[nodiscard]] IconComponentState& getIcon1State();
 
     /**
      * Get the icon 2 state of the mode indicators component.
      */
-    [[nodiscard]] IconComponentState getIcon2State() const;
+    [[nodiscard]] IconComponentState& getIcon2State();
 
    private:
     IconComponentState icon1State;

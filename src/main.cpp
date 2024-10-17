@@ -7,7 +7,6 @@
 #include "debug_print.h"
 #include "views/IdleView.h"
 #include "views/StandView.h"
-#include "components/MeasurementsLineComponent/MeasurementsLineComponent.h"
 #include "components/MeasurementsLineComponent/MeasurementsLineComponentState.h"
 #include "App.h"
 
@@ -32,9 +31,9 @@ namespace UI {
 
     namespace Views {
         IdleView idle({.envSensor = &Hardware::envSensor, .selectButton = &Hardware::selectButton},
-                      APP.getViewNavigator(), STAND_VIEW_INDEX, &StaticComponentStates::measurementsLineComponentState);
+                      APP.getViewNavigator(), STAND_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState);
         StandView stand({.envSensor = &Hardware::envSensor, .selectButton = &Hardware::selectButton},
-                        APP.getViewNavigator(), IDLE_VIEW_INDEX, &StaticComponentStates::measurementsLineComponentState,
+                        APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
                         61);
 
     };  // namespace Views

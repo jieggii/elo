@@ -23,7 +23,7 @@ class WorkModeView : public TimedModeView {
      * @param exerciseInterval - exercise interval in seconds
      */
     WorkModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
-                 MeasurementsLineComponentState* measurementsLineComponentState, const uint16_t duration,
+                 MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration,
                  const uint16_t postureReminderInterval, const uint16_t exerciseInterval)
         : TimedModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, duration),
           postureReminderTimer(Timer::fromSeconds(postureReminderInterval)),

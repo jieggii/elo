@@ -13,7 +13,7 @@
 class IdleView final : public ModeView {
    public:
     IdleView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
-             MeasurementsLineComponentState* measurementsLineComponentState)
+             MeasurementsLineComponentState& measurementsLineComponentState)
         : ModeView(hardware, viewNavigator, nextViewID, {0, 0, 0}, measurementsLineComponentState) {}
 
     void setup(Display& display) override;

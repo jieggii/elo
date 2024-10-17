@@ -8,12 +8,12 @@
 /**
  * ClockComponent represents a clock which displays hours, minutes and seconds.
  */
-class ClockComponent final : public ViewComponent<ClockComponentState> {
+class ClockComponent final : public ViewComponent<ClockComponentState&> {
    public:
     /**
      * Creates a clock component with the given coordinates and time.
      */
-    ClockComponent(const ClockComponentState state, const DisplayCoordinates coordinates)
+    ClockComponent(ClockComponentState& state, const DisplayCoordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
     /**

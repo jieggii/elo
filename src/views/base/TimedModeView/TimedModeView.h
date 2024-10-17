@@ -20,10 +20,11 @@ class TimedModeView : public ModeView {
      * @param hardware
      * @param viewNavigator - pointer to the ViewNavigator.
      * @param nextViewID - ID of the next view.
+     * @param measurementsLineComponentState pointer to the MeasurementsLineComponentState (TODO: use referenses).
      * @param duration - duration of the view in seconds.
      */
     TimedModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
-                  MeasurementsLineComponentState* measurementsLineComponentState, const uint16_t duration)
+                  MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration)
         : ModeView(hardware, viewNavigator, nextViewID, ClockTime::fromSTimestamp(duration),
                    measurementsLineComponentState),
           viewTimer(Timer::fromSeconds(duration)) {}
@@ -46,20 +47,28 @@ class TimedModeView : public ModeView {
     }
 
     void loop() override {
+        const uint32_t now = millis();  // TODO get now from param
+
         if (!this->isExpired) {
             this->serveNonExpired();
         } else {
             this->serveExpired();
         }
 
+        // debug_println(this->viewTimer.left(now));
+        this->setStatusLineClockTime(ClockTime::fromMsTimestamp(this->viewTimer.left(now)));
+
         this->ModeView::loop();
+
+        // auto x = this->statusLineState.getClockComponentState().getTime();
+        // debug_print(x.hours);
+        // debug_print(":");
+        // debug_print(x.minutes);
+        // debug_print(":");
+        // debug_println(x.seconds);
     }
 
-    void render(Display& display) override {
-        const uint32_t now = millis();  // TODO get now from param
-        this->setStatusLineClockTime(ClockTime::fromMsTimestamp(this->viewTimer.left(now)));
-        this->ModeView::render(display);
-    }
+    void render(Display& display) override { this->ModeView::render(display); }
 
     void reset() override { this->ModeView::reset(); }
 

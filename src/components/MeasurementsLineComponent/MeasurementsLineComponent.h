@@ -8,10 +8,10 @@
 /**
  * MeasurementsLineComponent line displaying environmental measurements and their statuses.
  */
-class MeasurementsLineComponent final : public ViewComponent<MeasurementsLineComponentState*> {
+class MeasurementsLineComponent final : public ViewComponent<MeasurementsLineComponentState&> {
    public:
     // TODO: move constructor implementation to cpp file.
-    MeasurementsLineComponent(MeasurementsLineComponentState* state, const DisplayCoordinates coordinates)
+    MeasurementsLineComponent(MeasurementsLineComponentState& state, const DisplayCoordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
     void loop(uint32_t now) override;

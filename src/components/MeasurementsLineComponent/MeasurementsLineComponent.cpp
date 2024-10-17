@@ -78,43 +78,45 @@ class RenderBuffer {
 };
 
 void MeasurementsLineComponent::loop(const uint32_t now) {
-    const auto componentState = this->getState();
+    MeasurementsLineComponentState& componentState = this->getState();
     // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
 
-    switch (componentState->getState()) {
+    switch (componentState.getState()) {
         case MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS:
-            if (componentState->isDisplayMeasurementStatusIcons()) {  // if statuses should be displayed
-                if (const Timer& displayMeasurementsTimer = componentState->getDisplayMeasurementsTimer();
+            debug_println("case 1");
+            if (componentState.isDisplayMeasurementStatusIcons()) {  // if statuses should be displayed
+                if (const Timer& displayMeasurementsTimer = componentState.getDisplayMeasurementsTimer();
                     displayMeasurementsTimer.isExpired(now)) {  // if measurements display time expired
 
                     // update state to display statuses:
-                    componentState->setState(MeasurementsLineComponentState::State::DISPLAYING_STATUSES);
+                    componentState.setState(MeasurementsLineComponentState::State::DISPLAYING_STATUSES);
 
                     // set display statuses timer:
-                    componentState->getDisplayStatusesTimer().set(now);
+                    componentState.getDisplayStatusesTimer().set(now);
                 }
             }
             break;
 
         case MeasurementsLineComponentState::State::DISPLAYING_STATUSES:
-            if (const Timer& displayStatusesTimer = componentState->getDisplayStatusesTimer();
+            debug_println("case 2");
+            if (const Timer& displayStatusesTimer = componentState.getDisplayStatusesTimer();
                 displayStatusesTimer.isExpired(now)) {  // if statuses display time expired
 
                 // update state to display measurements:
-                componentState->setState(MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS);
+                componentState.setState(MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS);
 
                 // set display measurements timer:
-                componentState->getDisplayMeasurementsTimer().set(now);
+                componentState.getDisplayMeasurementsTimer().set(now);
             }
             break;
     }
 }
 
 void MeasurementsLineComponent::render(Display& display) {
-    const auto componentState = this->getState();
+    const auto& componentState = this->getState();
     // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
 
-    switch (componentState->getState()) {
+    switch (componentState.getState()) {
         case MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS:
             this->renderMeasurements(display);
             break;
@@ -126,7 +128,7 @@ void MeasurementsLineComponent::render(Display& display) {
 }
 
 void MeasurementsLineComponent::renderMeasurements(Display& display) const {
-    const auto measurements = this->getState()->getMeasurements();
+    const auto measurements = this->getState().getMeasurements();
 
     RenderBuffer renderBuffer;
     renderBuffer.format(&measurements);
@@ -138,7 +140,7 @@ void MeasurementsLineComponent::renderMeasurementStatusIcons(Display& display) c
     renderBuffer.format();
     display.displayText(renderBuffer.getBuffer(), {0, this->coordinates.row});
 
-    const auto [temperature, humidity, co2] = this->getState()->getMeasurementStatusIconIDs();
+    const auto [temperature, humidity, co2] = this->getState().getMeasurementStatusIconIDs();
     display.displayIcon(temperature, {1, this->coordinates.row});
     display.displayIcon(humidity, {6, this->coordinates.row});
     display.displayIcon(co2, {12, this->coordinates.row});

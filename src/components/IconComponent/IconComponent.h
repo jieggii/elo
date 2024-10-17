@@ -9,9 +9,9 @@
 /**
  * IconComponent represents a component which renders an icon, which has its position and its icon ID.
  */
-class IconComponent final : public ViewComponent<IconComponentState> {
+class IconComponent final : public ViewComponent<IconComponentState&> {
    public:
-    IconComponent(const IconComponentState state, const DisplayCoordinates coordinates)
+    IconComponent(IconComponentState& state, const DisplayCoordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
     /**

@@ -12,6 +12,8 @@ class ViewComponent {
    protected:
     const DisplayCoordinates coordinates;  // coordinates on the display where component is rendered
 
+    static_assert(std::is_reference_v<ViewComponentStateType>, "ViewComponentStateType must be a reference type");
+
    public:
     ViewComponent(ViewComponentStateType state, const DisplayCoordinates coordinates)
         : coordinates(coordinates), state(state) {}

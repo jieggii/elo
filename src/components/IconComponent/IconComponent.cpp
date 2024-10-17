@@ -5,6 +5,8 @@
 #include "IconComponent.h"
 
 void IconComponent::render(Display& display) {
-    const auto iconID = this->getState().getIconID();
-    display.displayIcon(iconID, this->coordinates);
+    const auto& state =
+        this->getState();  // TODO: this looks great. Use auto& in similar methods of other components please!
+
+    display.displayIcon(state.getIconID(), this->coordinates);
 }

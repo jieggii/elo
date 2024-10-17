@@ -76,15 +76,17 @@ class ModeView : public View {
      * TODO: move constructor implementation to the .cpp file
      */
     ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID, const ClockTime clockTime,
-             MeasurementsLineComponentState* measurementsLineComponentState)
+             MeasurementsLineComponentState& measurementsLineComponentState)
         : View(),
           hardware(hardware),
           viewNavigator(viewNavigator),
           nextViewID(nextViewID),
           measurementsTimer(ModeViewSettings::measurementsDisplayDuration),
-          components({.statusLine = StatusLineComponent(
-                          StatusLineComponentState(ModeViewIconIDs::indicator1, ModeViewIconIDs::indicator2, clockTime),
-                          {0, 0}),
+          componentStates({
+              .statusLine =
+                  StatusLineComponentState(ModeViewIconIDs::indicator1, ModeViewIconIDs::indicator2, clockTime),
+          }),
+          components({.statusLine = StatusLineComponent(this->componentStates.statusLine, {0, 0}),
                       .measurementsLine = MeasurementsLineComponent(measurementsLineComponentState, {0, 1})}) {}
 
     /**
@@ -154,14 +156,19 @@ class ModeView : public View {
     Timer measurementsTimer;
 
     /**
+     * States of the local components.
+     */
+    struct ComponentStates {
+        StatusLineComponentState statusLine;
+    } componentStates;
+
+    /**
      * View components.
      */
     struct Components {
         StatusLineComponent statusLine;
         MeasurementsLineComponent measurementsLine;
     } components;
-
-    // bool measurementsAvailable = false;
 
     void updateMeasurementsLineState(const EnvSensorMeasurements& measurements) const;
     void updateStatusLineState(const EnvSensorMeasurements& measurements) const;
