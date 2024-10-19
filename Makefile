@@ -18,3 +18,11 @@ fmt:
 .PHONY: run-debug
 run-debug:
 	pio run -e debug -t upload && pio device monitor
+
+.PHONY: test-native
+test-native:
+	@echo "Running native tests..."
+	pio test -e test-native
+
+.PHONY: test
+test: test-native
