@@ -23,23 +23,39 @@ class Timer {
     static Timer fromSeconds(uint16_t duration);
 
     /**
+     * Returns true if the timer is paused.
+     */
+    [[nodiscard]] bool isPaused() const;
+
+    /**
      * Start or restart the timer.
+     * If the timer is paused, it will be resumed.
      * @param now current timestamp in milliseconds.
      */
     void set(uint32_t now);
 
     /**
+     * Pause the timer.
+     */
+    void pause(uint32_t now);
+
+    /**
+     * Resume the timer.
+     */
+    void resume(uint32_t now);
+
+    /**
      * Returns number of milliseconds elapsed.
+     * If the timer is paused, returns time elapsed until paused.
+     * Cannot return more than timer duration.
      * @param now current timestamp in milliseconds.
-     * @return number of milliseconds elapsed since last set.
      */
     [[nodiscard]] uint32_t elapsed(uint32_t now) const;
 
     /**
-     * Returns number of seconds left.
+     * Returns number of seconds left until timer expires.
+     * Cannot return less than 0.
      * @param now current timestamp in milliseconds.
-     * @return number of milliseconds left since last set.
-     * Returns 0 if number of milliseconds elapsed is more than timer duration.
      */
     [[nodiscard]] uint32_t left(uint32_t now) const;
 
@@ -50,8 +66,12 @@ class Timer {
     [[nodiscard]] bool isExpired(uint32_t now) const;
 
    private:
-    uint32_t duration;     // timer duration in ms
-    uint32_t startTS = 0;  // timestamp of the timer set
+    const uint32_t duration;  // timer duration in ms
+
+    uint32_t startTimestamp = 0;  // timestamp of the timer set
+    uint32_t pauseTimestamp = 0;  // timestamp of the timer pause
+
+    bool paused = false;
 };
 
 #endif  // ELO_LIB_TIMER_SRC_TIMER_H_
