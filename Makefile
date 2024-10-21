@@ -17,7 +17,11 @@ fmt:
 
 .PHONY: run-debug
 run-debug:
-	pio run -e debug -t upload && pio device monitor
+	@echo "Building debug release and uploading to the board..."
+	pio run -e debug -t upload
+
+	@echo "Starting serial monitor..."
+	pio device monitor
 
 .PHONY: test-native
 test-native:
