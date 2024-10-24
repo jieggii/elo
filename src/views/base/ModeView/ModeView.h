@@ -42,6 +42,7 @@ namespace ModeViewIconIDs {
 
 namespace ModeViewSettings {
     // interval between measurements updates in milliseconds.
+    // TODO: should this be less than 5 seconds? Please check with the env sensor specs.
     constexpr uint16_t measurementsUpdateInterval = 1000;
 
     // duration of displaying measurements in milliseconds.
