@@ -6,9 +6,14 @@
 
 void IconComponent::render(Display& display) {
     const auto& state = this->getState();
-    if (state.isHidden()) {  // do not render if hidden.
+    if (state.isHidden()) {  // render hidden representation if hidden
+        this->renderHidden(display);
         return;
     }
 
     display.displayIcon(state.getIconID(), this->coordinates);
+}
+
+void IconComponent::renderHidden(Display& display) const {
+    display.displayText(nullptr, this->coordinates);  // TODO: this has never been tested
 }

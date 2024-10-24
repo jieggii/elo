@@ -37,6 +37,8 @@ class StatusLineComponent final : public ViewComponent<StatusLineComponentState&
     ModeIndicatorsComponent modeIndicatorsComponent;
     ClockComponent clockComponent;
     IconComponent measurementsStatusIconComponent;
+
+    void renderHidden(Display& display) const override;
 };
 
 #endif  // STATUSLINECOMPONENT_H

@@ -5,6 +5,8 @@
 #include "ModeIndicatorsComponent.h"
 #include "ModeIndicatorsComponentState.h"
 
+#include <debug_print.h>
+
 ModeIndicatorsComponent::ModeIndicatorsComponent(ModeIndicatorsComponentState& state,
                                                  const DisplayCoordinates coordinates)
     : ViewComponent(state, coordinates),
@@ -14,9 +16,14 @@ ModeIndicatorsComponent::ModeIndicatorsComponent(ModeIndicatorsComponentState& s
 
 void ModeIndicatorsComponent::render(Display& display) {
     if (const auto& state = this->getState(); state.isHidden()) {
+        this->renderHidden(display);
         return;
-    }  // do not render if hidden
+    }  // render hidden representation if hidden
 
     this->icon1.render(display);
     this->icon2.render(display);
+}
+
+void ModeIndicatorsComponent::renderHidden(Display& display) const {
+    // TODO: implement if needed
 }

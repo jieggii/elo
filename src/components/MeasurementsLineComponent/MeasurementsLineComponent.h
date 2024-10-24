@@ -7,6 +7,8 @@
 
 /**
  * MeasurementsLineComponent line displaying environmental measurements and their statuses.
+ * TODO: include logic for isNeedRerendering. If icons are being displayed, do not rerender the component to avoid
+ * flickering.
  */
 class MeasurementsLineComponent final : public ViewComponent<MeasurementsLineComponentState&> {
    public:
@@ -21,6 +23,7 @@ class MeasurementsLineComponent final : public ViewComponent<MeasurementsLineCom
     void render(Display& display) override;
 
    private:
+    void renderHidden(Display& display) const override;
     /**
      * Render measurements.
      */

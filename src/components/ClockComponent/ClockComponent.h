@@ -20,6 +20,12 @@ class ClockComponent final : public ViewComponent<ClockComponentState&> {
      * Renders the clock on the display.
      */
     void render(Display& display) override;
+
+   private:
+    /**
+     * Renders the hidden copy of the clock on the display.
+     */
+    void renderHidden(Display& display) const override;
 };
 
 #endif

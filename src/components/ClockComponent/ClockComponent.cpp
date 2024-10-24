@@ -10,15 +10,26 @@ class RenderBuffer {
    public:
     RenderBuffer() = default;
 
-    void format(const uint8_t hours, const uint8_t minutes, const uint8_t seconds) {
-        this->formatValue(hours, HOURS_OFFSET);
-        this->formatColon(HOURS_OFFSET + VALUE_LEN);
+    /**
+     * Returns empty buffer.
+     * @return empty buffer.
+     */
+    static RenderBuffer empty() {
+        constexpr RenderBuffer buffer;
+        return buffer;
+    }
 
-        this->formatValue(minutes, MINUTES_OFFSET);
-        this->formatColon(MINUTES_OFFSET + VALUE_LEN);
-
-        this->formatValue(seconds, SECONDS_OFFSET);
-        this->formatNullTerm();
+    /**
+     * Returns buffer with formatted time.
+     * @param hours hours.
+     * @param minutes minutes.
+     * @param seconds seconds.
+     * @return buffer with formatted time.
+     */
+    static RenderBuffer formated(const uint8_t hours, const uint8_t minutes, const uint8_t seconds) {
+        RenderBuffer buffer;
+        buffer.format(hours, minutes, seconds);
+        return buffer;
     }
 
     [[nodiscard]] const char* getBuffer() const { return buffer; }
@@ -33,6 +44,17 @@ class RenderBuffer {
 
     char buffer[BUFFER_SIZE] = {};
 
+    void format(const uint8_t hours, const uint8_t minutes, const uint8_t seconds) {
+        this->formatValue(hours, HOURS_OFFSET);
+        this->formatColon(HOURS_OFFSET + VALUE_LEN);
+
+        this->formatValue(minutes, MINUTES_OFFSET);
+        this->formatColon(MINUTES_OFFSET + VALUE_LEN);
+
+        this->formatValue(seconds, SECONDS_OFFSET);
+        this->formatNullTerm();
+    }
+
     void formatValue(const uint8_t value, const uint8_t offset) {
         buffer[offset] = static_cast<char>('0' + value / 10);
         buffer[offset + 1] = static_cast<char>('0' + value % 10);
@@ -45,13 +67,20 @@ class RenderBuffer {
 
 void ClockComponent::render(Display& display) {
     const auto& state = this->getState();
-    if (state.isHidden()) {  // do not render if hidden.
+    if (state.isHidden()) {  // render hidden if hidden
+        this->renderHidden(display);
         return;
     }
 
-    const auto [hours, minutes, seconds] = state.getTime();
+    debug_println("render clock");
 
-    RenderBuffer renderBuffer;
-    renderBuffer.format(hours, minutes, seconds);
+    const auto [hours, minutes, seconds] = state.getTime();
+    const auto renderBuffer = RenderBuffer::formated(hours, minutes, seconds);
     display.displayText(renderBuffer.getBuffer(), this->coordinates);
+}
+
+void ClockComponent::renderHidden(Display& display) const {
+    const auto renderBuffer = RenderBuffer::empty();
+    debug_println("render HIDDEN clock");
+    display.displayText("        ", this->coordinates);
 }

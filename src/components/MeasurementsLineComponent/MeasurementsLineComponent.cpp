@@ -13,11 +13,24 @@ class RenderBuffer {
    public:
     RenderBuffer() = default;
 
+    static RenderBuffer empty() {
+        constexpr RenderBuffer buffer;
+        return buffer;
+    }
+
+    static RenderBuffer formated(const MeasurementsLineComponentState::Measurements* measurements = nullptr) {
+        RenderBuffer buffer;
+        buffer.format(measurements);
+        return buffer;
+    }
+
     /**
      * Format the buffer with the given measurements.
      * If no measurements are provided, the buffer will be formatted as a template with no measurements displayed.
      * I.e formats buffer as "99°C 99% 9999ppm" if measurements provided, otherwise as "  °C  %    ppm".
      * TODO: rename this method to something more descriptive.
+     * TODO: rewrite like RenderBuffer in ClockComponent.cpp
+     * TODO: is the default value for measurements needed?
      */
     void format(const MeasurementsLineComponentState::Measurements* measurements = nullptr) {
         // display temperature if measurements provided:
@@ -113,7 +126,8 @@ void MeasurementsLineComponent::update(const uint32_t now) {
 void MeasurementsLineComponent::render(Display& display) {
     // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
     const auto& state = this->getState();
-    if (state.isHidden()) {  // do not render if hidden
+    if (state.isHidden()) {  // render hidden representation if hidden
+        this->renderHidden(display);
         return;
     }
 
@@ -128,17 +142,20 @@ void MeasurementsLineComponent::render(Display& display) {
     }
 }
 
+void MeasurementsLineComponent::renderHidden(Display& display) const {
+    const auto renderBuffer = RenderBuffer::empty();
+    display.displayText(renderBuffer.getBuffer(), this->coordinates);  // TODO: this has never been tested
+}
+
 void MeasurementsLineComponent::renderMeasurements(Display& display) const {
     const auto measurements = this->getState().getMeasurements();
 
-    RenderBuffer renderBuffer;
-    renderBuffer.format(&measurements);
+    const auto renderBuffer = RenderBuffer::formated(&measurements);
     display.displayText(renderBuffer.getBuffer(), this->coordinates);
 }
 
 void MeasurementsLineComponent::renderMeasurementStatusIcons(Display& display) const {
-    RenderBuffer renderBuffer;
-    renderBuffer.format();
+    const auto renderBuffer = RenderBuffer::formated();
     display.displayText(renderBuffer.getBuffer(), {0, this->coordinates.row});
 
     const auto [temperature, humidity, co2] = this->getState().getMeasurementStatusIconIDs();

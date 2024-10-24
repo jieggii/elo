@@ -28,6 +28,8 @@ class ModeIndicatorsComponent final : public ViewComponent<ModeIndicatorsCompone
    private:
     IconComponent icon1;
     IconComponent icon2;
+
+    void renderHidden(Display& display) const override;
 };
 
 #endif  // MODE_INDICATORS_COMPONENT_H

@@ -6,8 +6,9 @@
 
 void StatusLineComponent::render(Display& display) {
     if (const auto& state = this->getState(); state.isHidden()) {
+        this->renderHidden(display);
         return;
-    }  // do not render if hidden
+    }  // render hidden representation if hidden
 
     this->modeIndicatorsComponent.render(display);
     this->clockComponent.render(display);
@@ -15,4 +16,8 @@ void StatusLineComponent::render(Display& display) {
     if (const auto& state = this->getState(); state.isDisplayMeasurementsStatusIcon()) {
         this->measurementsStatusIconComponent.render(display);
     }
+}
+
+void StatusLineComponent::renderHidden(Display& display) const {
+    // TODO: implement if needed
 }

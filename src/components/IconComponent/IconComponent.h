@@ -19,6 +19,9 @@ class IconComponent final : public ViewComponent<IconComponentState&> {
      * @param display The display to render the icon component on.
      */
     void render(Display& display) override;
+
+   protected:
+    void renderHidden(Display& display) const override;
 };
 
 #endif  // BASEDISPLAYVIEW_ICONCOMPONENT_H
