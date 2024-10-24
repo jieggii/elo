@@ -21,7 +21,7 @@ namespace Hardware {
 
 namespace UI {
     namespace Settings {
-        constexpr uint16_t VIEW_RENDER_INTERVAL = 1000;
+        constexpr uint16_t VIEW_RENDER_INTERVAL = 17;  // 58.823529 fps
     }
 
     App APP(Hardware::display, Settings::VIEW_RENDER_INTERVAL);
