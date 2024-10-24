@@ -21,7 +21,7 @@ class ViewComponentState {
     /**
      * Returns true if the component is hidden.
      */
-    virtual bool isHidden() { return this->hidden; };
+    [[nodiscard]] virtual bool isHidden() const { return this->hidden; };
 
     virtual ~ViewComponentState() = default;
 
