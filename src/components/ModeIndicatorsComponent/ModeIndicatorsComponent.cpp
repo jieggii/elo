@@ -13,6 +13,10 @@ ModeIndicatorsComponent::ModeIndicatorsComponent(ModeIndicatorsComponentState& s
                           {static_cast<uint8_t>(coordinates.col + 1), coordinates.row})) {}
 
 void ModeIndicatorsComponent::render(Display& display) {
+    if (const auto& state = this->getState(); state.isHidden()) {
+        return;
+    }  // do not render if hidden
+
     this->icon1.render(display);
     this->icon2.render(display);
 }

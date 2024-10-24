@@ -111,10 +111,13 @@ void MeasurementsLineComponent::update(const uint32_t now) {
 }
 
 void MeasurementsLineComponent::render(Display& display) {
-    const auto& componentState = this->getState();
     // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
+    const auto& state = this->getState();
+    if (state.isHidden()) {  // do not render if hidden
+        return;
+    }
 
-    switch (componentState.getState()) {
+    switch (state.getState()) {
         case MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS:
             this->renderMeasurements(display);
             break;

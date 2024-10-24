@@ -5,6 +5,10 @@
 #include "StatusLineComponent.h"
 
 void StatusLineComponent::render(Display& display) {
+    if (const auto& state = this->getState(); state.isHidden()) {
+        return;
+    }  // do not render if hidden
+
     this->modeIndicatorsComponent.render(display);
     this->clockComponent.render(display);
 

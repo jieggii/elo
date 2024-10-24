@@ -10,7 +10,9 @@
 #include "Timer.h"
 #include "EnvSensor.h"
 
-class MeasurementsLineComponentState final {
+#include <ViewComponentState.h>
+
+class MeasurementsLineComponentState final : public ViewComponentState {
    public:
     enum class State {
         DISPLAYING_MEASUREMENTS,  // measurements are displayed

@@ -5,9 +5,10 @@
 #ifndef ICONCOMPONENTSTATE_H
 #define ICONCOMPONENTSTATE_H
 
+#include <ViewComponentState.h>
 #include <cstdint>
 
-class IconComponentState final {
+class IconComponentState final : public ViewComponentState {
    public:
     explicit IconComponentState(const uint8_t iconID) : iconID(iconID) {}
 

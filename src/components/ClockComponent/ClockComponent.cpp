@@ -44,7 +44,12 @@ class RenderBuffer {
 };
 
 void ClockComponent::render(Display& display) {
-    const auto [hours, minutes, seconds] = this->getState().getTime();
+    const auto& state = this->getState();
+    if (state.isHidden()) {  // do not render if hidden.
+        return;
+    }
+
+    const auto [hours, minutes, seconds] = state.getTime();
 
     RenderBuffer renderBuffer;
     renderBuffer.format(hours, minutes, seconds);

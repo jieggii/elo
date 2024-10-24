@@ -5,11 +5,12 @@
 #ifndef STATUSLINECOMPONENTSTATE_H
 #define STATUSLINECOMPONENTSTATE_H
 
+#include "ViewComponentState.h"
 #include "components/ClockComponent/ClockComponentState.h"
 #include "components/ModeIndicatorsComponent/ModeIndicatorsComponent.h"
 #include "components/IconComponent/IconComponentState.h"
 
-class StatusLineComponentState final {
+class StatusLineComponentState final : public ViewComponentState {
    public:
     StatusLineComponentState(const uint8_t modeIndicatorIcon1ID, const uint8_t modeIndicatorIcon2ID,
                              const ClockTime clockTime)

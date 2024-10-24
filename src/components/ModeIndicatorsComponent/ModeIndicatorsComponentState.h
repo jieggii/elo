@@ -6,8 +6,9 @@
 #define MODEINDICATORSCOMPONENTSTATE_H
 
 #include "components/IconComponent/IconComponentState.h"
+#include "ViewComponentState.h"
 
-class ModeIndicatorsComponentState final {
+class ModeIndicatorsComponentState final : public ViewComponentState {
    public:
     ModeIndicatorsComponentState(const uint8_t icon1ID, const uint8_t icon2ID)
         : icon1State(IconComponentState(icon1ID)), icon2State(icon2ID) {}
