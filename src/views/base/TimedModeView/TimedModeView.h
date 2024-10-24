@@ -48,7 +48,11 @@ class TimedModeView : public ModeView {
           hardware({.actionButton = hardware.actionButton}),
           viewTimer(Timer::fromSeconds(duration)) {}
 
-    void setup(const uint32_t now, Display& display) override { this->ModeView::setup(now, display); }
+    void setup(const uint32_t now, Display& display) override {
+        this->pause(now);  // we pause the view on setup
+
+        this->ModeView::setup(now, display);
+    }
 
     void handleInputs(const uint32_t now) override {
         // update action button state:
