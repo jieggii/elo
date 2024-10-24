@@ -16,9 +16,9 @@ class IdleView final : public ModeView {
              MeasurementsLineComponentState& measurementsLineComponentState)
         : ModeView(hardware, viewNavigator, nextViewID, {0, 0, 0}, measurementsLineComponentState) {}
 
-    void setup(Display& display) override;
-    void handleInputs() override { ModeView::handleInputs(); }
-    void loop() override;
+    void setup(uint32_t now, Display& display) override;
+    void handleInputs(const uint32_t now) override { ModeView::handleInputs(now); }
+    void update(uint32_t now) override;
     void render(Display& display) override;
     void reset() override;
 

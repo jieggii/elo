@@ -77,13 +77,12 @@ class RenderBuffer {
     char buffer[DisplayDimensions::cols + 1] = {};  // the underlying buffer for rendering
 };
 
-void MeasurementsLineComponent::loop(const uint32_t now) {
+void MeasurementsLineComponent::update(const uint32_t now) {
     MeasurementsLineComponentState& componentState = this->getState();
     // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
 
     switch (componentState.getState()) {
         case MeasurementsLineComponentState::State::DISPLAYING_MEASUREMENTS:
-            debug_println("case 1");
             if (componentState.isDisplayMeasurementStatusIcons()) {  // if statuses should be displayed
                 if (const Timer& displayMeasurementsTimer = componentState.getDisplayMeasurementsTimer();
                     displayMeasurementsTimer.isExpired(now)) {  // if measurements display time expired
@@ -98,7 +97,6 @@ void MeasurementsLineComponent::loop(const uint32_t now) {
             break;
 
         case MeasurementsLineComponentState::State::DISPLAYING_STATUSES:
-            debug_println("case 2");
             if (const Timer& displayStatusesTimer = componentState.getDisplayStatusesTimer();
                 displayStatusesTimer.isExpired(now)) {  // if statuses display time expired
 

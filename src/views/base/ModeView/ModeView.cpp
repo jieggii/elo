@@ -2,37 +2,33 @@
 // Created by jieggii on 10/5/24.
 //
 
+#include "binary.h"
 #include "ModeView.h"
 
-void ModeView::setup(Display& display) {
+void ModeView::setup(const uint32_t now, Display& display) {
     cacheMeasurementStatusIcons(display);
-
-    const uint32_t now = millis();  // TODO: get current time from param provided to the method
     this->measurementsTimer.set(now);
 
     display.clear();
 }
 
-void ModeView::handleInputs() {
+void ModeView::handleInputs(const uint32_t now) {
     // update select button state:
-    this->hardware.selectButton->update();
+    this->hardware.selectButton.update();
 
     // navigate to the next view if the select button is pressed:
-    if (this->hardware.selectButton->isActuated()) {
-        debug_println("btn actuated");
+    if (this->hardware.selectButton.isActuated()) {
         this->navigateToNextView();
     }
 }
 
-void ModeView::loop() {
-    const uint32_t now = millis();  // todo: get from loop param
-
+void ModeView::update(const uint32_t now) {
     // perform measurements if it is time to do so:
     if (this->measurementsTimer.isExpired(now)) {
         debug_println("performing measurements...");
         this->measurementsTimer.set(now);
 
-        if (const auto measurements = this->hardware.envSensor->readMeasurements(); measurements.fresh) {
+        if (const auto measurements = this->hardware.envSensor.readMeasurements(); measurements.fresh) {
             this->updateStatusLineState(measurements);
             this->updateMeasurementsLineState(measurements);
             debug_println("measurements available");
@@ -42,7 +38,7 @@ void ModeView::loop() {
     }
 
     // update measurements line
-    this->components.measurementsLine.loop(now);
+    this->components.measurementsLine.update(now);
 }
 
 void ModeView::render(Display& display) {
@@ -50,12 +46,12 @@ void ModeView::render(Display& display) {
     this->components.measurementsLine.render(display);
 }
 
-void ModeView::setStatusLineClockTime(const ClockTime time) const {
-    auto& statusLineState = this->components.statusLine.getState();
-    statusLineState.getClockComponentState().setTime(time);
-}
+// void ModeView::setStatusLineClockTime(const ClockTime time) const {
+//     auto& statusLineState = this->components.statusLine.getState();
+//     statusLineState.getClockComponentState().setTime(time);
+// }
 
-void ModeView::navigateToNextView() const { this->viewNavigator.navigateTo(this->nextViewID); }
+void ModeView::navigateToNextView() const { this->navigateTo(this->nextViewID); }
 
 void ModeView::cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2) {
     display.cacheIcon(ModeViewIconIDs::indicator1, icon1);
@@ -63,6 +59,7 @@ void ModeView::cacheModeIndicatorIcons(Display& display, const Icon* icon1, cons
 }
 
 void ModeView::cacheMeasurementStatusIcons(Display& display) {
+    // TODO: move icons to a separate file
     constexpr Icon statusOptimalIcon = {
         // icon representing face :)
         B00000, B01010, B01010, B00000, B10001, B01110, B00000, B00000,

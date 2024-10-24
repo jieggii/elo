@@ -63,9 +63,12 @@ class ModeView : public View {
      * Contains an environment sensor.
      */
     struct Hardware {
-        EnvSensor* envSensor;
-        Button* selectButton;
+        EnvSensor& envSensor;
+        Button& selectButton;
+
+        Hardware(EnvSensor& envSensor, Button& selectButton) : envSensor(envSensor), selectButton(selectButton) {}
     };
+
     /**
      * Constructor.
      * @param hardware hardware dependencies of the mode view.
@@ -91,17 +94,18 @@ class ModeView : public View {
 
     /**
      * Initializes the view.
+     * @param now
      * @param display pointer to the display.
      */
-    void setup(Display& display) override;
+    void setup(uint32_t now, Display& display) override;
 
-    void handleInputs() override;
+    void handleInputs(uint32_t now) override;
 
     /**
      * Main view loop.
      * It is responsible for reading environment measurements, assessing them, and displaying the results.
      */
-    void loop() override;
+    void update(uint32_t now) override;
 
     /**
      * Renders status line and measurements line.
@@ -114,11 +118,20 @@ class ModeView : public View {
     ~ModeView() override = default;
 
    protected:
+    struct Components {
+        StatusLineComponent statusLine;
+        MeasurementsLineComponent measurementsLine;
+    };
+
     /**
-     * Sets the clock time displayed in the status line.
-     * @param time clock time to set.
+     * Returns components of the view.
      */
-    void setStatusLineClockTime(ClockTime time) const;
+    Components& getComponents() { return this->components; }
+
+    /**
+     * Navigates to the given view.
+     */
+    void navigateTo(const uint8_t viewID) const { this->viewNavigator.navigateTo(viewID); }
 
     /**
      * Navigates to the next view.
@@ -165,10 +178,7 @@ class ModeView : public View {
     /**
      * View components.
      */
-    struct Components {
-        StatusLineComponent statusLine;
-        MeasurementsLineComponent measurementsLine;
-    } components;
+    Components components;
 
     void updateMeasurementsLineState(const EnvSensorMeasurements& measurements) const;
     void updateStatusLineState(const EnvSensorMeasurements& measurements) const;

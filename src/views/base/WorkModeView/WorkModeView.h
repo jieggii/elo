@@ -29,13 +29,11 @@ class WorkModeView : public TimedModeView {
           postureReminderTimer(Timer::fromSeconds(postureReminderInterval)),
           exerciseTimer(Timer::fromSeconds(exerciseInterval)) {}
 
-    void setup(Display& display) override { this->TimedModeView::setup(display); }
+    void setup(const uint32_t now, Display& display) override { this->TimedModeView::setup(now, display); }
 
-    void handleInputs() override { TimedModeView::handleInputs(); }
+    void handleInputs(const uint32_t now) override { TimedModeView::handleInputs(now); }
 
-    void loop() override {
-        const uint32_t now = millis();  // TODO: get now from param
-
+    void update(const uint32_t now) override {
         if (this->postureReminderTimer.isExpired(now)) {
             // TODO
         }
@@ -47,7 +45,7 @@ class WorkModeView : public TimedModeView {
         // if (this->isExpired(now)) {
         // }
 
-        this->TimedModeView::loop();
+        this->TimedModeView::update(now);
     }
     void render(Display& display) override { this->TimedModeView::render(display); }
     void reset() override { this->TimedModeView::reset(); }

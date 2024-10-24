@@ -17,7 +17,7 @@
 class App {
    public:
     explicit App(Display& display, const uint16_t renderInterval)
-        : display(display), viewRegistry(), viewNavigator(0), viewRenderer(this->display, renderInterval) {};
+        : display(display), viewNavigator(0), viewRenderer(this->display, renderInterval){};
 
     void registerView(const uint8_t viewID, View* view) { this->viewRegistry.registerView(viewID, view); }
 
@@ -39,16 +39,16 @@ class App {
             }
 #endif
             this->viewNavigator.resetViewIndexChangedFlag();
-            currentView->setup(this->display);
+            currentView->setup(now, this->display);
             this->viewRenderer.requestImmediateRender();
         }
 
-        currentView->handleInputs();
+        currentView->handleInputs(now);
         if (this->viewNavigator.hasViewIndexChanged()) {  // stop serving this view if view has changed due to inputs
             return;
         }
 
-        currentView->loop();
+        currentView->update(now);
         if (this->viewNavigator.hasViewIndexChanged()) {  // stop serving this view if view has changed due to loop call
             return;
         }
@@ -57,6 +57,9 @@ class App {
     }
 
    private:
+    /**
+     * Display used to render views.
+     */
     Display& display;
 
     /**

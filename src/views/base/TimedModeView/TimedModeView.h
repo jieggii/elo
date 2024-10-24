@@ -8,7 +8,13 @@
 #include <cstdint>
 #include "Timer.h"
 #include "views/base/ModeView/ModeView.h"
-#include "components/ClockComponent/ClockComponent.h"
+
+namespace TimedModeViewSettings {
+    /**
+     * Blinking interval of the clock component when the view is paused (milliseconds).
+     */
+    constexpr uint16_t statusLineClockBlinkIntervalWhenPaused = 750;
+}  // namespace TimedModeViewSettings
 
 /**
  * TimedModeView is a base class for all mode views that have a duration, i.e. can be paused, expire, and navigate to
@@ -17,77 +23,134 @@
 class TimedModeView : public ModeView {
    public:
     /**
+     * Hardware dependencies of the view.
+     */
+    struct Hardware {
+        ModeView::Hardware modeViewHardware;
+
+        Button& actionButton;
+    };
+
+    /**
      * @param hardware
      * @param viewNavigator - pointer to the ViewNavigator.
      * @param nextViewID - ID of the next view.
      * @param measurementsLineComponentState pointer to the MeasurementsLineComponentState (TODO: use referenses).
      * @param duration - duration of the view in seconds.
+     * TODO: consider passing hardware by a (const) reference.
+     * TODO: is this way to handle and pass hardware dependencies the best?
+     * TODO: rename localHardware to something more meaningful.
      */
     TimedModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
                   MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration)
-        : ModeView(hardware, viewNavigator, nextViewID, ClockTime::fromSTimestamp(duration),
+        : ModeView(hardware.modeViewHardware, viewNavigator, nextViewID, ClockTime::fromSTimestamp(duration),
                    measurementsLineComponentState),
+          hardware({.actionButton = hardware.actionButton}),
           viewTimer(Timer::fromSeconds(duration)) {}
 
-    void setup(Display& display) override { this->ModeView::setup(display); }
+    void setup(const uint32_t now, Display& display) override { this->ModeView::setup(now, display); }
 
-    void handleInputs() override { ModeView::handleInputs(); }
+    void handleInputs(const uint32_t now) override {
+        // update action button state:
+        this->hardware.actionButton.update();
 
-    void serveExpired() {
-        // TODO: blink timer
-    }
-
-    void serveNonExpired() {
-        // TODO get now from param
-        const uint32_t now = millis();
-        if (this->viewTimer.isExpired(now)) {
-            // TODO: beep
-            this->isExpired = true;
+        // pause/resume view if action button is actuated:
+        if (this->hardware.actionButton.isActuated()) {
+            if (!this->paused) {
+                debug_println("PAUSE view");
+                this->pause(now);
+            } else {
+                debug_println("RESUME view");
+                this->resume(now);
+            }
         }
+
+        ModeView::handleInputs(now);
     }
 
-    void loop() override {
-        const uint32_t now = millis();  // TODO get now from param
+    void update(const uint32_t now) override {
+        // update clock component time:
+        const ClockTime time = ClockTime::fromMsTimestamp(this->viewTimer.left(now));
+        this->getComponents().statusLine.getState().getClockComponentState().setTime(time);
 
-        if (!this->isExpired) {
-            this->serveNonExpired();
+        if (this->paused) {
+            // handle paused view:
+            // TODO: move to a separate loop function?
+            if (this->blinkClockComponentTimer.isExpired(now)) {
+                if (auto& clockComponentState = this->getComponents().statusLine.getState().getClockComponentState();
+                    clockComponentState.isHidden()) {
+                    debug_println("show clock");
+                    clockComponentState.show();
+                } else {
+                    debug_println("hide clock");
+                    clockComponentState.hide();
+                }
+                this->blinkClockComponentTimer.set(now);
+            }
         } else {
-            this->serveExpired();
+            // handle ongoing view:
+            if (this->viewTimer.isExpired(now)) {
+                this->navigateToNextView();
+            }
         }
 
-        // debug_println(this->viewTimer.left(now));
-        this->setStatusLineClockTime(ClockTime::fromMsTimestamp(this->viewTimer.left(now)));
-
-        this->ModeView::loop();
-
-        // auto x = this->statusLineState.getClockComponentState().getTime();
-        // debug_print(x.hours);
-        // debug_print(":");
-        // debug_print(x.minutes);
-        // debug_print(":");
-        // debug_println(x.seconds);
+        this->ModeView::update(now);
     }
 
     void render(Display& display) override { this->ModeView::render(display); }
 
     void reset() override { this->ModeView::reset(); }
 
-   protected:
-    void pause() { this->isPaused = true; };
-
-    void resume(const uint32_t now) {
-        this->isPaused = false;
-        // TODO: do something with timer
-    };
+    [[nodiscard]] bool isPaused() const { return this->paused; }
 
    private:
+    /**
+     * Hardware dependencies of the view.
+     */
+    struct {
+        Button& actionButton;
+    } hardware;
+
     /**
      * Timer used to track view expiration.
      */
     Timer viewTimer;
 
-    bool isPaused = false;
-    bool isExpired = false;
+    /**
+     * Hardware used by the view.
+     */
+    // Hardware hardware;
+
+    /**
+     * Flag indicating if the view is paused.
+     */
+    bool paused = true;
+
+    /**
+     * Timer used to blink the clock component when view is paused.
+     */
+    Timer blinkClockComponentTimer = Timer(TimedModeViewSettings::statusLineClockBlinkIntervalWhenPaused);
+
+    /**
+     * Pauses the view.
+     */
+    void pause(const uint32_t now) {
+        this->paused = true;
+        this->viewTimer.pause(now);
+    }
+
+    /**
+     * Resumes the view.
+     */
+    void resume(const uint32_t now) {
+        this->paused = false;
+        this->viewTimer.resume(now);
+    }
+
+    /**
+     * Returns true if the view is paused.
+     */
+    // [[nodiscard]] bool isPaused() const { return this->paused; }
 };
 
 #endif  // EXPIREABLEMODEVIEW_H

@@ -21,7 +21,7 @@ void Display::clear() { this->lcd.clear(); }
 
 void Display::setCursor(const DisplayCoordinates coordinates) { this->lcd.setCursor(coordinates.col, coordinates.row); }
 
-// TODO: accept icon as a pointer?
+// TODO: accept icon as a referense?
 // TODO: is "cache" a proper term? Maybe use store/save/register?
 void Display::cacheIcon(const uint8_t slot, const Icon* icon) {
     if (slot == DisplayCGRAMInfo::defaultIconSlot) {

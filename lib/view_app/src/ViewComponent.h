@@ -5,6 +5,7 @@
 
 /**
  * ViewComponent is an interface for view components.
+ * TODO: ensure that ViewComponentStateType is a reference to an instance of ViewComponentState
  */
 
 template <typename ViewComponentStateType>
@@ -25,9 +26,8 @@ class ViewComponent {
 
     /**
      * Updates state of the component.
-     * TODO: rename to something like "update state".
      */
-    virtual void loop(const uint32_t now){};
+    virtual void update(const uint32_t now){};
 
     /**
      * Renders view component on the display.

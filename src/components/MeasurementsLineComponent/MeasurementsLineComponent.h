@@ -14,7 +14,7 @@ class MeasurementsLineComponent final : public ViewComponent<MeasurementsLineCom
     MeasurementsLineComponent(MeasurementsLineComponentState& state, const DisplayCoordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
-    void loop(uint32_t now) override;
+    void update(uint32_t now) override;
     /**
      * Render the component.
      */

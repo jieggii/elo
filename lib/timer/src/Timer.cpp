@@ -31,7 +31,7 @@ void Timer::resume(const uint32_t now) {
         now = this->pauseTimestamp;
     }
 
-    uint32_t elapsed = now - this->startTimestamp;
+    const uint32_t elapsed = now - this->startTimestamp;
     if (elapsed >= this->duration) {
         return this->duration;
     }

@@ -7,6 +7,8 @@
 
 #include <cstdint>
 
+#include "ViewComponentState.h"
+
 /**
  * ClockTime represents a time in hours, minutes and seconds, which is displayed by the @ClockComponent.
  */
@@ -36,7 +38,7 @@ struct ClockTime {
     static ClockTime fromMsTimestamp(uint32_t timestamp);
 };
 
-class ClockComponentState {
+class ClockComponentState final : public ViewComponentState {
    public:
     /**
      * Creates a ClockComponentState object with the given time.

@@ -19,21 +19,20 @@ class View {
     /**
      * Setup view.
      */
-    virtual void setup(Display& display) = 0;
+    virtual void setup(uint32_t now, Display& display) = 0;
 
     /*
      * Update view state.
      * This method should be called before calling @render.
-     * TODO: consider renaming to "update"
      */
-    virtual void loop() = 0;
+    virtual void update(uint32_t now) = 0;
 
     /**
      * Handle hardware inputs (e.g. buttons).
      * This method should be called before calling @loop and @render.
      * TODO: consider renaming to "handleInput" or "handle buttons"
      */
-    virtual void handleInputs() = 0;
+    virtual void handleInputs(uint32_t now) = 0;
 
     /*
      * Render view on the display.
