@@ -80,7 +80,7 @@ void ModeView::cacheMeasurementStatusIcons(Display& display) {
     display.cacheIcon(ModeViewIconIDs::measurementStatusBad, &statusBadIcon);
 }
 
-void ModeView::reset() {}
+void ModeView::reset(const uint32_t now) {}
 
 void ModeView::updateMeasurementsLineState(const EnvSensorMeasurements& measurements) const {
     auto& measurementsLineState = this->components.measurementsLine.getState();

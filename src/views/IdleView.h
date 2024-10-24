@@ -20,7 +20,7 @@ class IdleView final : public ModeView {
     void handleInputs(const uint32_t now) override { ModeView::handleInputs(now); }
     void update(uint32_t now) override;
     void render(Display& display) override;
-    void reset() override;
+    void reset(uint32_t now) override;
 
     ~IdleView() override = default;
 };

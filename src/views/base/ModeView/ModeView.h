@@ -113,7 +113,7 @@ class ModeView : public View {
      */
     void render(Display& display) override;
 
-    void reset() override;
+    void reset(uint32_t now) override;
 
     ~ModeView() override = default;
 

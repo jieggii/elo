@@ -20,7 +20,7 @@ class StandView final : public WorkModeView {
     void handleInputs(const uint32_t now) override { WorkModeView::handleInputs(now); };
     void update(uint32_t now) override;
     void render(Display& display) override;
-    void reset() override;
+    void reset(uint32_t now) override;
 };
 
 #endif  // STANDVIEW_H

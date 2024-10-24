@@ -41,9 +41,9 @@ class View {
     virtual void render(Display& display) = 0;
 
     /**
-     * Reset view state.
+     * Resets view state is called when the view is being left.
      */
-    virtual void reset() = 0;
+    virtual void reset(uint32_t now) = 0;
 
     virtual ~View() = default;
 };

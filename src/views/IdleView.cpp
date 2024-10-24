@@ -29,4 +29,4 @@ void IdleView::update(const uint32_t now) {
 
 void IdleView::render(Display& display) { ModeView::render(display); }
 
-void IdleView::reset() {}
+void IdleView::reset(const uint32_t now) { ModeView::reset(now); }

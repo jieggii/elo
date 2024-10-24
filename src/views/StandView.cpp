@@ -25,4 +25,4 @@ void StandView::update(const uint32_t now) { this->WorkModeView::update(now); }
 
 void StandView::render(Display& display) { this->WorkModeView::render(display); }
 
-void StandView::reset() {}
+void StandView::reset(const uint32_t now) { this->WorkModeView::reset(now); }

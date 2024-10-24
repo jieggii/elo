@@ -103,7 +103,7 @@ class TimedModeView : public ModeView {
 
     void render(Display& display) override { this->ModeView::render(display); }
 
-    void reset() override { this->ModeView::reset(); }
+    void reset(const uint32_t now) override { this->ModeView::reset(now); }
 
     [[nodiscard]] bool isPaused() const { return this->paused; }
 

@@ -48,7 +48,7 @@ class WorkModeView : public TimedModeView {
         this->TimedModeView::update(now);
     }
     void render(Display& display) override { this->TimedModeView::render(display); }
-    void reset() override { this->TimedModeView::reset(); }
+    void reset(const uint32_t now) override { this->TimedModeView::reset(now); }
 
     // ~WorkModeView() override = default;
 
