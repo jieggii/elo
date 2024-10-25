@@ -73,10 +73,8 @@ class TimedModeView : public ModeView {
         // pause/resume view if action button is actuated:
         if (this->hardware.actionButton.isActuated()) {
             if (!this->paused) {
-                debug_println("PAUSE view");
                 this->pause(now);
             } else {
-                debug_println("RESUME view");
                 this->resume(now);
             }
         }
