@@ -3,6 +3,7 @@
 #include "Display.h"
 #include "EnvSensor.h"
 #include "Button.h"
+#include "Buzzer.h"
 #include "view_index.h"
 #include "debug_print.h"
 #include "views/IdleView.h"
@@ -17,6 +18,7 @@ namespace Hardware {
     EnvSensor envSensor;
     Button selectButton(D5);
     Button actionButton(D6);
+    Buzzer buzzer(D7);
 }  // namespace Hardware
 
 namespace UI {
@@ -62,6 +64,14 @@ void initHardware() {
     // init buttons:
     Hardware::selectButton.init();
     Hardware::actionButton.init();
+
+    // init buzzer:
+    // TODO: move magic numbers frequencies to constants; move melody to a separate file
+    Hardware::buzzer.init();
+    Hardware::buzzer.scheduleNote(131 * 2, 50);
+    Hardware::buzzer.scheduleNote(165 * 2, 50);
+    Hardware::buzzer.scheduleNote(196 * 2, 50);
+    Hardware::buzzer.scheduleNote(131 * 2, 150);
 }
 
 /**
@@ -84,5 +94,6 @@ void setup() {
 
 void loop() {
     const uint32_t now = millis();
+    Hardware::buzzer.serve(now);  // TODO: should this be moved to view update()?
     UI::APP.serve(now);
 }
