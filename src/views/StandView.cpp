@@ -7,6 +7,7 @@
 #include "StandView.h"
 
 void StandView::setup(const uint32_t now, Display& display) {
+    // TODO: move icons to a separate file
     constexpr Icon modeIcon1 = {
         // person standing
         B01110, B01110, B00100, B00111, B00100, B00100, B00100, B00100,

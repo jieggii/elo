@@ -60,6 +60,9 @@ void initHardware() {
     Hardware::selectButton.init();
 }
 
+/**
+ * Registers all views in the app.
+ */
 void registerAppViews() {
     UI::APP.registerView(IDLE_VIEW_INDEX, &UI::Views::idle);
     UI::APP.registerView(STAND_VIEW_INDEX, &UI::Views::stand);

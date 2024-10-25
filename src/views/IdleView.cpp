@@ -3,6 +3,7 @@
 #include "IdleView.h"
 
 void IdleView::setup(const uint32_t now, Display& display) {
+    // TODO: move icons to a separate file
     constexpr Icon modeIcon1 = {
         // empty icon
         B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000,

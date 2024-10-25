@@ -51,6 +51,7 @@ class ViewRegistry {
     /**
      * Returns view by its index. Returns nullptr if view with such index is not registered.
      * @param id view id.
+     * TODO: consider returning reference instead of a pointer?
      */
     [[nodiscard]] View* getView(const uint8_t index) const {
         if (index > MAX_VIEWS - 1) {

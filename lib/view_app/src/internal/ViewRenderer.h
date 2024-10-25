@@ -17,7 +17,8 @@
 class ViewRenderer {
    public:
     /**
-     * @param renderInterval - rendering interval in milliseconds
+     * @param display display to render view on.
+     * @param renderInterval rendering interval in milliseconds
      */
     explicit ViewRenderer(Display& display, const uint16_t renderInterval)
         : display(display), renderTimer(renderInterval) {
@@ -32,8 +33,8 @@ class ViewRenderer {
 
     /**
      * Conditionally render view.
-     * @param view - view to render.
-     * @param now - current timestamp in milliseconds.
+     * @param view view to render.
+     * @param now current timestamp in milliseconds.
      */
     void renderIfNeeded(View* view, const uint32_t now) {
         if (this->renderImmediately || this->renderTimer.isExpired(now)) {
@@ -49,7 +50,14 @@ class ViewRenderer {
      */
     Display& display;
 
+    /**
+     * Timer to control rendering interval.
+     */
     Timer renderTimer;
+
+    /**
+     * Flag to render the next frame immediately.
+     */
     bool renderImmediately = true;  // render the first frame immediately by default.
 };
 
