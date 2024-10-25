@@ -80,20 +80,19 @@ class TimedModeView : public ModeView {
         if (this->paused) {
             // handle paused view:
             // TODO: move to a separate loop function?
-            if (this->blinkClockComponentTimer.isExpired(now)) {
+            if (this->blinkClockTimer.isExpired(now)) {
                 if (auto& clockComponentState = this->getComponents().statusLine.getState().getClockComponentState();
                     clockComponentState.isHidden()) {
-                    debug_println("show clock");
                     clockComponentState.show();
                 } else {
-                    debug_println("hide clock");
                     clockComponentState.hide();
                 }
-                this->blinkClockComponentTimer.set(now);
+                this->blinkClockTimer.set(now);
             }
         } else {
             // handle ongoing view:
             if (this->viewTimer.isExpired(now)) {
+                debug_println("view has expired");
                 this->navigateToNextView();
             }
         }
@@ -133,7 +132,7 @@ class TimedModeView : public ModeView {
     /**
      * Timer used to blink the clock component when view is paused.
      */
-    Timer blinkClockComponentTimer = Timer(TimedModeViewSettings::statusLineClockBlinkIntervalWhenPaused);
+    Timer blinkClockTimer = Timer(TimedModeViewSettings::statusLineClockBlinkIntervalWhenPaused);
 
     /**
      * Pauses the view.
