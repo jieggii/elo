@@ -14,14 +14,17 @@
  * Measurements from the environmental sensor.
  */
 struct EnvSensorMeasurements {
-    bool fresh;  // fresh indicates whether the measurements are fresh or not.
+    /**
+     * Indicates whether the measurements are fresh or not.
+     */
+    bool fresh;
     float temperature;
     float humidity;
     uint16_t co2;
 };
 
 /**
- * EnvSensor
+ * EnvSensor class is a wrapper around the SCD4x library. It provides an interface to the environmental sensor.
  */
 class EnvSensor {
    public:
@@ -32,6 +35,7 @@ class EnvSensor {
             debug_println("EnvSensor.init: begin failed");
             return false;
         }
+
         if (!this->scd40.startPeriodicMeasurement()) {
             debug_println("EnvSensor.init: start measurements failed");
             return false;
@@ -41,9 +45,7 @@ class EnvSensor {
     }
 
     /**
-     * Get measurements after they have been read. You should call @performMeasurements first and make sure, that
-     * it returned true in order to get valid and fresh measurements.
-     * @return measurements.
+     * Reads measurements from the sensor.
      */
     EnvSensorMeasurements readMeasurements() {
         const bool fresh = this->scd40.readMeasurement();
@@ -57,6 +59,9 @@ class EnvSensor {
     }
 
    private:
+    /**
+     * SCD40 sensor.
+     */
     SCD4x scd40;
 };
 
