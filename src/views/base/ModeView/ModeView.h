@@ -45,7 +45,7 @@ namespace ModeViewSettings {
      * Interval between measurements updates in milliseconds.
      * TODO: check with specs, it seems that value should be not less than 5000.
      */
-    constexpr uint16_t measurementsUpdateInterval = 5000;
+    constexpr uint16_t measurementsUpdateInterval = 10000;
 }  // namespace ModeViewSettings
 
 /**
