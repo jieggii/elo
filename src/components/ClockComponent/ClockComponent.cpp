@@ -72,15 +72,12 @@ void ClockComponent::render(Display& display) {
         return;
     }
 
-    debug_println("render clock");
-
     const auto [hours, minutes, seconds] = state.getTime();
     const auto renderBuffer = RenderBuffer::formated(hours, minutes, seconds);
     display.displayText(renderBuffer.getBuffer(), this->coordinates);
 }
 
 void ClockComponent::renderHidden(Display& display) const {
-    const auto renderBuffer = RenderBuffer::empty();
-    debug_println("render HIDDEN clock");
+    // const auto renderBuffer = RenderBuffer::empty();
     display.displayText("        ", this->coordinates);
 }
