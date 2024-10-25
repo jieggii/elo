@@ -41,16 +41,11 @@ namespace ModeViewIconIDs {
 }  // namespace ModeViewIconIDs
 
 namespace ModeViewSettings {
-    // interval between measurements updates in milliseconds.
-    // TODO: should this be less than 5 seconds? Please check with the env sensor specs.
-    constexpr uint16_t measurementsUpdateInterval = 1000;
-
-    // duration of displaying measurements in milliseconds.
-    constexpr uint16_t measurementsDisplayDuration = 4000;
-
-    // duration of displaying measurement statuses in milliseconds.
-    constexpr uint16_t measurementsStatusDisplayDuration = 1000;
-
+    /**
+     * Interval between measurements updates in milliseconds.
+     * TODO: check with specs, it seems that value should be not less than 5000.
+     */
+    constexpr uint16_t measurementsUpdateInterval = 5000;
 }  // namespace ModeViewSettings
 
 /**
@@ -85,7 +80,7 @@ class ModeView : public View {
           hardware(hardware),
           viewNavigator(viewNavigator),
           nextViewID(nextViewID),
-          measurementsTimer(ModeViewSettings::measurementsDisplayDuration),
+          measurementsTimer(ModeViewSettings::measurementsUpdateInterval),
           componentStates({
               .statusLine =
                   StatusLineComponentState(ModeViewIconIDs::indicator1, ModeViewIconIDs::indicator2, clockTime),

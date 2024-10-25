@@ -20,15 +20,16 @@ namespace Hardware {
 }  // namespace Hardware
 
 namespace UI {
-    namespace Settings {
-        constexpr uint16_t VIEW_RENDER_INTERVAL = 17;  // 58.823529 fps
-    }
-
-    App APP(Hardware::display, Settings::VIEW_RENDER_INTERVAL);
+    constexpr uint16_t viewRenderInterval = 17;      // 58.823529 fps
+    App APP(Hardware::display, viewRenderInterval);  // app instance
 
     namespace StaticComponentStates {
-        MeasurementsLineComponentState measurementsLineComponentState(2000, 1000);
-    };
+        constexpr uint16_t measurementsLineComponentStateDisplayMeasurementsDuration = 7000;
+        constexpr uint16_t measurementsLineComponentsStateDisplayStatusesDuration = 1750;
+        MeasurementsLineComponentState measurementsLineComponentState(
+            measurementsLineComponentStateDisplayMeasurementsDuration,
+            measurementsLineComponentsStateDisplayStatusesDuration);
+    }  // namespace StaticComponentStates
 
     namespace Views {
         IdleView idle({.envSensor = Hardware::envSensor, .selectButton = Hardware::selectButton},
@@ -44,9 +45,11 @@ namespace UI {
             APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState, 61);
 
     };  // namespace Views
+}  // namespace UI
 
-};  // namespace UI
-
+/**
+ * Initializes hardware components.
+ */
 void initHardware() {
     // init display:
     Hardware::display.init();
