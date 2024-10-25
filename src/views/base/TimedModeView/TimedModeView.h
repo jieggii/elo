@@ -150,6 +150,10 @@ class TimedModeView : public ModeView {
     void resume(const uint32_t now) {
         this->paused = false;
         this->viewTimer.resume(now);
+
+        // show the clock component:
+        // this is needed for the case when user resumed the view when the clock component was hidden
+        this->getComponents().statusLine.getState().getClockComponentState().show();
     }
 
     /**
