@@ -49,7 +49,9 @@ class TimedModeView : public ModeView {
           viewTimer(Timer::fromSeconds(duration)) {}
 
     void setup(const uint32_t now, Display& display) override {
-        this->pause(now);  // we pause the view on setup
+        this->viewTimer.set(now);  // set the view timer
+        this->blinkClockTimer.set(now);
+        this->pause(now);  // pause the view on setup
 
         this->ModeView::setup(now, display);
     }
