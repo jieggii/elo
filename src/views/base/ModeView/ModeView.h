@@ -62,7 +62,7 @@ class ModeView : public View {
         EnvSensor& envSensor;
         Button& selectButton;
 
-        Hardware(EnvSensor& envSensor, Button& selectButton) : envSensor(envSensor), selectButton(selectButton) {}
+        // Hardware(EnvSensor& envSensor, Button& selectButton) : envSensor(envSensor), selectButton(selectButton) {}
     };
 
     /**

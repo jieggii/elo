@@ -9,6 +9,8 @@
 #include "ViewNavigator.h"
 #include "views/base/TimedModeView/TimedModeView.h"
 
+#include <Buzzer.h>
+
 /**
  * Base class for all mode views that are timed and have a posture reminder and exercise timer.
  */

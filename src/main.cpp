@@ -36,17 +36,18 @@ namespace UI {
     namespace Views {
         IdleView idle({.envSensor = Hardware::envSensor, .selectButton = Hardware::selectButton},
                       APP.getViewNavigator(), STAND_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState);
-        StandView stand(
-            {
-                {
-                    .envSensor = Hardware::envSensor,
-                    .selectButton = Hardware::selectButton,
-                },
-                .actionButton = Hardware::actionButton,
-            },
-            APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState, 61);
+        StandView stand({{
+                             .envSensor = Hardware::envSensor,
+                             .selectButton = Hardware::selectButton,
+                         },
+                         {
+                             .actionButton = Hardware::actionButton,
+                             .buzzer = Hardware::buzzer,
+                         }},
+                        APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
+                        61);
 
-    };  // namespace Views
+    }  // namespace Views
 }  // namespace UI
 
 /**

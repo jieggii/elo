@@ -9,6 +9,8 @@
 #include "Timer.h"
 #include "views/base/ModeView/ModeView.h"
 
+#include <Buzzer.h>
+
 namespace TimedModeViewSettings {
     /**
      * Blinking interval of the clock component when the view is paused (milliseconds).
@@ -23,12 +25,20 @@ namespace TimedModeViewSettings {
 class TimedModeView : public ModeView {
    public:
     /**
-     * Hardware dependencies of the view.
+     * Additional hardware dependencies of the view.
+     * Other dependencies are inherited from the ModeView.
+     */
+    struct AdditionalHardware {
+        Button& actionButton;
+        Buzzer& buzzer;
+    };
+
+    /**
+     * All hardware dependencies of the view.
      */
     struct Hardware {
-        ModeView::Hardware modeViewHardware;
-
-        Button& actionButton;
+        ModeView::Hardware hardware;
+        AdditionalHardware additionalHardware;
     };
 
     /**
@@ -43,9 +53,9 @@ class TimedModeView : public ModeView {
      */
     TimedModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
                   MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration)
-        : ModeView(hardware.modeViewHardware, viewNavigator, nextViewID, ClockTime::fromSTimestamp(duration),
+        : ModeView(hardware.hardware, viewNavigator, nextViewID, ClockTime::fromSTimestamp(duration),
                    measurementsLineComponentState),
-          hardware({.actionButton = hardware.actionButton}),
+          hardware(hardware.additionalHardware),
           viewTimer(Timer::fromSeconds(duration)) {}
 
     void setup(const uint32_t now, Display& display) override {
@@ -94,7 +104,14 @@ class TimedModeView : public ModeView {
         } else {
             // handle ongoing view:
             if (this->viewTimer.isExpired(now)) {
-                debug_println("view has expired");
+                // play an expiration melody:
+
+                // TODO: define a "melody", use a separate file for that
+                for (uint8_t i = 0; i < 3; i++) {
+                    this->hardware.buzzer.scheduleNote(440, 250, 500);
+                }
+
+                // navigate to the next view:
                 this->navigateToNextView();
             }
         }
@@ -112,19 +129,12 @@ class TimedModeView : public ModeView {
     /**
      * Hardware dependencies of the view.
      */
-    struct {
-        Button& actionButton;
-    } hardware;
+    AdditionalHardware hardware;
 
     /**
      * Timer used to track view expiration.
      */
     Timer viewTimer;
-
-    /**
-     * Hardware used by the view.
-     */
-    // Hardware hardware;
 
     /**
      * Flag indicating if the view is paused.
