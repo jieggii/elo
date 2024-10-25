@@ -41,12 +41,22 @@ class NoteQueue {
 
     /**
      * Get the first note from the queue and remove it.
+     * Will return an empty note if the queue is empty.
      */
     Note get() {
         const Note note = this->queue[0];
+        if (this->isEmpty()) {
+            // return an empty note if the queue is empty
+            return note;
+        }
+
+        // move all notes one position to the left:
         for (uint8_t i = 0; i < this->len; i++) {
             this->queue[i] = this->queue[i + 1];
         }
+
+        this->len--;
+
         return note;
     }
 
