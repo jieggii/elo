@@ -59,8 +59,9 @@ void initHardware() {
     // init env sensor:
     Hardware::envSensor.init();
 
-    // init select button:
+    // init buttons:
     Hardware::selectButton.init();
+    Hardware::actionButton.init();
 }
 
 /**
