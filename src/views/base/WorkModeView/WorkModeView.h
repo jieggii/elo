@@ -31,7 +31,7 @@ class WorkModeView : public TimedModeView {
 
     void setup(const uint32_t now, Display& display) override { this->TimedModeView::setup(now, display); }
 
-    void handleInputs(const uint32_t now) override { TimedModeView::handleInputs(now); }
+    void handleInputs(const uint32_t now) override { this->TimedModeView::handleInputs(now); }
 
     void update(const uint32_t now) override {
         if (this->postureReminderTimer.isExpired(now)) {
