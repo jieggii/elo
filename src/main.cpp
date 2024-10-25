@@ -10,7 +10,7 @@
 #include "components/MeasurementsLineComponent/MeasurementsLineComponentState.h"
 #include "App.h"
 
-constexpr uint16_t SERIAL_BAUD_RATE = 9600;
+constexpr uint16_t serialBaudRate = 9600;
 
 namespace Hardware {
     Display display(0x27);
@@ -69,7 +69,7 @@ void registerAppViews() {
 }
 
 void setup() {
-    debug_init(SERIAL_BAUD_RATE);
+    debug_init(serialBaudRate);
     debug_println("info: begin setup");
 
     initHardware();
