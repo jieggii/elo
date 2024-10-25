@@ -41,6 +41,7 @@ class App {
             this->viewNavigator.resetViewIndexChangedFlag();
             currentView->setup(now, this->display);
             this->viewRenderer.requestImmediateRender();
+            display.clear();  // clear display after view change
         }
 
         currentView->handleInputs(now);

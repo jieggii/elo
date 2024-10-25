@@ -6,10 +6,10 @@
 #include "ModeView.h"
 
 void ModeView::setup(const uint32_t now, Display& display) {
+    // cache icons:
     cacheMeasurementStatusIcons(display);
-    this->measurementsTimer.set(now);
 
-    display.clear();
+    this->measurementsTimer.set(now);
 }
 
 void ModeView::handleInputs(const uint32_t now) {
