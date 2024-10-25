@@ -88,6 +88,9 @@ class TimedModeView : public ModeView {
         this->getComponents().statusLine.getState().getClockComponentState().setTime(time);
 
         if (this->paused) {
+            // reset justPaused flag:
+            this->justPaused = false;
+
             // handle paused view:
             if (this->blinkClockTimer.isExpired(now)) {
                 // blink the clock component:
@@ -100,6 +103,9 @@ class TimedModeView : public ModeView {
                 this->blinkClockTimer.set(now);
             }
         } else {
+            // reset justResumed flag:
+            this->justResumed = false;
+
             // handle ongoing view:
             if (this->viewTimer.isExpired(now)) {
                 // play an expiration melody:
@@ -123,12 +129,16 @@ class TimedModeView : public ModeView {
 
     [[nodiscard]] bool isPaused() const { return this->paused; }
 
-   private:
+   protected:
     /**
      * Hardware dependencies of the view.
      */
     AdditionalHardware hardware;
 
+    [[nodiscard]] bool wasJustPaused() const { return this->justPaused; }
+    [[nodiscard]] bool wasJustResumed() const { return this->justResumed; }
+
+   private:
     /**
      * Timer used to track view expiration.
      */
@@ -140,6 +150,16 @@ class TimedModeView : public ModeView {
     bool paused = true;
 
     /**
+     * Flag indicating if the view has just been paused.
+     */
+    bool justPaused = true;
+
+    /**
+     * Flag indicating if the view has just been resumed.
+     */
+    bool justResumed = false;
+
+    /**
      * Timer used to blink the clock component when view is paused.
      */
     Timer blinkClockTimer = Timer(TimedModeViewSettings::statusLineClockBlinkIntervalWhenPaused);
@@ -148,7 +168,11 @@ class TimedModeView : public ModeView {
      * Pauses the view.
      */
     void pause(const uint32_t now) {
+        // update flags:
         this->paused = true;
+        this->justPaused = true;
+
+        // pause view timer:
         this->viewTimer.pause(now);
     }
 
@@ -156,7 +180,11 @@ class TimedModeView : public ModeView {
      * Resumes the view.
      */
     void resume(const uint32_t now) {
+        // update flags:
         this->paused = false;
+        this->justResumed = true;
+
+        // resume view timer:
         this->viewTimer.resume(now);
 
         // show the clock component:
