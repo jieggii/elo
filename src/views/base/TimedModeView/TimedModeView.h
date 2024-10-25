@@ -13,7 +13,7 @@ namespace TimedModeViewSettings {
     /**
      * Blinking interval of the clock component when the view is paused (milliseconds).
      */
-    constexpr uint16_t statusLineClockBlinkIntervalWhenPaused = 750;
+    constexpr uint16_t statusLineClockBlinkIntervalWhenPaused = 1250;
 }  // namespace TimedModeViewSettings
 
 /**
