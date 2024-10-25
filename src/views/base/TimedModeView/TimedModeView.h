@@ -91,8 +91,8 @@ class TimedModeView : public ModeView {
 
         if (this->paused) {
             // handle paused view:
-            // TODO: move to a separate loop function?
             if (this->blinkClockTimer.isExpired(now)) {
+                // blink the clock component:
                 if (auto& clockComponentState = this->getComponents().statusLine.getState().getClockComponentState();
                     clockComponentState.isHidden()) {
                     clockComponentState.show();

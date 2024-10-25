@@ -19,10 +19,11 @@ class WorkModeView : public TimedModeView {
     /**
      * @param hardware
      * @param viewNavigator
-     * @param duration - duration of the view in seconds
+     * @param duration duration of the view in seconds
      * @param nextViewID
-     * @param postureReminderInterval - posture reminder interval in seconds
-     * @param exerciseInterval - exercise interval in seconds
+     * @param measurementsLineComponentState reference to the static measurements line component state
+     * @param postureReminderInterval posture reminder interval in seconds
+     * @param exerciseInterval exercise interval in seconds
      */
     WorkModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
                  MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration,
