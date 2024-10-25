@@ -16,6 +16,12 @@ class Timer {
     explicit Timer(const uint32_t duration) : duration(duration) {}
 
     /**
+     * Set the duration of the timer.
+     * TODO: move to cpp file.
+     */
+    void setDuration(const uint32_t duration) { this->duration = duration; }
+
+    /**
      * Create a timer from seconds.
      * @param duration duration of the timer in seconds.
      * @return Timer object.
@@ -66,7 +72,7 @@ class Timer {
     [[nodiscard]] bool isExpired(uint32_t now) const;
 
    private:
-    const uint32_t duration;  // timer duration in ms
+    uint32_t duration;  // timer duration in ms
 
     uint32_t startTimestamp = 0;  // timestamp of the timer set
     uint32_t pauseTimestamp = 0;  // timestamp of the timer pause
