@@ -14,7 +14,7 @@ class StandView final : public WorkModeView {
    public:
     StandView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
               MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration)
-        : WorkModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, duration, 60, 60) {}
+        : WorkModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, duration, 2000, 60000) {}
 
     void setup(uint32_t now, Display& display) override;
     void handleInputs(const uint32_t now) override { WorkModeView::handleInputs(now); };
