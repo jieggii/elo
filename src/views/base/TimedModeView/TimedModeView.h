@@ -76,8 +76,16 @@ class TimedModeView : public ModeView {
         // pause/resume view if action button is actuated:
         if (this->hardware.actionButton.isActuated()) {
             if (!this->paused) {
+                // play a pause sfx:
+                this->hardware.buzzer.scheduleMelody(SFX::pause, std::size(SFX::pause));
+
+                // pause the view:
                 this->pause(now);
             } else {
+                // play a resume sfx:
+                this->hardware.buzzer.scheduleMelody(SFX::resume, std::size(SFX::resume));
+
+                // resume the view:
                 this->resume(now);
             }
         }
@@ -171,9 +179,6 @@ class TimedModeView : public ModeView {
      * Pauses the view.
      */
     void pause(const uint32_t now) {
-        // play a pause sfx:
-        this->hardware.buzzer.scheduleMelody(SFX::pause, std::size(SFX::pause));
-
         // update flags:
         this->paused = true;
         this->justPaused = true;
@@ -186,9 +191,6 @@ class TimedModeView : public ModeView {
      * Resumes the view.
      */
     void resume(const uint32_t now) {
-        // play a resume sfx:
-        this->hardware.buzzer.scheduleMelody(SFX::resume, std::size(SFX::resume));
-
         // update flags:
         this->paused = false;
         this->justResumed = true;
