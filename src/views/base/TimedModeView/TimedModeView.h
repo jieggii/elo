@@ -6,10 +6,13 @@
 #define EXPIREABLEMODEVIEW_H
 
 #include <cstdint>
-#include "Timer.h"
-#include "views/base/ModeView/ModeView.h"
 
-#include <Buzzer.h>
+#include "Buzzer.h"
+#include "Timer.h"
+
+#include "sfx.h"
+
+#include "views/base/ModeView/ModeView.h"
 
 namespace TimedModeViewSettings {
     /**
@@ -112,7 +115,7 @@ class TimedModeView : public ModeView {
 
                 // TODO: define a "melody", use a separate file for that
                 for (uint8_t i = 0; i < 3; i++) {
-                    this->hardware.buzzer.scheduleNote(440, 250, 500);
+                    // this->hardware.buzzer.scheduleNote(440, 250, 500);
                 }
 
                 // navigate to the next view:
@@ -168,6 +171,9 @@ class TimedModeView : public ModeView {
      * Pauses the view.
      */
     void pause(const uint32_t now) {
+        // play a pause sfx:
+        this->hardware.buzzer.scheduleMelody(SFX::pause, std::size(SFX::pause));
+
         // update flags:
         this->paused = true;
         this->justPaused = true;
@@ -180,6 +186,9 @@ class TimedModeView : public ModeView {
      * Resumes the view.
      */
     void resume(const uint32_t now) {
+        // play a resume sfx:
+        this->hardware.buzzer.scheduleMelody(SFX::resume, std::size(SFX::resume));
+
         // update flags:
         this->paused = false;
         this->justResumed = true;

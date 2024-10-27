@@ -4,11 +4,15 @@
 #include "EnvSensor.h"
 #include "Button.h"
 #include "Buzzer.h"
+
+#include "sfx.h"
 #include "view_index.h"
 #include "debug_print.h"
+
 #include "views/IdleView.h"
 #include "views/StandView.h"
 #include "components/MeasurementsLineComponent/MeasurementsLineComponentState.h"
+
 #include "App.h"
 
 constexpr uint16_t serialBaudRate = 9600;
@@ -69,10 +73,7 @@ void initHardware() {
     // init buzzer:
     // TODO: move magic numbers frequencies to constants; move melody to a separate file
     Hardware::buzzer.init();
-    Hardware::buzzer.scheduleNote(131 * 2, 50);
-    Hardware::buzzer.scheduleNote(165 * 2, 50);
-    Hardware::buzzer.scheduleNote(196 * 2, 50);
-    Hardware::buzzer.scheduleNote(131 * 2, 150);
+    Hardware::buzzer.scheduleMelody(SFX::boot, std::size(SFX::boot));
 }
 
 /**

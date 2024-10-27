@@ -5,11 +5,12 @@
 #ifndef WORKMODEVIEW_H
 #define WORKMODEVIEW_H
 
+#include "Buzzer.h"
 #include "Display.h"
 #include "ViewNavigator.h"
 #include "views/base/TimedModeView/TimedModeView.h"
 
-#include <Buzzer.h>
+#include "sfx.h"
 
 /**
  * Base class for all mode views that are timed and have a posture reminder and exercise timer.
@@ -57,7 +58,7 @@ class WorkModeView : public TimedModeView {
             // play posture reminder if it is time to:
             if (this->postureReminderTimer.isExpired(now)) {
                 debug_println("POSTURE REMINDER timer expired");
-                this->hardware.buzzer.scheduleNote(440, 100);  // TODO: use constants for frequency and duration
+                this->hardware.buzzer.scheduleMelody(SFX::postureReminder, std::size(SFX::postureReminder));
                 this->postureReminderTimer.set(now);
 
                 this->displayFlashNotification(now, "test", 3000);  // TODO: test this out
