@@ -59,6 +59,8 @@ class WorkModeView : public TimedModeView {
                 debug_println("POSTURE REMINDER timer expired");
                 this->hardware.buzzer.scheduleNote(440, 100);  // TODO: use constants for frequency and duration
                 this->postureReminderTimer.set(now);
+
+                this->displayFlashNotification(now, "test", 3000);  // TODO: test this out
             }
 
             if (this->exerciseTimer.isExpired(now)) {

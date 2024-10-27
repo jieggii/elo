@@ -17,6 +17,8 @@
 #include "components/StatusLineComponent/StatusLineComponent.h"
 #include "components/StatusLineComponent/StatusLineComponentState.h"
 
+#include <components/FlashNotificationComponent/FlashNotificationComponent.h>
+
 // TODO: shall I move those constants to the .cpp file?
 
 namespace ModeViewIconIDs {
@@ -84,9 +86,12 @@ class ModeView : public View {
           componentStates({
               .statusLine =
                   StatusLineComponentState(ModeViewIconIDs::indicator1, ModeViewIconIDs::indicator2, clockTime),
+              .flashNotification = FlashNotificationComponentState(),
           }),
-          components({.statusLine = StatusLineComponent(this->componentStates.statusLine, {0, 0}),
-                      .measurementsLine = MeasurementsLineComponent(measurementsLineComponentState, {0, 1})}) {}
+          components(
+              {.statusLine = StatusLineComponent(this->componentStates.statusLine, {0, 0}),
+               .measurementsLine = MeasurementsLineComponent(measurementsLineComponentState, {0, 1}),
+               .flashNotification = FlashNotificationComponent(this->componentStates.flashNotification, {0, 0})}) {}
 
     /**
      * Initializes the view.
@@ -117,6 +122,7 @@ class ModeView : public View {
     struct Components {
         StatusLineComponent statusLine;
         MeasurementsLineComponent measurementsLine;
+        FlashNotificationComponent flashNotification;
     };
 
     /**
@@ -133,6 +139,13 @@ class ModeView : public View {
      * Navigates to the next view.
      */
     void navigateToNextView() const;
+
+    /**
+     * Displays a toast message.
+     * @param text toast message text.
+     * @param duration duration of the toast message in milliseconds.
+     */
+    void displayFlashNotification(uint32_t now, const char* text, uint32_t duration);
 
     /**
      * Caches mode indicator icons.
@@ -165,10 +178,21 @@ class ModeView : public View {
     Timer measurementsTimer;
 
     /**
+     * Timer used to display flash notifications.
+     */
+    Timer flashNotificationTimer = Timer(0);
+
+    /**
+     * Flag indicating whether a flash notification is currently being displayed.
+     */
+    bool isDisplayingFlashNotification = false;
+
+    /**
      * States of the local components.
      */
     struct ComponentStates {
         StatusLineComponentState statusLine;
+        FlashNotificationComponentState flashNotification;
     } componentStates;
 
     /**

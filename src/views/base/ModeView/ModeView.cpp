@@ -23,6 +23,17 @@ void ModeView::handleInputs(const uint32_t now) {
 }
 
 void ModeView::update(const uint32_t now) {
+    // update flash notification state if displaying it:
+    if (this->isDisplayingFlashNotification) {
+        auto& flashNotificationState = this->components.flashNotification.getState();
+        flashNotificationState.setTimeLeft(this->flashNotificationTimer.left(now));
+
+        if (this->flashNotificationTimer.isExpired(now)) {
+            // stop displaying flash notification if it is time to do so:
+            this->isDisplayingFlashNotification = false;
+        }
+    }
+
     // perform measurements if it is time to do so:
     if (this->measurementsTimer.isExpired(now)) {
         debug_println("performing measurements...");
@@ -37,13 +48,19 @@ void ModeView::update(const uint32_t now) {
         }
     }
 
-    // update measurements line
+    // update measurements line:
     this->components.measurementsLine.update(now);
 }
 
 void ModeView::render(Display& display) {
-    this->components.statusLine.render(display);
-    this->components.measurementsLine.render(display);
+    if (this->isDisplayingFlashNotification) {
+        // render flash notification if displaying it:
+        this->components.flashNotification.render(display);
+    } else {
+        // otherwise, render status line and measurements line:
+        this->components.statusLine.render(display);
+        this->components.measurementsLine.render(display);
+    }
 }
 
 // void ModeView::setStatusLineClockTime(const ClockTime time) const {
@@ -56,6 +73,18 @@ void ModeView::navigateToNextView() const { this->navigateTo(this->nextViewID); 
 void ModeView::cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2) {
     display.cacheIcon(ModeViewIconIDs::indicator1, icon1);
     display.cacheIcon(ModeViewIconIDs::indicator2, icon2);
+}
+
+void ModeView::displayFlashNotification(const uint32_t now, const char* text, const uint32_t duration) {
+    // setup flash notification:
+    auto& flashNotificationState = this->components.flashNotification.getState();
+    flashNotificationState.setText(text);
+    flashNotificationState.setTimeLeft(duration);
+
+    // start displaying flash notification:
+    this->isDisplayingFlashNotification = true;
+    this->flashNotificationTimer.setDuration(duration);
+    this->flashNotificationTimer.set(now);
 }
 
 void ModeView::cacheMeasurementStatusIcons(Display& display) {
