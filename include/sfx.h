@@ -1,6 +1,7 @@
 //
 // Created by jieggii on 10/27/24.
 // This file contains various sound effects that can be played by the device.
+// I do adore combining programming and music! This is my favorite part of the project.
 //
 
 #ifndef SFX_H
