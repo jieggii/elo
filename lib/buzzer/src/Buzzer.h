@@ -65,7 +65,7 @@ class Buzzer {
     /**
      * Timer used to track the current note.
      */
-    Timer currentNoteTimer = Timer(0);
+    Timer currentNoteTimer = Timer();
 };
 
 #endif  // BUZZER_H

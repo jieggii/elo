@@ -12,9 +12,8 @@ class Timer {
     /**
      * Create a timer from milliseconds.
      * @param duration duration of the timer in milliseconds.
-     * TODO: set default value for duration to 0.
      */
-    explicit Timer(const uint32_t duration) : duration(duration) {}
+    explicit Timer(const uint32_t duration = 0) : duration(duration) {}
 
     /**
      * Set the duration of the timer.
