@@ -60,7 +60,6 @@ namespace UI {
 void initHardware() {
     // init display:
     Hardware::display.init();
-    Hardware::display.clear();
     Hardware::display.displayText("Booting elo...", {0, 0});
 
     // init env sensor:

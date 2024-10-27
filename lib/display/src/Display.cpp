@@ -8,6 +8,7 @@
 
 void Display::init() {
     this->lcd.init();       // init LCD
+    this->lcd.clear();      // clear LCD
     this->lcd.backlight();  // turn on backlight
 
     // cache default icon:
