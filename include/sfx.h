@@ -48,6 +48,12 @@ namespace SFX {
         {Tone::D4, 100, 0},
         {Tone::D5, 100, 0},
     };
+
+    /**
+     * Sound effect that is played when user switches a view using the select button.
+     */
+    constexpr Note switchView[] = {{Tone::C4, 20, 0}};
+
 }  // namespace SFX
 
 #endif  // SFX_H

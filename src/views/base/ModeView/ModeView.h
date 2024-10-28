@@ -7,17 +7,19 @@
 
 #include <cstdint>
 
-#include "View.h"
 #include "EnvSensor.h"
 #include "Button.h"
 #include "Display.h"
+#include "Buzzer.h"
+
+#include "View.h"
 #include "ViewNavigator.h"
+
 #include "components/MeasurementsLineComponent/MeasurementsLineComponent.h"
 #include "components/MeasurementsLineComponent/MeasurementsLineComponentState.h"
 #include "components/StatusLineComponent/StatusLineComponent.h"
 #include "components/StatusLineComponent/StatusLineComponentState.h"
-
-#include <components/FlashNotificationComponent/FlashNotificationComponent.h>
+#include "components/FlashNotificationComponent/FlashNotificationComponent.h"
 
 // TODO: shall I move those constants to the .cpp file?
 
@@ -63,8 +65,7 @@ class ModeView : public View {
     struct Hardware {
         EnvSensor& envSensor;
         Button& selectButton;
-
-        // Hardware(EnvSensor& envSensor, Button& selectButton) : envSensor(envSensor), selectButton(selectButton) {}
+        Buzzer& buzzer;
     };
 
     /**
@@ -126,6 +127,12 @@ class ModeView : public View {
     };
 
     /**
+     * Hardware dependencies of the mode view.
+     * Contains an environment sensor.
+     */
+    Hardware hardware;
+
+    /**
      * Returns components of the view.
      */
     Components& getComponents() { return this->components; }
@@ -156,12 +163,6 @@ class ModeView : public View {
     static void cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2);
 
    private:
-    /**
-     * Hardware dependencies of the mode view.
-     * Contains an environment sensor.
-     */
-    Hardware hardware;
-
     /**
      * View navigator used to navigate to another view.
      */

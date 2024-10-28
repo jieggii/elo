@@ -3,6 +3,9 @@
 //
 
 #include "binary.h"
+
+#include "sfx.h"
+
 #include "ModeView.h"
 
 void ModeView::setup(const uint32_t now, Display& display) {
@@ -23,6 +26,7 @@ void ModeView::handleInputs(const uint32_t now) {
 
     // navigate to the next view if the select button is pressed:
     if (this->hardware.selectButton.isActuated()) {
+        this->hardware.buzzer.scheduleMelody(SFX::switchView, std::size(SFX::switchView));
         this->navigateToNextView();
     }
 }

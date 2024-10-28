@@ -33,7 +33,6 @@ class TimedModeView : public ModeView {
      */
     struct AdditionalHardware {
         Button& actionButton;
-        Buzzer& buzzer;
     };
 
     /**
@@ -77,13 +76,13 @@ class TimedModeView : public ModeView {
         if (this->hardware.actionButton.isActuated()) {
             if (!this->paused) {
                 // play a pause sfx:
-                this->hardware.buzzer.scheduleMelody(SFX::pause, std::size(SFX::pause));
+                this->ModeView::hardware.buzzer.scheduleMelody(SFX::pause, std::size(SFX::pause));
 
                 // pause the view:
                 this->pause(now);
             } else {
                 // play a resume sfx:
-                this->hardware.buzzer.scheduleMelody(SFX::resume, std::size(SFX::resume));
+                this->ModeView::hardware.buzzer.scheduleMelody(SFX::resume, std::size(SFX::resume));
 
                 // resume the view:
                 this->resume(now);
