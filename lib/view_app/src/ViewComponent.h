@@ -44,6 +44,9 @@ class ViewComponent {
      * Renders the hidden representation of a component (invisible placeholder).
      * Is called from render method when the component is hidden.
      * TODO: make implementing renderHidden optional.
+     * TODO: create renderInvisiblePlaceholder method
+     * renderInvisiblePlaceholder will do what currently do renderHidden (render hidden representation of the component)
+     * renderHidden will render nothing.
      */
     virtual void renderHidden(Display& display) const = 0;
 
