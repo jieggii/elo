@@ -179,11 +179,6 @@ class ModeView : public View {
     Timer measurementsTimer;
 
     /**
-     * Timer used to display flash notifications.
-     */
-    // Timer flashNotificationTimer = Timer(0);
-
-    /**
      * Flag indicating whether a flash notification is currently being displayed.
      */
     bool isDisplayingFlashNotification = false;
@@ -211,7 +206,7 @@ class ModeView : public View {
 
     /**
      * Caches measurement status icons.
-     * @param display pointer to the display.
+     * @param display reference to display.
      */
     static void cacheMeasurementStatusIcons(Display& display);
 };

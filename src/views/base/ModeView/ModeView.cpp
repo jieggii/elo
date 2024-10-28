@@ -78,11 +78,6 @@ void ModeView::render(Display& display) {
     }
 }
 
-// void ModeView::setStatusLineClockTime(const ClockTime time) const {
-//     auto& statusLineState = this->components.statusLine.getState();
-//     statusLineState.getClockComponentState().setTime(time);
-// }
-
 void ModeView::navigateToNextView() const { this->navigateTo(this->nextViewID); }
 
 void ModeView::cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2) {

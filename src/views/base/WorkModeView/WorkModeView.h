@@ -70,10 +70,13 @@ class WorkModeView : public TimedModeView {
 
                 this->displayFlashNotification(
                     now, "Remember about  your posture!",  // TODO: add more texts, rotate them randomly
+                    // TODO: use PROGMEM to store string literals
                     WorkModeViewSettings::postureReminderFlashNotificationDuration);
             }
 
+            // go to exercise view if it is time to:
             if (this->exerciseTimer.isExpired(now)) {
+                // TODO: implement
                 debug_println("EXERCISE timer expired");
                 this->exerciseTimer.set(now);
             }

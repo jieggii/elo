@@ -43,6 +43,7 @@ class Buzzer {
 
     /**
      * Schedule a melody to be played.
+     * TODO: consider removing len param and calculating len of the array in the function.
      */
     void scheduleMelody(const Note notes[], const uint8_t len) {
         for (uint8_t i = 0; i < len; i++) {
