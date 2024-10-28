@@ -180,12 +180,17 @@ class ModeView : public View {
     /**
      * Timer used to display flash notifications.
      */
-    Timer flashNotificationTimer = Timer(0);
+    // Timer flashNotificationTimer = Timer(0);
 
     /**
      * Flag indicating whether a flash notification is currently being displayed.
      */
     bool isDisplayingFlashNotification = false;
+
+    /**
+     * Flag indicating whether a flash notification has just stopped displaying.
+     */
+    bool justStoppedDisplayingFlashNotification = false;
 
     /**
      * States of the local components.

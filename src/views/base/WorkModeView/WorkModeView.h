@@ -12,6 +12,13 @@
 
 #include "sfx.h"
 
+namespace WorkModeViewSettings {
+    /**
+     * Duration of the posture reminder flash notification in milliseconds.
+     */
+    constexpr uint16_t postureReminderFlashNotificationDuration = 3000;
+}  // namespace WorkModeViewSettings
+
 /**
  * Base class for all mode views that are timed and have a posture reminder and exercise timer.
  */
@@ -61,7 +68,9 @@ class WorkModeView : public TimedModeView {
                 this->hardware.buzzer.scheduleMelody(SFX::postureReminder, std::size(SFX::postureReminder));
                 this->postureReminderTimer.set(now);
 
-                this->displayFlashNotification(now, "test", 3000);  // TODO: test this out
+                this->displayFlashNotification(
+                    now, "Remember about  your posture!",  // TODO: add more texts, rotate them randomly
+                    WorkModeViewSettings::postureReminderFlashNotificationDuration);
             }
 
             if (this->exerciseTimer.isExpired(now)) {

@@ -14,16 +14,24 @@ class FlashNotificationComponent final : public ViewComponent<FlashNotificationC
     FlashNotificationComponent(FlashNotificationComponentState &state, const DisplayCoordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
-    void render(Display &display) override {
-        const auto &state = this->getState();
+    void update(const uint32_t now) override {
+        FlashNotificationComponentState &state = this->getState();
+        const Timer &timer = state.getTimer();
 
-        // const uint16_t secondsLeft = state.getTimeLeft() / 1000;
+        // update seconds left:
+        // (we add one to the result to round up the division)
+        const uint8_t secondsLeft = timer.left(now) / 1000 + 1;
+        state.setSecondsLeft(secondsLeft);
+    }
+
+    void render(Display &display) override {
+        const FlashNotificationComponentState &state = this->getState();
 
         display.displayText(state.getTopRenderBuffer(), {0, 0});
         display.displayText(state.getBottomRenderBuffer(), {0, 1});
-    };
+    }
 
    protected:
-    void renderHidden(Display &display) const override{};
+    void renderHidden(Display &display) const override {}
 };
 #endif  // FLASHNOTIFICATIONCOMPONENT_H
