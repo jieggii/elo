@@ -37,18 +37,16 @@ class WorkModeView : public TimedModeView {
      * TODO: remove duration param.
      */
     WorkModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
-                 MeasurementsLineComponentState& measurementsLineComponentState, const uint32_t exerciseInterval,
+                 MeasurementsLineComponentState& measurementsLineComponentState,
                  const Settings::EnvironmentEvaluation& envEvalSettings, const Settings::WorkMode& workModeSettings)
         : TimedModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, workModeSettings.duration,
                         envEvalSettings),
-          postureReminderTimer(workModeSettings.postureReminder.interval),  // TODO: do Timer(...)
-          exerciseTimer(exerciseInterval) {}                                // TODO: do Timer(...)
+          postureReminderTimer(workModeSettings.postureReminder.interval) {}  // TODO: do Timer(...)
 
     void setup(const uint32_t now, Display& display) override {
-        // set posture reminder and exercise timers:
-        // (NOTE: there is no need to pause them in the setup as they will be paused in the update method automatically)
+        // set posture reminder timer:
+        // (NOTE: there is no need to pause it in the setup as it will be paused in the update method automatically)
         this->postureReminderTimer.set(now);
-        this->exerciseTimer.set(now);
 
         this->TimedModeView::setup(now, display);
     }
@@ -59,11 +57,9 @@ class WorkModeView : public TimedModeView {
         if (this->isPaused() && this->wasJustPaused()) {
             // pause posture reminder and exercise timers when view is paused:
             this->postureReminderTimer.pause(now);
-            this->exerciseTimer.pause(now);
         } else {
             if (this->wasJustResumed()) {
                 this->postureReminderTimer.resume(now);
-                this->exerciseTimer.resume(now);
             }
 
             // play posture reminder if it is time to:
@@ -77,13 +73,6 @@ class WorkModeView : public TimedModeView {
                     // TODO: use PROGMEM to store string literals
                     WorkModeViewSettings::postureReminderFlashNotificationDuration);
             }
-
-            // go to exercise view if it is time to:
-            if (this->exerciseTimer.isExpired(now)) {
-                // TODO: implement
-                debug_println("EXERCISE timer expired");
-                this->exerciseTimer.set(now);
-            }
         }
 
         this->TimedModeView::update(now);
@@ -94,8 +83,10 @@ class WorkModeView : public TimedModeView {
     // ~WorkModeView() override = default;
 
    private:
+    /**
+     * Timer used to remind about the posture.
+     */
     Timer postureReminderTimer;
-    Timer exerciseTimer;
 };
 
 #endif  // WORKMODEVIEW_H
