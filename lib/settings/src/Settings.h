@@ -10,11 +10,12 @@
 #include "env_eval.h"
 
 // TODO: decide which work mode should be first: stand or sit.
+// TODO: namespace to "settings".
 namespace Settings {
     /**
-     * Represents the settings of the environment.
+     * Represents the settings for the environmental conditions evaluation.
      */
-    struct Environment {
+    struct EnvironmentEvaluation {
         struct Temperature {
             EnvEval::ValueRange<float> optimal;     // optimal temperature range
             EnvEval::ValueRange<float> acceptable;  // acceptable temperature range
@@ -52,7 +53,7 @@ namespace Settings {
      * Contains settings for the environmental conditions evaluation and work modes.
      */
     struct Settings {
-        Environment environment;
+        EnvironmentEvaluation environment;
         WorkMode standWorkMode;  // stand work mode settings
         WorkMode sitWorkMode;    // sit work mode settings
     };
