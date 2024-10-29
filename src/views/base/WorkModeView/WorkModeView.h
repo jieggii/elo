@@ -38,7 +38,7 @@ class WorkModeView : public TimedModeView {
      */
     WorkModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
                  MeasurementsLineComponentState& measurementsLineComponentState,
-                 const Settings::EnvironmentEvaluation& envEvalSettings, const Settings::WorkMode& workModeSettings)
+                 const settings::EnvironmentEvaluation& envEvalSettings, const settings::WorkMode& workModeSettings)
         : TimedModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, workModeSettings.duration,
                         envEvalSettings),
           postureReminderTimer(workModeSettings.postureReminder.interval) {}  // TODO: do Timer(...)

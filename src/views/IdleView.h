@@ -16,7 +16,7 @@ class IdleView final : public ModeView {
    public:
     IdleView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
              MeasurementsLineComponentState& measurementsLineComponentState,
-             const Settings::EnvironmentEvaluation& envEvalSettings)
+             const settings::EnvironmentEvaluation& envEvalSettings)
         : ModeView(hardware, viewNavigator, nextViewID, {0, 0, 0}, measurementsLineComponentState, envEvalSettings) {}
 
     void setup(uint32_t now, Display& display) override;

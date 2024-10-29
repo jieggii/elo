@@ -81,7 +81,7 @@ class ModeView : public View {
      */
     ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID, const ClockTime clockTime,
              MeasurementsLineComponentState& measurementsLineComponentState,
-             const Settings::EnvironmentEvaluation& envEvalSettings)
+             const settings::EnvironmentEvaluation& envEvalSettings)
         : View(),
           hardware(hardware),
           viewNavigator(viewNavigator),
@@ -208,7 +208,7 @@ class ModeView : public View {
     /**
      *
      */
-    const Settings::EnvironmentEvaluation& envEvalSettings;
+    const settings::EnvironmentEvaluation& envEvalSettings;
 
     void updateMeasurementsLineState(const EnvSensorMeasurements& measurements) const;
     void updateStatusLineState(const EnvSensorMeasurements& measurements) const;

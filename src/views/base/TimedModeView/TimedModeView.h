@@ -57,7 +57,7 @@ class TimedModeView : public ModeView {
      */
     TimedModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
                   MeasurementsLineComponentState& measurementsLineComponentState, const uint32_t duration,
-                  const Settings::EnvironmentEvaluation& envEvalSettings)
+                  const settings::EnvironmentEvaluation& envEvalSettings)
         : ModeView(hardware.hardware, viewNavigator, nextViewID, ClockTime::fromMsTimestamp(duration),
                    measurementsLineComponentState, envEvalSettings),
           hardware(hardware.additionalHardware),

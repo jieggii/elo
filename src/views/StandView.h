@@ -14,7 +14,7 @@ class StandView final : public WorkModeView {
    public:
     StandView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
               MeasurementsLineComponentState& measurementsLineComponentState,
-              const Settings::EnvironmentEvaluation& envEvalSettings, const Settings::WorkMode& workModeSettings)
+              const settings::EnvironmentEvaluation& envEvalSettings, const settings::WorkMode& workModeSettings)
         : WorkModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, envEvalSettings,
                        workModeSettings) {}
 

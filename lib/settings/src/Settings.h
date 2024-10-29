@@ -10,8 +10,7 @@
 #include "env_eval.h"
 
 // TODO: decide which work mode should be first: stand or sit.
-// TODO: namespace to "settings".
-namespace Settings {
+namespace settings {
     /**
      * Represents the settings for the environmental conditions evaluation.
      */
@@ -57,6 +56,6 @@ namespace Settings {
         WorkMode standWorkMode;  // stand work mode settings
         WorkMode sitWorkMode;    // sit work mode settings
     };
-}  // namespace Settings
+}  // namespace settings
 
 #endif  // ELO_LIB_SETTINGS_SRC_SETTINGS_H_
