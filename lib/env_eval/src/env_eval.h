@@ -7,7 +7,7 @@
 
 // TODO: should we use a namespace here?
 // consider wrapping all modules to namespaces.
-namespace EnvEval {
+namespace env_eval {
     /**
      * Represents a range of values.
      */
@@ -60,6 +60,6 @@ namespace EnvEval {
         return Evaluation::BAD;
     }
 
-}  // namespace EnvEval
+}  // namespace env_eval
 
 #endif  // ENV_EVAL_H

@@ -16,13 +16,13 @@ namespace settings {
      */
     struct EnvironmentEvaluation {
         struct Temperature {
-            EnvEval::ValueRange<float> optimal;     // optimal temperature range
-            EnvEval::ValueRange<float> acceptable;  // acceptable temperature range
+            env_eval::ValueRange<float> optimal;     // optimal temperature range
+            env_eval::ValueRange<float> acceptable;  // acceptable temperature range
         } temperature;
 
         struct Humidity {
-            EnvEval::ValueRange<uint8_t> optimal;     // optimal humidity range
-            EnvEval::ValueRange<uint8_t> acceptable;  // acceptable humidity range
+            env_eval::ValueRange<uint8_t> optimal;     // optimal humidity range
+            env_eval::ValueRange<uint8_t> acceptable;  // acceptable humidity range
         } humidity;
 
         struct CO2 {
