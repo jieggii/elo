@@ -10,6 +10,8 @@
 #include "Buzzer.h"
 #include "Timer.h"
 
+#include "Settings.h"
+
 #include "sfx.h"
 
 #include "views/base/ModeView/ModeView.h"
@@ -54,11 +56,12 @@ class TimedModeView : public ModeView {
      * TODO: rename localHardware to something more meaningful.
      */
     TimedModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
-                  MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration)
-        : ModeView(hardware.hardware, viewNavigator, nextViewID, ClockTime::fromSTimestamp(duration),
-                   measurementsLineComponentState),
+                  MeasurementsLineComponentState& measurementsLineComponentState, const uint32_t duration,
+                  const Settings::EnvironmentEvaluation& envEvalSettings)
+        : ModeView(hardware.hardware, viewNavigator, nextViewID, ClockTime::fromMsTimestamp(duration),
+                   measurementsLineComponentState, envEvalSettings),
           hardware(hardware.additionalHardware),
-          viewTimer(Timer::fromSeconds(duration)) {}
+          viewTimer(Timer(duration)) {}
 
     void setup(const uint32_t now, Display& display) override {
         this->viewTimer.set(now);  // set the view timer

@@ -13,8 +13,10 @@ namespace StandViewIcons {}
 class StandView final : public WorkModeView {
    public:
     StandView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
-              MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration)
-        : WorkModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, duration, 5000, 60000) {}
+              MeasurementsLineComponentState& measurementsLineComponentState,
+              const Settings::EnvironmentEvaluation& envEvalSettings, const Settings::WorkMode& workModeSettings)
+        : WorkModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, 99999, envEvalSettings,
+                       workModeSettings) {}
 
     void setup(uint32_t now, Display& display) override;
     void handleInputs(const uint32_t now) override { WorkModeView::handleInputs(now); };

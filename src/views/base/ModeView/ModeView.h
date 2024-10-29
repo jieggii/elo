@@ -12,6 +12,8 @@
 #include "Display.h"
 #include "Buzzer.h"
 
+#include "Settings.h"
+
 #include "View.h"
 #include "ViewNavigator.h"
 
@@ -78,7 +80,8 @@ class ModeView : public View {
      * TODO: move constructor implementation to the .cpp file
      */
     ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID, const ClockTime clockTime,
-             MeasurementsLineComponentState& measurementsLineComponentState)
+             MeasurementsLineComponentState& measurementsLineComponentState,
+             const Settings::EnvironmentEvaluation& envEvalSettings)
         : View(),
           hardware(hardware),
           viewNavigator(viewNavigator),
@@ -92,7 +95,8 @@ class ModeView : public View {
           components(
               {.statusLine = StatusLineComponent(this->componentStates.statusLine, {0, 0}),
                .measurementsLine = MeasurementsLineComponent(measurementsLineComponentState, {0, 1}),
-               .flashNotification = FlashNotificationComponent(this->componentStates.flashNotification, {0, 0})}) {}
+               .flashNotification = FlashNotificationComponent(this->componentStates.flashNotification, {0, 0})}),
+          envEvalSettings(envEvalSettings) {}
 
     /**
      * Initializes the view.
@@ -200,6 +204,11 @@ class ModeView : public View {
      * View components.
      */
     Components components;
+
+    /**
+     *
+     */
+    const Settings::EnvironmentEvaluation& envEvalSettings;
 
     void updateMeasurementsLineState(const EnvSensorMeasurements& measurements) const;
     void updateStatusLineState(const EnvSensorMeasurements& measurements) const;

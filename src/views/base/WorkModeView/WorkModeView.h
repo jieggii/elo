@@ -10,6 +10,8 @@
 #include "ViewNavigator.h"
 #include "views/base/TimedModeView/TimedModeView.h"
 
+#include "Settings.h"
+
 #include "sfx.h"
 
 namespace WorkModeViewSettings {
@@ -32,13 +34,15 @@ class WorkModeView : public TimedModeView {
      * @param measurementsLineComponentState reference to the static measurements line component state
      * @param postureReminderInterval posture reminder interval in milliseconds.
      * @param exerciseInterval exercise interval in milliseconds
+     * TODO: remove duration param.
      */
     WorkModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
-                 MeasurementsLineComponentState& measurementsLineComponentState, const uint16_t duration,
-                 const uint32_t postureReminderInterval, const uint32_t exerciseInterval)
-        : TimedModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, duration),
-          postureReminderTimer(postureReminderInterval),
-          exerciseTimer(exerciseInterval) {}
+                 MeasurementsLineComponentState& measurementsLineComponentState, const uint32_t exerciseInterval,
+                 const Settings::EnvironmentEvaluation& envEvalSettings, const Settings::WorkMode& workModeSettings)
+        : TimedModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, workModeSettings.duration,
+                        envEvalSettings),
+          postureReminderTimer(workModeSettings.postureReminder.interval),  // TODO: do Timer(...)
+          exerciseTimer(exerciseInterval) {}                                // TODO: do Timer(...)
 
     void setup(const uint32_t now, Display& display) override {
         // set posture reminder and exercise timers:

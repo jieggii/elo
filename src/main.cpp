@@ -6,6 +6,7 @@
 #include "Buzzer.h"
 
 #include "sfx.h"
+#include "default_settings.h"
 #include "view_index.h"
 #include "debug_print.h"
 
@@ -41,7 +42,8 @@ namespace UI {
         IdleView idle({.envSensor = Hardware::envSensor,
                        .selectButton = Hardware::selectButton,
                        .buzzer = Hardware::buzzer},
-                      APP.getViewNavigator(), STAND_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState);
+                      APP.getViewNavigator(), STAND_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
+                      SETTINGS.environment);
         StandView stand({{
                              .envSensor = Hardware::envSensor,
                              .selectButton = Hardware::selectButton,
@@ -51,7 +53,7 @@ namespace UI {
                              .actionButton = Hardware::actionButton,
                          }},
                         APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
-                        61);
+                        SETTINGS.environment, SETTINGS.standWorkMode);
 
     }  // namespace Views
 }  // namespace UI
@@ -88,6 +90,7 @@ void registerAppViews() {
 void setup() {
     debug_init(serialBaudRate);
     debug_println("info: begin setup");
+    debug_println(SETTINGS.standWorkMode.duration);
 
     initHardware();
     registerAppViews();

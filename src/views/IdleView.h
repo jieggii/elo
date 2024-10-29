@@ -7,14 +7,17 @@
 
 #include "Display.h"
 
+#include "Settings.h"
+
 #include "base/ModeView/ModeView.h"
 #include "components/MeasurementsLineComponent/MeasurementsLineComponentState.h"
 
 class IdleView final : public ModeView {
    public:
     IdleView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
-             MeasurementsLineComponentState& measurementsLineComponentState)
-        : ModeView(hardware, viewNavigator, nextViewID, {0, 0, 0}, measurementsLineComponentState) {}
+             MeasurementsLineComponentState& measurementsLineComponentState,
+             const Settings::EnvironmentEvaluation& envEvalSettings)
+        : ModeView(hardware, viewNavigator, nextViewID, {0, 0, 0}, measurementsLineComponentState, envEvalSettings) {}
 
     void setup(uint32_t now, Display& display) override;
     void handleInputs(const uint32_t now) override { ModeView::handleInputs(now); }
