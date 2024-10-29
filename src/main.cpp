@@ -90,7 +90,6 @@ void registerAppViews() {
 void setup() {
     debug_init(serialBaudRate);
     debug_println("info: begin setup");
-    debug_println(defaultSettings.standWorkMode.duration);
 
     initHardware();
     registerAppViews();
