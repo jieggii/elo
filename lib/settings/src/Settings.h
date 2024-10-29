@@ -5,49 +5,57 @@
 #ifndef ELO_LIB_SETTINGS_SRC_SETTINGS_H_
 #define ELO_LIB_SETTINGS_SRC_SETTINGS_H_
 
-#include "cstdint"
+#include <cstdint>
 
-struct Settings {
+#include "env_eval.h"
+
+// TODO: decide which work mode should be first: stand or sit.
+namespace Settings {
+    /**
+     * Represents the settings of the environment.
+     */
     struct Environment {
         struct Temperature {
-            enum class Units {
-                CELSIUS,
-                FAHRENHEIT,
-            } units;
-            struct ValueRange {
-                float min;
-                float max;
-            } optimal, acceptable;
+            EnvEval::ValueRange<float> optimal;     // optimal temperature range
+            EnvEval::ValueRange<float> acceptable;  // acceptable temperature range
         } temperature;
 
         struct Humidity {
-            struct ValueRange {
-                uint8_t min;
-                uint8_t max;
-            } optimal, acceptable;
+            EnvEval::ValueRange<uint8_t> optimal;     // optimal humidity range
+            EnvEval::ValueRange<uint8_t> acceptable;  // acceptable humidity range
         } humidity;
 
         struct CO2 {
             uint16_t max_optimal;     // optimal max CO2 value (ppm)
             uint16_t max_acceptable;  // acceptable max CO2 value (ppm)
         } co2;
-    } environment;
+    };
 
-    struct Mode {
+    /**
+     * Represents the settings of a work mode.
+     */
+    struct WorkMode {
+        /**
+         * Posture reminder settings.
+         * Posture reminder is a short notification that reminds the user to correct their posture.
+         */
         struct PostureReminder {
             bool enabled;       // enable posture reminder
-            uint16_t interval;  // posture reminder interval in seconds
+            uint32_t interval;  // posture reminder interval in milliseconds
         } postureReminder;
 
-        struct ExerciseBreak {
-            bool enabled;       // enable Exercise
-            uint16_t duration;  // Exercise duration in seconds
-            uint16_t interval;  // Exercise interval in seconds
-        } exerciseBreak;
+        uint32_t duration;  // duration of the work mode in milliseconds
+    };
 
-        bool enabled;       // enable work mode
-        uint16_t duration;  // work mode duration in seconds
-    } sitMode, standMode;
-};
+    /**
+     * Represents the device settings.
+     * Contains settings for the environmental conditions evaluation and work modes.
+     */
+    struct Settings {
+        Environment environment;
+        WorkMode standWorkMode;  // stand work mode settings
+        WorkMode sitWorkMode;    // sit work mode settings
+    };
+}  // namespace Settings
 
 #endif  // ELO_LIB_SETTINGS_SRC_SETTINGS_H_
