@@ -14,7 +14,7 @@
  * range (default integer literal type in cpp).
  * TODO: rename to DEFAULT_SETTINGS.
  */
-constexpr Settings::Settings SETTINGS = {
+constexpr Settings::Settings defaultSettings = {
     .environment = {.temperature = {.optimal = {20.0f, 22.0f}, .acceptable = {19.0f, 23.5f}},
                     .humidity = {.optimal = {40, 60}, .acceptable = {30, 70}},
                     .co2 = {.max_optimal = 800, .max_acceptable = 900}},

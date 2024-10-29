@@ -43,7 +43,7 @@ namespace UI {
                        .selectButton = Hardware::selectButton,
                        .buzzer = Hardware::buzzer},
                       APP.getViewNavigator(), STAND_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
-                      SETTINGS.environment);
+                      defaultSettings.environment);
         StandView stand({{
                              .envSensor = Hardware::envSensor,
                              .selectButton = Hardware::selectButton,
@@ -53,7 +53,7 @@ namespace UI {
                              .actionButton = Hardware::actionButton,
                          }},
                         APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
-                        SETTINGS.environment, SETTINGS.standWorkMode);
+                        defaultSettings.environment, defaultSettings.standWorkMode);
 
     }  // namespace Views
 }  // namespace UI
@@ -90,7 +90,7 @@ void registerAppViews() {
 void setup() {
     debug_init(serialBaudRate);
     debug_println("info: begin setup");
-    debug_println(SETTINGS.standWorkMode.duration);
+    debug_println(defaultSettings.standWorkMode.duration);
 
     initHardware();
     registerAppViews();
