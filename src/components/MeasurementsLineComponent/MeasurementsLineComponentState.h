@@ -62,6 +62,7 @@ class MeasurementsLineComponentState final : public ViewComponentState {
 
     Timer& getDisplayMeasurementsTimer();
     Timer& getDisplayStatusesTimer();
+    Timer& getUpdateMeasurementsTimer();
 
     void setMeasurements(Measurements measurements);
     Measurements& getMeasurements();
@@ -87,6 +88,11 @@ class MeasurementsLineComponentState final : public ViewComponentState {
      * Timer controlling how long measurement statuses are displayed.
      */
     Timer displayStatusesTimer;
+
+    /**
+     * Timer indicating when it is time to update measurements.
+     */
+    Timer updateMeasurementsTimer;
 
     /**
      * Current measurements to display.

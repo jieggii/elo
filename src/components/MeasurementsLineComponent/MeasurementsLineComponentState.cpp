@@ -8,6 +8,8 @@ Timer& MeasurementsLineComponentState::getDisplayMeasurementsTimer() { return th
 
 Timer& MeasurementsLineComponentState::getDisplayStatusesTimer() { return this->displayStatusesTimer; }
 
+Timer& MeasurementsLineComponentState::getUpdateMeasurementsTimer() { return this->updateMeasurementsTimer; }
+
 void MeasurementsLineComponentState::setMeasurements(const Measurements measurements) {
     this->measurements = measurements;
 }

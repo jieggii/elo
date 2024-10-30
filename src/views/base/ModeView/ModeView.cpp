@@ -71,7 +71,6 @@ ModeView::ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const 
                   .flashNotification = FlashNotificationComponent(this->componentStates.flashNotification, {0, 0})}),
       viewNavigator(viewNavigator),
       nextViewID(nextViewID),
-      measurementsTimer(Settings::measurementsUpdateInterval),
       componentStates({
           .statusLine = StatusLineComponentState(iconIds::modeIndicator::indicator1, iconIds::modeIndicator::indicator2,
                                                  clockTime),
@@ -82,9 +81,6 @@ ModeView::ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const 
 void ModeView::setup(const uint32_t now, display::Display& display) {
     // cache icons:
     cacheMeasurementStatusIcons(display);
-
-    // reset measurements timer:
-    this->measurementsTimer.set(now);
 
     // reset flags related to flash notification:
     this->isDisplayingFlashNotification = false;
@@ -119,8 +115,9 @@ void ModeView::update(const uint32_t now) {
     }
 
     // perform measurements if it is time to do so:
-    if (this->measurementsTimer.isExpired(now)) {
-        this->measurementsTimer.set(now);
+    if (Timer& updateMeasurementsTimer = this->components.measurementsLine.getState().getUpdateMeasurementsTimer();
+        updateMeasurementsTimer.isExpired(now)) {
+        updateMeasurementsTimer.set(now);
 
         if (const EnvSensorMeasurements measurements = this->hardware.envSensor.readMeasurements();
             measurements.fresh) {

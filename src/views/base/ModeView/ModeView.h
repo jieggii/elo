@@ -99,11 +99,6 @@ class ModeView : public View {
     Components components;
 
     /**
-     * Returns components of the view.
-     */
-    // Components& getComponents();
-
-    /**
      * Displays a toast message.
      * @param now current time.
      * @param text toast message text.
@@ -134,11 +129,6 @@ class ModeView : public View {
      * ID of the view to switch to.
      */
     const uint8_t nextViewID;
-
-    /**
-     * Timer used to track measurements update interval.
-     */
-    Timer measurementsTimer;
 
     /**
      * Flag indicating whether a flash notification is currently being displayed.
