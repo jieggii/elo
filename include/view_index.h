@@ -7,8 +7,10 @@
 
 #include <cstdint>
 
-constexpr uint8_t IDLE_VIEW_INDEX = 0;
-constexpr uint8_t STAND_VIEW_INDEX = 1;
-constexpr uint8_t SIT_VIEW_INDEX = 2;
+namespace view_index {
+    constexpr uint8_t idle = 0;
+    constexpr uint8_t stand = 1;
+    constexpr uint8_t sit = 2;
+}  // namespace view_index
 
 #endif  // ELO_VIEWINDEX_H

@@ -44,7 +44,7 @@ namespace UI {
         IdleView idle({.envSensor = Hardware::envSensor,
                        .selectButton = Hardware::selectButton,
                        .buzzer = Hardware::buzzer},
-                      APP.getViewNavigator(), STAND_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
+                      APP.getViewNavigator(), view_index::stand, StaticComponentStates::measurementsLineComponentState,
                       defaultSettings.environment);
 
         StandView stand({{
@@ -55,7 +55,7 @@ namespace UI {
                          {
                              .actionButton = Hardware::actionButton,
                          }},
-                        APP.getViewNavigator(), SIT_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
+                        APP.getViewNavigator(), view_index::sit, StaticComponentStates::measurementsLineComponentState,
                         defaultSettings.environment, defaultSettings.standWorkMode);
 
         SitView sit({{
@@ -66,7 +66,7 @@ namespace UI {
                      {
                          .actionButton = Hardware::actionButton,
                      }},
-                    APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
+                    APP.getViewNavigator(), view_index::idle, StaticComponentStates::measurementsLineComponentState,
                     defaultSettings.environment, defaultSettings.sitWorkMode);
 
     }  // namespace Views
@@ -97,9 +97,9 @@ void initHardware() {
  * Registers all views in the app.
  */
 void registerAppViews() {
-    UI::APP.registerView(IDLE_VIEW_INDEX, &UI::Views::idle);
-    UI::APP.registerView(STAND_VIEW_INDEX, &UI::Views::stand);
-    UI::APP.registerView(SIT_VIEW_INDEX, &UI::Views::sit);
+    UI::APP.registerView(view_index::idle, &UI::Views::idle);
+    UI::APP.registerView(view_index::stand, &UI::Views::stand);
+    UI::APP.registerView(view_index::sit, &UI::Views::sit);
 }
 
 void setup() {
