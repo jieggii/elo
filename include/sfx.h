@@ -54,6 +54,12 @@ namespace SFX {
      */
     constexpr Note switchView[] = {{Tone::C4, 20, 0}};
 
+    /**
+     * Sound effect that is played when measurements are available for the first time.
+     */
+    constexpr Note measurementsAvailable[] = {{.frequency = Tone::C4, .duration = 15, .pauseDuration = 0},
+                                              {.frequency = Tone::E5, .duration = 30, .pauseDuration = 0}};
+
 }  // namespace SFX
 
 #endif  // SFX_H

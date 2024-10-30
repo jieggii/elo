@@ -76,20 +76,25 @@ void ModeView::update(const uint32_t now) {
 
             // update measurements line:
             MeasurementsLineComponentState& measurementsLineState = this->components.measurementsLine.getState();
-
             measurementsLineState.setMeasurements(
                 MeasurementsLineComponentState::Measurements::fromEnvSensorMeasurements(&measurements));
 
             measurementsLineState.setMeasurementStatusIconIDs(
                 {.temperature = temperatureStatusIconID, .humidity = humidityStatusIconID, .co2 = co2StatusIconID});
 
-            measurementsLineState.setDisplayMeasurementStatusIcons(true);
+            if (!measurementsLineState.isDisplayMeasurementStatusIcons()) {
+                // play a melody and start displaying measurements if they are available for the first time:
+                this->hardware.buzzer.scheduleMelody(SFX::measurementsAvailable, std::size(SFX::measurementsAvailable));
+                measurementsLineState.setDisplayMeasurementStatusIcons(true);
+                measurementsLineState.getDisplayMeasurementsTimer().set(now);
+            }
 
             // update status line:
             StatusLineComponentState& statusLineState = this->components.statusLine.getState();
-
             statusLineState.getMeasurementsStatusIconsComponentState().setIconID(overallStatusIconID);
-            statusLineState.setDisplayMeasurementsStatusIcon(true);
+            if (!statusLineState.isDisplayMeasurementsStatusIcon()) {
+                statusLineState.setDisplayMeasurementsStatusIcon(true);
+            }
         }
     }
 
