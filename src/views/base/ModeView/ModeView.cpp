@@ -66,6 +66,9 @@ ModeView::ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const 
                    const settings::EnvironmentEvaluation& envEvalSettings)
     : View(),
       hardware(hardware),
+      components({.statusLine = StatusLineComponent(this->componentStates.statusLine, {0, 0}),
+                  .measurementsLine = MeasurementsLineComponent(measurementsLineComponentState, {0, 1}),
+                  .flashNotification = FlashNotificationComponent(this->componentStates.flashNotification, {0, 0})}),
       viewNavigator(viewNavigator),
       nextViewID(nextViewID),
       measurementsTimer(Settings::measurementsUpdateInterval),
@@ -74,9 +77,6 @@ ModeView::ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const 
                                                  clockTime),
           .flashNotification = FlashNotificationComponentState(),
       }),
-      components({.statusLine = StatusLineComponent(this->componentStates.statusLine, {0, 0}),
-                  .measurementsLine = MeasurementsLineComponent(measurementsLineComponentState, {0, 1}),
-                  .flashNotification = FlashNotificationComponent(this->componentStates.flashNotification, {0, 0})}),
       envEvalSettings(envEvalSettings) {}
 
 void ModeView::setup(const uint32_t now, Display& display) {
