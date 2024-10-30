@@ -17,7 +17,7 @@
 class App {
    public:
     explicit App(Display& display, const uint16_t renderInterval)
-        : display(display), viewNavigator(0), viewRenderer(this->display, renderInterval){};
+        : display(display), viewNavigator(0), viewRenderer(this->display, renderInterval) {};
 
     void registerView(const uint8_t viewID, View* view) { this->viewRegistry.registerView(viewID, view); }
 

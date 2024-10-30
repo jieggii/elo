@@ -98,7 +98,7 @@ class TimedModeView : public ModeView {
     void update(const uint32_t now) override {
         // update clock component time:
         const ClockTime time = ClockTime::fromMsTimestamp(this->viewTimer.left(now));
-        this->getComponents().statusLine.getState().getClockComponentState().setTime(time);
+        this->components.statusLine.getState().getClockComponentState().setTime(time);
 
         if (this->paused) {
             // reset justPaused flag:
@@ -107,7 +107,7 @@ class TimedModeView : public ModeView {
             // handle paused view:
             if (this->blinkClockTimer.isExpired(now)) {
                 // blink the clock component:
-                if (auto& clockComponentState = this->getComponents().statusLine.getState().getClockComponentState();
+                if (auto& clockComponentState = this->components.statusLine.getState().getClockComponentState();
                     clockComponentState.isHidden()) {
                     clockComponentState.show();
                 } else {
@@ -202,7 +202,7 @@ class TimedModeView : public ModeView {
 
         // show the clock component:
         // this is needed for the case when user resumed the view when the clock component was hidden
-        this->getComponents().statusLine.getState().getClockComponentState().show();
+        this->components.statusLine.getState().getClockComponentState().show();
     }
 
     /**

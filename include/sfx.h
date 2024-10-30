@@ -17,8 +17,7 @@ namespace SFX {
     constexpr Note boot[] = {
         {Tone::C4, 50, 0},
         {Tone::E4, 50, 0},
-        {Tone::G4, 50, 0},
-        {Tone::C5, 150, 0},
+        {Tone::G4, 100, 0},
     };
 
     /**

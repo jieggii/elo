@@ -114,6 +114,5 @@ void setup() {
 
 void loop() {
     const uint32_t now = millis();
-    Hardware::buzzer.serve(now);  // TODO: should this be moved to view update()?
     UI::APP.serve(now);
 }

@@ -7,6 +7,78 @@
 
 #include "ModeView.h"
 
+/**
+ * IDs of the icons used by the mode view.
+ * NOTE: icon IDs must be unique and only from 1 to 7.
+ */
+namespace iconIds {
+    namespace modeIndicator {
+        // id of the first mode indicator icon.
+        constexpr uint8_t indicator1 = 1;
+
+        // id of the second mode indicator icon.
+        constexpr uint8_t indicator2 = 2;
+    }  // namespace modeIndicator
+
+    namespace measurementStatus {
+        // id of the icon representing optimal measurement status.
+        constexpr uint8_t optimal = 3;
+
+        // id of the icon representing acceptable measurement status.
+        constexpr uint8_t acceptable = 4;
+
+        // id of the icon representing bad measurement status.
+        constexpr uint8_t bad = 5;
+
+        // id of the icon representing placeholder for measurements.
+        // constexpr uint8_t measurementsPlaceholder = 6;
+    }  // namespace measurementStatus
+
+}  // namespace iconIds
+
+namespace Settings {
+    /**
+     * Interval between measurements updates in milliseconds.
+     */
+    constexpr uint16_t measurementsUpdateInterval = 10000;
+}  // namespace Settings
+
+/**
+ * Returns an icon ID corresponding to the given environmental evaluation.
+ * @param evaluation environmental measurement evaluation.
+ * @return icon ID.
+ */
+uint8_t getEnvStatusIconID(const env_eval::Evaluation& evaluation) {
+    switch (evaluation) {
+        case env_eval::Evaluation::OPTIMAL:
+            return iconIds::measurementStatus::optimal;
+        case env_eval::Evaluation::ACCEPTABLE:
+            return iconIds::measurementStatus::acceptable;
+        case env_eval::Evaluation::BAD:
+            return iconIds::measurementStatus::bad;
+        default:
+            return DisplayCGRAMInfo::defaultIconSlot;
+    }
+}
+
+ModeView::ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const uint8_t nextViewID,
+                   const ClockTime clockTime, MeasurementsLineComponentState& measurementsLineComponentState,
+                   const settings::EnvironmentEvaluation& envEvalSettings)
+    : View(),
+      hardware(hardware),
+      viewNavigator(viewNavigator),
+      nextViewID(nextViewID),
+      measurementsTimer(Settings::measurementsUpdateInterval),
+      componentStates({
+          .statusLine = StatusLineComponentState(iconIds::modeIndicator::indicator1, iconIds::modeIndicator::indicator2,
+                                                 clockTime),
+          .flashNotification = FlashNotificationComponentState(),
+      }),
+      components({.statusLine = StatusLineComponent(this->componentStates.statusLine, {0, 0}),
+                  .measurementsLine = MeasurementsLineComponent(measurementsLineComponentState, {0, 1}),
+                  .flashNotification = FlashNotificationComponent(this->componentStates.flashNotification, {0, 0})}),
+      envEvalSettings(envEvalSettings) {}
+
 void ModeView::setup(const uint32_t now, Display& display) {
     // cache icons:
     cacheMeasurementStatusIcons(display);
@@ -31,6 +103,10 @@ void ModeView::handleInputs(const uint32_t now) {
 }
 
 void ModeView::update(const uint32_t now) {
+    // handle hardware:
+    this->hardware.buzzer.serve(now);
+
+    // handle flash notification if it is being displayed:
     if (this->isDisplayingFlashNotification) {
         this->components.flashNotification.update(now);
 
@@ -70,7 +146,6 @@ void ModeView::update(const uint32_t now) {
 
             const uint8_t overallStatusIconID = getEnvStatusIconID(overallEval);
 
-            // TODO: play a sound if it is the first time when measurements available
             // TODO: show a notification when the env conditions are changed
 
             // update measurements line:
@@ -118,11 +193,9 @@ void ModeView::render(Display& display) {
     }
 }
 
-void ModeView::navigateToNextView() const { this->navigateTo(this->nextViewID); }
-
 void ModeView::cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2) {
-    display.cacheIcon(ModeViewIconIDs::indicator1, icon1);
-    display.cacheIcon(ModeViewIconIDs::indicator2, icon2);
+    display.cacheIcon(iconIds::modeIndicator::indicator1, icon1);
+    display.cacheIcon(iconIds::modeIndicator::indicator2, icon2);
 }
 
 void ModeView::displayFlashNotification(const uint32_t now, const char* text, const uint32_t duration) {
@@ -138,10 +211,12 @@ void ModeView::displayFlashNotification(const uint32_t now, const char* text, co
     this->isDisplayingFlashNotification = true;
 }
 
+void ModeView::navigateToNextView() const { this->viewNavigator.navigateTo(this->nextViewID); }
+
 void ModeView::cacheMeasurementStatusIcons(Display& display) {
-    display.cacheIcon(ModeViewIconIDs::measurementStatusOptimal, &icon::measurementsStatus::optimal);
-    display.cacheIcon(ModeViewIconIDs::measurementStatusAcceptable, &icon::measurementsStatus::acceptable);
-    display.cacheIcon(ModeViewIconIDs::measurementStatusBad, &icon::measurementsStatus::bad);
+    display.cacheIcon(iconIds::measurementStatus::optimal, &icon::measurementStatus::optimal);
+    display.cacheIcon(iconIds::measurementStatus::acceptable, &icon::measurementStatus::acceptable);
+    display.cacheIcon(iconIds::measurementStatus::bad, &icon::measurementStatus::bad);
 }
 
 void ModeView::reset(const uint32_t now) {}

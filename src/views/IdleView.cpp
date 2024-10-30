@@ -3,7 +3,7 @@
 #include "IdleView.h"
 
 void IdleView::setup(const uint32_t now, Display& display) {
-    cacheModeIndicatorIcons(display, &icon::modeIndicator::idle::modeIcon1, &icon::modeIndicator::idle::modeIcon2);
+    cacheModeIndicatorIcons(display, &icon::modeIndicator::idle::indicator1, &icon::modeIndicator::idle::indicator2);
 
     this->ModeView::setup(now, display);
 }
@@ -11,7 +11,7 @@ void IdleView::setup(const uint32_t now, Display& display) {
 void IdleView::update(const uint32_t now) {
     // todo: get actual current time from the actual RTC
     constexpr ClockTime currentTime = {23, 59, 59};
-    auto& clockComponentState = this->getComponents().statusLine.getState().getClockComponentState();
+    auto& clockComponentState = this->components.statusLine.getState().getClockComponentState();
     clockComponentState.setTime(currentTime);
 
     ModeView::update(now);

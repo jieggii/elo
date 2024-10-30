@@ -19,12 +19,12 @@ namespace icon {
          * Mode indicators for the idle mode.
          */
         namespace idle {
-            constexpr Icon modeIcon1 = {
+            constexpr Icon indicator1 = {
                 // empty icon
                 0b00000, 0b00000, 0b00000, 0b00000, 0b00000, 0b00000, 0b00000, 0b00000,
             };
 
-            constexpr Icon modeIcon2 = {
+            constexpr Icon indicator2 = {
                 // table
                 0b00000, 0b00000, 0b00000, 0b00000, 0b11111, 0b01010, 0b01010, 0b01010,
             };
@@ -34,12 +34,12 @@ namespace icon {
          * Mode indicators for the stand mode.
          */
         namespace stand {
-            constexpr Icon modeIcon1 = {
+            constexpr Icon indicator1 = {
                 // person standing
                 0b01110, 0b01110, 0b00100, 0b00111, 0b00100, 0b00100, 0b00100, 0b00100,
             };
 
-            constexpr Icon modeIcon2 = {
+            constexpr Icon indicator2 = {
                 // table in the standing position
                 0b00000, 0b00000, 0b00000, 0b00000, 0b11111, 0b01010, 0b01010, 0b01010,
             };
@@ -49,11 +49,11 @@ namespace icon {
          * Mode indicators for the sit mode.
          */
         namespace sit {
-            constexpr Icon modeIcon1 = {
+            constexpr Icon indicator1 = {
                 // person sitting
                 0b00000, 0b01110, 0b01110, 0b00100, 0b00111, 0b00100, 0b00100, 0b00111};
 
-            constexpr Icon modeIcon2 = {
+            constexpr Icon indicator2 = {
                 // table in the sitting position
                 0b00000, 0b00000, 0b00000, 0b00000, 0b00000, 0b11111, 0b01010, 0b01010,
             };
@@ -63,7 +63,7 @@ namespace icon {
     /**
      * Icons representing environmental measurement evaluations.
      */
-    namespace measurementsStatus {
+    namespace measurementStatus {
         constexpr Icon optimal = {
             // icon representing smiling face :)
             0b00000, 0b01010, 0b01010, 0b00000, 0b10001, 0b01110, 0b00000, 0b00000,
@@ -78,7 +78,7 @@ namespace icon {
             // icon representing sad face :(
             0b00000, 0b01010, 0b01010, 0b00000, 0b00000, 0b01110, 0b10001, 0b00000,
         };
-    }  // namespace measurementsStatus
+    }  // namespace measurementStatus
 }  // namespace icon
 
 #endif  // ICON_H

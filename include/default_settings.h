@@ -12,7 +12,6 @@
  * Contains default settings for the environmental conditions evaluation and work modes.
  * NOTE: please do not forget to indicate integer literal types (e.g. 10UL) to avoid overflow, if values exceed int
  * range (default integer literal type in cpp).
- * TODO: rename to DEFAULT_SETTINGS.
  */
 constexpr settings::Settings defaultSettings = {
     .environment = {.temperature = {.optimal = {20.0f, 22.0f}, .acceptable = {19.0f, 23.5f}},

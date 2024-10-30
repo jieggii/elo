@@ -9,7 +9,7 @@
 #include "SitView.h"
 
 void SitView::setup(const uint32_t now, Display& display) {
-    cacheModeIndicatorIcons(display, &icon::modeIndicator::sit::modeIcon1, &icon::modeIndicator::sit::modeIcon2);
+    cacheModeIndicatorIcons(display, &icon::modeIndicator::sit::indicator1, &icon::modeIndicator::sit::indicator2);
 
     this->WorkModeView::setup(now, display);
 }

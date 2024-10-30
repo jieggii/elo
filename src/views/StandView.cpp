@@ -7,7 +7,7 @@
 #include "StandView.h"
 
 void StandView::setup(const uint32_t now, Display& display) {
-    cacheModeIndicatorIcons(display, &icon::modeIndicator::stand::modeIcon1, &icon::modeIndicator::stand::modeIcon2);
+    cacheModeIndicatorIcons(display, &icon::modeIndicator::stand::indicator1, &icon::modeIndicator::stand::indicator2);
 
     this->WorkModeView::setup(now, display);
 }
