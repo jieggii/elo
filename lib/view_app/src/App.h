@@ -16,7 +16,7 @@
 
 class App {
    public:
-    explicit App(Display& display, const uint16_t renderInterval)
+    explicit App(display::Display& display, const uint16_t renderInterval)
         : display(display), viewNavigator(0), viewRenderer(this->display, renderInterval) {};
 
     void registerView(const uint8_t viewID, View* view) { this->viewRegistry.registerView(viewID, view); }
@@ -61,7 +61,7 @@ class App {
     /**
      * Display used to render views.
      */
-    Display& display;
+    display::Display& display;
 
     /**
      * View registry used to store views.

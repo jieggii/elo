@@ -13,19 +13,19 @@ class ClockComponent final : public ViewComponent<ClockComponentState&> {
     /**
      * Creates a clock component with the given coordinates and time.
      */
-    ClockComponent(ClockComponentState& state, const DisplayCoordinates coordinates)
+    ClockComponent(ClockComponentState& state, const display::Coordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
     /**
      * Renders the clock on the display.
      */
-    void render(Display& display) override;
+    void render(display::Display& display) override;
 
    private:
     /**
      * Renders the hidden copy of the clock on the display.
      */
-    void renderHidden(Display& display) const override;
+    void renderHidden(display::Display& display) const override;
 };
 
 #endif

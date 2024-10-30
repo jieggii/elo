@@ -11,7 +11,7 @@
 template <typename ViewComponentStateType>
 class ViewComponent {
    public:
-    ViewComponent(ViewComponentStateType state, const DisplayCoordinates coordinates)
+    ViewComponent(ViewComponentStateType state, const display::Coordinates coordinates)
         : coordinates(coordinates), state(state) {}
 
     /**
@@ -31,12 +31,12 @@ class ViewComponent {
      * @param display - display to render on.
      * TODO: make method const.
      */
-    virtual void render(Display& display) = 0;
+    virtual void render(display::Display& display) = 0;
 
     virtual ~ViewComponent() = default;
 
    protected:
-    const DisplayCoordinates coordinates;  // coordinates on the display where component is rendered
+    const display::Coordinates coordinates;  // coordinates on the display where component is rendered
 
     static_assert(std::is_reference_v<ViewComponentStateType>, "ViewComponentStateType must be a reference type");
 
@@ -48,7 +48,7 @@ class ViewComponent {
      * renderInvisiblePlaceholder will do what currently do renderHidden (render hidden representation of the component)
      * renderHidden will render nothing.
      */
-    virtual void renderHidden(Display& display) const = 0;
+    virtual void renderHidden(display::Display& display) const = 0;
 
    private:
     ViewComponentStateType state;  // state of the component

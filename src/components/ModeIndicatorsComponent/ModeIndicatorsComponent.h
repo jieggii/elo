@@ -17,19 +17,19 @@ class ModeIndicatorsComponent final : public ViewComponent<ModeIndicatorsCompone
      * @param state state of the component.
      * @param coordinates coordinates of the first icon.
      */
-    ModeIndicatorsComponent(ModeIndicatorsComponentState& state, DisplayCoordinates coordinates);
+    ModeIndicatorsComponent(ModeIndicatorsComponentState& state, display::Coordinates coordinates);
 
     /**
      * Renders the component.
      * @param display Display to render on.
      */
-    void render(Display& display) override;
+    void render(display::Display& display) override;
 
    private:
     IconComponent icon1;
     IconComponent icon2;
 
-    void renderHidden(Display& display) const override;
+    void renderHidden(display::Display& display) const override;
 };
 
 #endif  // MODE_INDICATORS_COMPONENT_H

@@ -13,26 +13,26 @@
 class MeasurementsLineComponent final : public ViewComponent<MeasurementsLineComponentState&> {
    public:
     // TODO: move constructor implementation to cpp file.
-    MeasurementsLineComponent(MeasurementsLineComponentState& state, const DisplayCoordinates coordinates)
+    MeasurementsLineComponent(MeasurementsLineComponentState& state, const display::Coordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
     void update(uint32_t now) override;
     /**
      * Render the component.
      */
-    void render(Display& display) override;
+    void render(display::Display& display) override;
 
    private:
-    void renderHidden(Display& display) const override;
+    void renderHidden(display::Display& display) const override;
     /**
      * Render measurements.
      */
-    void renderMeasurements(Display& display) const;
+    void renderMeasurements(display::Display& display) const;
 
     /**
      * Render measurement status icons.
      */
-    void renderMeasurementStatusIcons(Display& display) const;
+    void renderMeasurementStatusIcons(display::Display& display) const;
 };
 
 #endif  // MEASUREMENTSLINECOMPONENT_H

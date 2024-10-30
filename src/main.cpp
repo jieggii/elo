@@ -21,7 +21,7 @@
 constexpr uint16_t serialBaudRate = 9600;
 
 namespace Hardware {
-    Display display(0x27);
+    display::Display display(0x27);
     EnvSensor envSensor;
     Button selectButton(D5);
     Button actionButton(D6);

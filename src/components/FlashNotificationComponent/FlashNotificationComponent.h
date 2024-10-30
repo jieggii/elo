@@ -11,7 +11,7 @@
 
 class FlashNotificationComponent final : public ViewComponent<FlashNotificationComponentState &> {
    public:
-    FlashNotificationComponent(FlashNotificationComponentState &state, const DisplayCoordinates coordinates)
+    FlashNotificationComponent(FlashNotificationComponentState &state, const display::Coordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
     void update(const uint32_t now) override {
@@ -24,7 +24,7 @@ class FlashNotificationComponent final : public ViewComponent<FlashNotificationC
         state.setSecondsLeft(secondsLeft);
     }
 
-    void render(Display &display) override {
+    void render(display::Display &display) override {
         const FlashNotificationComponentState &state = this->getState();
 
         display.displayText(state.getTopRenderBuffer(), {0, 0});
@@ -32,6 +32,6 @@ class FlashNotificationComponent final : public ViewComponent<FlashNotificationC
     }
 
    protected:
-    void renderHidden(Display &display) const override {}
+    void renderHidden(display::Display &display) const override {}
 };
 #endif  // FLASHNOTIFICATIONCOMPONENT_H

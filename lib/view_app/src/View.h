@@ -19,7 +19,7 @@ class View {
     /**
      * Setup view.
      */
-    virtual void setup(uint32_t now, Display& display) = 0;
+    virtual void setup(uint32_t now, display::Display& display) = 0;
 
     /*
      * Update view state.
@@ -38,7 +38,7 @@ class View {
      * Render view on the display.
      * This method should be called after @loop and @handleInputs are called.
      */
-    virtual void render(Display& display) = 0;
+    virtual void render(display::Display& display) = 0;
 
     /**
      * Resets view state is called when the view is being left.

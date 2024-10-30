@@ -2,7 +2,7 @@
 
 #include "IdleView.h"
 
-void IdleView::setup(const uint32_t now, Display& display) {
+void IdleView::setup(const uint32_t now, display::Display& display) {
     cacheModeIndicatorIcons(display, &icon::modeIndicator::idle::indicator1, &icon::modeIndicator::idle::indicator2);
 
     this->ModeView::setup(now, display);
@@ -17,6 +17,6 @@ void IdleView::update(const uint32_t now) {
     ModeView::update(now);
 }
 
-void IdleView::render(Display& display) { ModeView::render(display); }
+void IdleView::render(display::Display& display) { ModeView::render(display); }
 
 void IdleView::reset(const uint32_t now) { ModeView::reset(now); }

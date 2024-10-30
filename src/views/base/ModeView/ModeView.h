@@ -57,7 +57,7 @@ class ModeView : public View {
      * @param now
      * @param display pointer to the display.
      */
-    void setup(uint32_t now, Display& display) override;
+    void setup(uint32_t now, display::Display& display) override;
 
     /**
      * Handles user inputs.
@@ -74,7 +74,7 @@ class ModeView : public View {
      * Renders status line and measurements line.
      * @param display - pointer to the display.
      */
-    void render(Display& display) override;
+    void render(display::Display& display) override;
 
     void reset(uint32_t now) override;
 
@@ -122,7 +122,7 @@ class ModeView : public View {
      * @param icon1
      * @param icon2
      */
-    static void cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2);
+    static void cacheModeIndicatorIcons(display::Display& display, const Icon* icon1, const Icon* icon2);
 
    private:
     /**
@@ -167,7 +167,7 @@ class ModeView : public View {
      * Caches measurement status icons.
      * @param display reference to display.
      */
-    static void cacheMeasurementStatusIcons(Display& display);
+    static void cacheMeasurementStatusIcons(display::Display& display);
 };
 
 #endif  // MODEVIEW_H

@@ -51,9 +51,9 @@ class MeasurementsLineComponentState final : public ViewComponentState {
      * @param displayStatusesDuration how long to display measurement statuses in milliseconds.
      */
     MeasurementsLineComponentState(const uint32_t displayMeasurementsDuration, const uint32_t displayStatusesDuration)
-        : measurementStatusIconIDs({.temperature = DisplayCGRAMInfo::defaultIconSlot,
-                                    .humidity = DisplayCGRAMInfo::defaultIconSlot,
-                                    .co2 = DisplayCGRAMInfo::defaultIconSlot}),
+        : measurementStatusIconIDs({.temperature = display::CGRAM::defaultIconSlot,
+                                    .humidity = display::CGRAM::defaultIconSlot,
+                                    .co2 = display::CGRAM::defaultIconSlot}),
           displayMeasurementsTimer(Timer(displayMeasurementsDuration)),
           displayStatusesTimer(Timer(displayStatusesDuration)) {}
 

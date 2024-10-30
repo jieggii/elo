@@ -17,10 +17,10 @@ class StandView final : public WorkModeView {
         : WorkModeView(hardware, viewNavigator, nextViewID, measurementsLineComponentState, envEvalSettings,
                        workModeSettings) {}
 
-    void setup(uint32_t now, Display& display) override;
+    void setup(uint32_t now, display::Display& display) override;
     void handleInputs(const uint32_t now) override { WorkModeView::handleInputs(now); };
     void update(uint32_t now) override;
-    void render(Display& display) override;
+    void render(display::Display& display) override;
     void reset(uint32_t now) override;
 };
 

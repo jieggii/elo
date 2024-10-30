@@ -19,7 +19,7 @@ class StatusLineComponent final : public ViewComponent<StatusLineComponentState&
      * @param state state.
      * @param coordinates coordinates of the component.
      */
-    StatusLineComponent(StatusLineComponentState& state, const DisplayCoordinates coordinates)
+    StatusLineComponent(StatusLineComponentState& state, const display::Coordinates coordinates)
         : ViewComponent(state, coordinates),
           modeIndicatorsComponent(
               ModeIndicatorsComponent(this->getState().getModeIndicatorsComponentState(), {0, coordinates.row})),
@@ -31,14 +31,14 @@ class StatusLineComponent final : public ViewComponent<StatusLineComponentState&
      * Renders the component.
      * @param display to render on.
      */
-    void render(Display& display) override;
+    void render(display::Display& display) override;
 
    private:
     ModeIndicatorsComponent modeIndicatorsComponent;
     ClockComponent clockComponent;
     IconComponent measurementsStatusIconComponent;
 
-    void renderHidden(Display& display) const override;
+    void renderHidden(display::Display& display) const override;
 };
 
 #endif  // STATUSLINECOMPONENT_H

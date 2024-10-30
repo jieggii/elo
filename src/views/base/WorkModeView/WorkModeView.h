@@ -43,7 +43,7 @@ class WorkModeView : public TimedModeView {
                         envEvalSettings),
           postureReminderTimer(workModeSettings.postureReminder.interval) {}  // TODO: do Timer(...)
 
-    void setup(const uint32_t now, Display& display) override {
+    void setup(const uint32_t now, display::Display& display) override {
         // set posture reminder timer:
         // (NOTE: there is no need to pause it in the setup as it will be paused in the update method automatically)
         this->postureReminderTimer.set(now);
@@ -77,7 +77,7 @@ class WorkModeView : public TimedModeView {
 
         this->TimedModeView::update(now);
     }
-    void render(Display& display) override { this->TimedModeView::render(display); }
+    void render(display::Display& display) override { this->TimedModeView::render(display); }
     void reset(const uint32_t now) override { this->TimedModeView::reset(now); }
 
     // ~WorkModeView() override = default;

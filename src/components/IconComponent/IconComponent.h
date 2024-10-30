@@ -11,17 +11,17 @@
  */
 class IconComponent final : public ViewComponent<IconComponentState&> {
    public:
-    IconComponent(IconComponentState& state, const DisplayCoordinates coordinates)
+    IconComponent(IconComponentState& state, const display::Coordinates coordinates)
         : ViewComponent(state, coordinates) {}
 
     /**
      * Render the icon component on the display.
      * @param display The display to render the icon component on.
      */
-    void render(Display& display) override;
+    void render(display::Display& display) override;
 
    protected:
-    void renderHidden(Display& display) const override;
+    void renderHidden(display::Display& display) const override;
 };
 
 #endif  // BASEDISPLAYVIEW_ICONCOMPONENT_H

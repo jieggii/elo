@@ -63,7 +63,7 @@ class TimedModeView : public ModeView {
           hardware(hardware.additionalHardware),
           viewTimer(Timer(duration)) {}
 
-    void setup(const uint32_t now, Display& display) override {
+    void setup(const uint32_t now, display::Display& display) override {
         this->viewTimer.set(now);              // set the view timer
         this->resetStatusLineClockState(now);  // reset the clock component state
         this->pause(now);                      // pause the view on setup
@@ -136,7 +136,7 @@ class TimedModeView : public ModeView {
         this->ModeView::update(now);
     }
 
-    void render(Display& display) override { this->ModeView::render(display); }
+    void render(display::Display& display) override { this->ModeView::render(display); }
 
     void reset(const uint32_t now) override { this->ModeView::reset(now); }
 

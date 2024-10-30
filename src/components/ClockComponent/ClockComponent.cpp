@@ -65,7 +65,7 @@ class RenderBuffer {
     void formatNullTerm() { buffer[BUFFER_SIZE - 1] = '\0'; }
 };
 
-void ClockComponent::render(Display& display) {
+void ClockComponent::render(display::Display& display) {
     const auto& state = this->getState();
     if (state.isHidden()) {  // render hidden if hidden
         this->renderHidden(display);
@@ -77,7 +77,7 @@ void ClockComponent::render(Display& display) {
     display.displayText(renderBuffer.getBuffer(), this->coordinates);
 }
 
-void ClockComponent::renderHidden(Display& display) const {
+void ClockComponent::renderHidden(display::Display& display) const {
     // const auto renderBuffer = RenderBuffer::empty();
     display.displayText("        ", this->coordinates);
 }

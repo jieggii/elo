@@ -15,12 +15,12 @@ class RenderBuffers {
      * Is equal to the number of characters that can be displayed on the screen minus 3
      * (3 chars are reserved to display notification display time left).
      */
-    static constexpr uint8_t maxTextLen = DisplayDimensions::cols * DisplayDimensions::rows - 3;
+    static constexpr uint8_t maxTextLen = display::dimensions::cols * display::dimensions::rows - 3;
 
     /**
      * Length of the buffer for one line.
      */
-    static constexpr uint8_t bufferLen = DisplayDimensions::cols;
+    static constexpr uint8_t bufferLen = display::dimensions::cols;
 
     /**
      * Number of characters reserved to display seconds left.

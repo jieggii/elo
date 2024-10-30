@@ -87,7 +87,7 @@ class RenderBuffer {
 
     static constexpr char DEGREE_SYMBOL = static_cast<char>(223);  // degree symbol ('°')
 
-    char buffer[DisplayDimensions::cols + 1] = {};  // the underlying buffer for rendering
+    char buffer[display::dimensions::cols + 1] = {};  // the underlying buffer for rendering
 };
 
 void MeasurementsLineComponent::update(const uint32_t now) {
@@ -123,7 +123,7 @@ void MeasurementsLineComponent::update(const uint32_t now) {
     }
 }
 
-void MeasurementsLineComponent::render(Display& display) {
+void MeasurementsLineComponent::render(display::Display& display) {
     // TODO: improve code readability here, because it's hard to distinguish between "state" and "state".
     const auto& state = this->getState();
     if (state.isHidden()) {  // render hidden representation if hidden
@@ -142,19 +142,19 @@ void MeasurementsLineComponent::render(Display& display) {
     }
 }
 
-void MeasurementsLineComponent::renderHidden(Display& display) const {
+void MeasurementsLineComponent::renderHidden(display::Display& display) const {
     const auto renderBuffer = RenderBuffer::empty();
     display.displayText(renderBuffer.getBuffer(), this->coordinates);  // TODO: this has never been tested
 }
 
-void MeasurementsLineComponent::renderMeasurements(Display& display) const {
+void MeasurementsLineComponent::renderMeasurements(display::Display& display) const {
     const auto measurements = this->getState().getMeasurements();
 
     const auto renderBuffer = RenderBuffer::formated(&measurements);
     display.displayText(renderBuffer.getBuffer(), this->coordinates);
 }
 
-void MeasurementsLineComponent::renderMeasurementStatusIcons(Display& display) const {
+void MeasurementsLineComponent::renderMeasurementStatusIcons(display::Display& display) const {
     const auto renderBuffer = RenderBuffer::formated();
     display.displayText(renderBuffer.getBuffer(), {0, this->coordinates.row});
 

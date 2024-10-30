@@ -19,10 +19,10 @@ class IdleView final : public ModeView {
              const settings::EnvironmentEvaluation& envEvalSettings)
         : ModeView(hardware, viewNavigator, nextViewID, {0, 0, 0}, measurementsLineComponentState, envEvalSettings) {}
 
-    void setup(uint32_t now, Display& display) override;
+    void setup(uint32_t now, display::Display& display) override;
     void handleInputs(const uint32_t now) override { ModeView::handleInputs(now); }
     void update(uint32_t now) override;
-    void render(Display& display) override;
+    void render(display::Display& display) override;
     void reset(uint32_t now) override;
 
     ~IdleView() override = default;

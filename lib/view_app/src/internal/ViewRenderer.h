@@ -20,7 +20,7 @@ class ViewRenderer {
      * @param display display to render view on.
      * @param renderInterval rendering interval in milliseconds
      */
-    explicit ViewRenderer(Display& display, const uint16_t renderInterval)
+    explicit ViewRenderer(display::Display& display, const uint16_t renderInterval)
         : display(display), renderTimer(renderInterval) {
         // we can set the timer to 0 here, because the first frame shall be rendered immediately anyway.
         this->renderTimer.set(0);
@@ -48,7 +48,7 @@ class ViewRenderer {
     /**
      * Display to render view on.
      */
-    Display& display;
+    display::Display& display;
 
     /**
      * Timer to control rendering interval.

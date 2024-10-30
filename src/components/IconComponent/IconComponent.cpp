@@ -4,7 +4,7 @@
 
 #include "IconComponent.h"
 
-void IconComponent::render(Display& display) {
+void IconComponent::render(display::Display& display) {
     const auto& state = this->getState();
     if (state.isHidden()) {  // render hidden representation if hidden
         this->renderHidden(display);
@@ -14,6 +14,6 @@ void IconComponent::render(Display& display) {
     display.displayIcon(state.getIconID(), this->coordinates);
 }
 
-void IconComponent::renderHidden(Display& display) const {
+void IconComponent::renderHidden(display::Display& display) const {
     display.displayText(nullptr, this->coordinates);  // TODO: this has never been tested
 }

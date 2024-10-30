@@ -4,7 +4,7 @@
 
 #include "StatusLineComponent.h"
 
-void StatusLineComponent::render(Display& display) {
+void StatusLineComponent::render(display::Display& display) {
     if (const auto& state = this->getState(); state.isHidden()) {
         this->renderHidden(display);
         return;
@@ -18,6 +18,6 @@ void StatusLineComponent::render(Display& display) {
     }
 }
 
-void StatusLineComponent::renderHidden(Display& display) const {
+void StatusLineComponent::renderHidden(display::Display& display) const {
     // TODO: implement if needed
 }

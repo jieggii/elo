@@ -57,7 +57,7 @@ uint8_t getEnvStatusIconID(const env_eval::Evaluation& evaluation) {
         case env_eval::Evaluation::BAD:
             return iconIds::measurementStatus::bad;
         default:
-            return DisplayCGRAMInfo::defaultIconSlot;
+            return display::CGRAM::defaultIconSlot;
     }
 }
 
@@ -79,7 +79,7 @@ ModeView::ModeView(const Hardware hardware, ViewNavigator& viewNavigator, const 
       }),
       envEvalSettings(envEvalSettings) {}
 
-void ModeView::setup(const uint32_t now, Display& display) {
+void ModeView::setup(const uint32_t now, display::Display& display) {
     // cache icons:
     cacheMeasurementStatusIcons(display);
 
@@ -176,7 +176,7 @@ void ModeView::update(const uint32_t now) {
     this->components.measurementsLine.update(now);
 }
 
-void ModeView::render(Display& display) {
+void ModeView::render(display::Display& display) {
     if (this->isDisplayingFlashNotification) {
         // render flash notification if displaying it:
         this->components.flashNotification.render(display);
@@ -193,7 +193,7 @@ void ModeView::render(Display& display) {
     }
 }
 
-void ModeView::cacheModeIndicatorIcons(Display& display, const Icon* icon1, const Icon* icon2) {
+void ModeView::cacheModeIndicatorIcons(display::Display& display, const Icon* icon1, const Icon* icon2) {
     display.cacheIcon(iconIds::modeIndicator::indicator1, icon1);
     display.cacheIcon(iconIds::modeIndicator::indicator2, icon2);
 }
@@ -213,7 +213,7 @@ void ModeView::displayFlashNotification(const uint32_t now, const char* text, co
 
 void ModeView::navigateToNextView() const { this->viewNavigator.navigateTo(this->nextViewID); }
 
-void ModeView::cacheMeasurementStatusIcons(Display& display) {
+void ModeView::cacheMeasurementStatusIcons(display::Display& display) {
     display.cacheIcon(iconIds::measurementStatus::optimal, &icon::measurementStatus::optimal);
     display.cacheIcon(iconIds::measurementStatus::acceptable, &icon::measurementStatus::acceptable);
     display.cacheIcon(iconIds::measurementStatus::bad, &icon::measurementStatus::bad);
