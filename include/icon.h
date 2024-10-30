@@ -7,8 +7,17 @@
 
 #include "Icon.h"
 
+/**
+ * All icons displayed by various views.
+ */
 namespace icon {
+    /**
+     * Mode indicators used by various modes.
+     */
     namespace modeIndicator {
+        /**
+         * Mode indicators for the idle mode.
+         */
         namespace idle {
             constexpr Icon modeIcon1 = {
                 // empty icon
@@ -21,6 +30,9 @@ namespace icon {
             };
         }  // namespace idle
 
+        /**
+         * Mode indicators for the stand mode.
+         */
         namespace stand {
             constexpr Icon modeIcon1 = {
                 // person standing
@@ -34,6 +46,9 @@ namespace icon {
         }  // namespace stand
     }  // namespace modeIndicator
 
+    /**
+     * Icons representing environmental measurement evaluations.
+     */
     namespace measurementsStatus {
         constexpr Icon optimal = {
             // icon representing smiling face :)
