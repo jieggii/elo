@@ -45,7 +45,7 @@ namespace UI {
                        .selectButton = Hardware::selectButton,
                        .buzzer = Hardware::buzzer},
                       APP.getViewNavigator(), view_index::stand, StaticComponentStates::measurementsLineComponentState,
-                      defaultSettings.environment);
+                      default_settings::defaultSettings.environment);
 
         StandView stand({{
                              .envSensor = Hardware::envSensor,
@@ -56,7 +56,7 @@ namespace UI {
                              .actionButton = Hardware::actionButton,
                          }},
                         APP.getViewNavigator(), view_index::sit, StaticComponentStates::measurementsLineComponentState,
-                        defaultSettings.environment, defaultSettings.standWorkMode);
+                        default_settings::defaultSettings.environment, default_settings::defaultSettings.standWorkMode);
 
         SitView sit({{
                          .envSensor = Hardware::envSensor,
@@ -67,7 +67,7 @@ namespace UI {
                          .actionButton = Hardware::actionButton,
                      }},
                     APP.getViewNavigator(), view_index::idle, StaticComponentStates::measurementsLineComponentState,
-                    defaultSettings.environment, defaultSettings.sitWorkMode);
+                    default_settings::defaultSettings.environment, default_settings::defaultSettings.sitWorkMode);
 
     }  // namespace Views
 }  // namespace UI
