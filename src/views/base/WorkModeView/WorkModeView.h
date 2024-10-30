@@ -65,7 +65,7 @@ class WorkModeView : public TimedModeView {
             // play posture reminder if it is time to:
             if (this->postureReminderTimer.isExpired(now)) {
                 debug_println("POSTURE REMINDER timer expired");
-                this->ModeView::hardware.buzzer.scheduleMelody(SFX::postureReminder, std::size(SFX::postureReminder));
+                this->ModeView::hardware.buzzer.scheduleMelody(sfx::postureReminder, std::size(sfx::postureReminder));
                 this->postureReminderTimer.set(now);
 
                 this->displayFlashNotification(

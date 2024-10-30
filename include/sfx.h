@@ -10,7 +10,7 @@
 #include "Note.h"
 #include "tone.h"
 
-namespace SFX {
+namespace sfx {
     /**
      * Sound effect that is played when the device is booted.
      */
@@ -59,6 +59,6 @@ namespace SFX {
     constexpr Note measurementsAvailable[] = {{.frequency = Tone::C4, .duration = 15, .pauseDuration = 0},
                                               {.frequency = Tone::E5, .duration = 30, .pauseDuration = 0}};
 
-}  // namespace SFX
+}  // namespace sfx
 
 #endif  // SFX_H

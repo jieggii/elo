@@ -90,7 +90,7 @@ void initHardware() {
     // init buzzer:
     // TODO: move magic numbers frequencies to constants; move melody to a separate file
     Hardware::buzzer.init();
-    Hardware::buzzer.scheduleMelody(SFX::boot, std::size(SFX::boot));
+    Hardware::buzzer.scheduleMelody(sfx::boot, std::size(sfx::boot));
 }
 
 /**

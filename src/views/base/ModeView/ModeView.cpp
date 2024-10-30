@@ -97,7 +97,7 @@ void ModeView::handleInputs(const uint32_t now) {
 
     // navigate to the next view if the select button is pressed:
     if (this->hardware.selectButton.isActuated()) {
-        this->hardware.buzzer.scheduleMelody(SFX::switchView, std::size(SFX::switchView));
+        this->hardware.buzzer.scheduleMelody(sfx::switchView, std::size(sfx::switchView));
         this->navigateToNextView();
     }
 }
@@ -158,7 +158,7 @@ void ModeView::update(const uint32_t now) {
 
             if (!measurementsLineState.isDisplayMeasurementStatusIcons()) {
                 // play a melody and start displaying measurements if they are available for the first time:
-                this->hardware.buzzer.scheduleMelody(SFX::measurementsAvailable, std::size(SFX::measurementsAvailable));
+                this->hardware.buzzer.scheduleMelody(sfx::measurementsAvailable, std::size(sfx::measurementsAvailable));
                 measurementsLineState.setDisplayMeasurementStatusIcons(true);
                 measurementsLineState.getDisplayMeasurementsTimer().set(now);
             }

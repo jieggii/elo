@@ -79,13 +79,13 @@ class TimedModeView : public ModeView {
         if (this->hardware.actionButton.isActuated()) {
             if (!this->paused) {
                 // play a pause sfx:
-                this->ModeView::hardware.buzzer.scheduleMelody(SFX::pause, std::size(SFX::pause));
+                this->ModeView::hardware.buzzer.scheduleMelody(sfx::pause, std::size(sfx::pause));
 
                 // pause the view:
                 this->pause(now);
             } else {
                 // play a resume sfx:
-                this->ModeView::hardware.buzzer.scheduleMelody(SFX::resume, std::size(SFX::resume));
+                this->ModeView::hardware.buzzer.scheduleMelody(sfx::resume, std::size(sfx::resume));
 
                 // resume the view:
                 this->resume(now);
