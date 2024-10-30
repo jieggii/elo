@@ -44,6 +44,20 @@ namespace icon {
                 0b00000, 0b00000, 0b00000, 0b00000, 0b11111, 0b01010, 0b01010, 0b01010,
             };
         }  // namespace stand
+
+        /**
+         * Mode indicators for the sit mode.
+         */
+        namespace sit {
+            constexpr Icon modeIcon1 = {
+                // person sitting
+                0b00000, 0b01110, 0b01110, 0b00100, 0b00111, 0b00100, 0b00100, 0b00111};
+
+            constexpr Icon modeIcon2 = {
+                // table in the sitting position
+                0b00000, 0b00000, 0b00000, 0b00000, 0b00000, 0b11111, 0b01010, 0b01010,
+            };
+        }  // namespace sit
     }  // namespace modeIndicator
 
     /**

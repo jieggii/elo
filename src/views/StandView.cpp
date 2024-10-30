@@ -3,6 +3,7 @@
 //
 
 #include "icon.h"
+
 #include "StandView.h"
 
 void StandView::setup(const uint32_t now, Display& display) {

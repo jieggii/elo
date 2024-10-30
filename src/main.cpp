@@ -16,6 +16,8 @@
 
 #include "App.h"
 
+#include <views/SitView.h>
+
 constexpr uint16_t serialBaudRate = 9600;
 
 namespace Hardware {
@@ -44,6 +46,7 @@ namespace UI {
                        .buzzer = Hardware::buzzer},
                       APP.getViewNavigator(), STAND_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
                       defaultSettings.environment);
+
         StandView stand({{
                              .envSensor = Hardware::envSensor,
                              .selectButton = Hardware::selectButton,
@@ -52,8 +55,19 @@ namespace UI {
                          {
                              .actionButton = Hardware::actionButton,
                          }},
-                        APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
+                        APP.getViewNavigator(), SIT_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
                         defaultSettings.environment, defaultSettings.standWorkMode);
+
+        SitView sit({{
+                         .envSensor = Hardware::envSensor,
+                         .selectButton = Hardware::selectButton,
+                         .buzzer = Hardware::buzzer,
+                     },
+                     {
+                         .actionButton = Hardware::actionButton,
+                     }},
+                    APP.getViewNavigator(), IDLE_VIEW_INDEX, StaticComponentStates::measurementsLineComponentState,
+                    defaultSettings.environment, defaultSettings.sitWorkMode);
 
     }  // namespace Views
 }  // namespace UI
@@ -85,6 +99,7 @@ void initHardware() {
 void registerAppViews() {
     UI::APP.registerView(IDLE_VIEW_INDEX, &UI::Views::idle);
     UI::APP.registerView(STAND_VIEW_INDEX, &UI::Views::stand);
+    UI::APP.registerView(SIT_VIEW_INDEX, &UI::Views::sit);
 }
 
 void setup() {
