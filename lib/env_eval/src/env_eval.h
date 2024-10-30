@@ -5,6 +5,8 @@
 #ifndef ENV_EVAL_H
 #define ENV_EVAL_H
 
+#include <cmath>
+
 // TODO: should we use a namespace here?
 // consider wrapping all modules to namespaces.
 namespace env_eval {
@@ -21,9 +23,9 @@ namespace env_eval {
      * Represents the evaluation of a value.
      */
     enum class Evaluation {
-        OPTIMAL,
-        ACCEPTABLE,
-        BAD,
+        BAD = 1,
+        ACCEPTABLE = 2,
+        OPTIMAL = 3,
     };
 
     /**
@@ -58,6 +60,18 @@ namespace env_eval {
         }
 
         return Evaluation::BAD;
+    }
+
+    /**
+     * Calculates the average evaluation from an array of evaluations.
+     * @param evaluations evaluations to average.
+     * TODO: do we need to pass evaluations as a variadic template?
+     */
+    template <typename... Evaluations>
+    Evaluation averageEvaluation(Evaluations... evaluations) {
+        const uint8_t sum = (static_cast<uint8_t>(evaluations) + ...);
+        const auto avg = static_cast<uint8_t>(round(static_cast<double>(sum) / sizeof...(evaluations)));
+        return static_cast<Evaluation>(avg);
     }
 
 }  // namespace env_eval

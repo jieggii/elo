@@ -45,15 +45,51 @@ void ModeView::update(const uint32_t now) {
 
     // perform measurements if it is time to do so:
     if (this->measurementsTimer.isExpired(now)) {
-        debug_println("performing measurements...");
         this->measurementsTimer.set(now);
 
-        if (const auto measurements = this->hardware.envSensor.readMeasurements(); measurements.fresh) {
-            this->updateStatusLineState(measurements);
-            this->updateMeasurementsLineState(measurements);
-            debug_println("measurements available");
-        } else {
-            debug_println("measurements are not fresh yet");
+        if (const EnvSensorMeasurements measurements = this->hardware.envSensor.readMeasurements();
+            measurements.fresh) {
+            // evaluate measurements:
+            const env_eval::Evaluation temperatureEval = env_eval::evaluateByRange<temperatureType>(
+                measurements.temperature, this->envEvalSettings.temperature.optimal,
+                this->envEvalSettings.temperature.acceptable);
+
+            const env_eval::Evaluation humidityEval =
+                env_eval::evaluateByRange<humidityType>(measurements.humidity, this->envEvalSettings.humidity.optimal,
+                                                        this->envEvalSettings.humidity.acceptable);
+
+            const env_eval::Evaluation co2Eval = env_eval::evaluateByMax<co2Type>(
+                measurements.co2, this->envEvalSettings.co2.max_optimal, this->envEvalSettings.co2.max_acceptable);
+
+            const env_eval::Evaluation overallEval =
+                env_eval::averageEvaluation(temperatureEval, humidityEval, co2Eval);
+
+            // get status icons for measurements according to their evaluations:
+            const uint8_t temperatureStatusIconID = getEnvStatusIconID(temperatureEval);
+            const uint8_t humidityStatusIconID = getEnvStatusIconID(humidityEval);
+            const uint8_t co2StatusIconID = getEnvStatusIconID(co2Eval);
+
+            const uint8_t overallStatusIconID = getEnvStatusIconID(overallEval);
+
+            // TODO: play a sound if it is the first time when measurements available
+            // TODO: show a notification when the env conditions are changed
+
+            // update measurements line:
+            MeasurementsLineComponentState& measurementsLineState = this->components.measurementsLine.getState();
+
+            measurementsLineState.setMeasurements(
+                MeasurementsLineComponentState::Measurements::fromEnvSensorMeasurements(&measurements));
+
+            measurementsLineState.setMeasurementStatusIconIDs(
+                {.temperature = temperatureStatusIconID, .humidity = humidityStatusIconID, .co2 = co2StatusIconID});
+
+            measurementsLineState.setDisplayMeasurementStatusIcons(true);
+
+            // update status line:
+            StatusLineComponentState& statusLineState = this->components.statusLine.getState();
+
+            statusLineState.getMeasurementsStatusIconsComponentState().setIconID(overallStatusIconID);
+            statusLineState.setDisplayMeasurementsStatusIcon(true);
         }
     }
 
@@ -121,25 +157,3 @@ void ModeView::cacheMeasurementStatusIcons(Display& display) {
 }
 
 void ModeView::reset(const uint32_t now) {}
-
-void ModeView::updateMeasurementsLineState(const EnvSensorMeasurements& measurements) const {
-    auto& measurementsLineState = this->components.measurementsLine.getState();
-
-    measurementsLineState.setMeasurements(
-        MeasurementsLineComponentState::Measurements::fromEnvSensorMeasurements(&measurements));
-
-    // TODO: assess measurements and set status icons accordingly
-    measurementsLineState.setMeasurementStatusIconIDs({.temperature = ModeViewIconIDs::measurementStatusOptimal,
-                                                       .humidity = ModeViewIconIDs::measurementStatusAcceptable,
-                                                       .co2 = ModeViewIconIDs::measurementStatusBad});
-
-    measurementsLineState.setDisplayMeasurementStatusIcons(true);
-}
-
-void ModeView::updateStatusLineState(const EnvSensorMeasurements& measurements) const {
-    auto& statusLineState = this->components.statusLine.getState();
-
-    // TODO: assess measurements and set status icon accordingly
-    statusLineState.getMeasurementsStatusIconsComponentState().setIconID(ModeViewIconIDs::measurementStatusBad);
-    statusLineState.setDisplayMeasurementsStatusIcon(true);
-}

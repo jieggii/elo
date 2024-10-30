@@ -7,6 +7,7 @@
 
 #include <cstdint>
 
+#include "EnvSensor.h"
 #include "env_eval.h"
 
 // TODO: decide which work mode should be first: stand or sit.
@@ -16,18 +17,18 @@ namespace settings {
      */
     struct EnvironmentEvaluation {
         struct Temperature {
-            env_eval::ValueRange<float> optimal;     // optimal temperature range
-            env_eval::ValueRange<float> acceptable;  // acceptable temperature range
+            env_eval::ValueRange<temperatureType> optimal;     // optimal temperature range
+            env_eval::ValueRange<temperatureType> acceptable;  // acceptable temperature range
         } temperature;
 
         struct Humidity {
-            env_eval::ValueRange<uint8_t> optimal;     // optimal humidity range
-            env_eval::ValueRange<uint8_t> acceptable;  // acceptable humidity range
+            env_eval::ValueRange<humidityType> optimal;     // optimal humidity range
+            env_eval::ValueRange<humidityType> acceptable;  // acceptable humidity range
         } humidity;
 
         struct CO2 {
-            uint16_t max_optimal;     // optimal max CO2 value (ppm)
-            uint16_t max_acceptable;  // acceptable max CO2 value (ppm)
+            co2Type max_optimal;     // optimal max CO2 value (ppm)
+            co2Type max_acceptable;  // acceptable max CO2 value (ppm)
         } co2;
     };
 

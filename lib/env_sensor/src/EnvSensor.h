@@ -10,6 +10,12 @@
 
 #include <debug_print.h>
 
+// TODO: add a namespace for the library
+
+using temperatureType = float;
+using humidityType = float;
+using co2Type = uint16_t;
+
 /**
  * Measurements from the environmental sensor.
  */
@@ -18,9 +24,10 @@ struct EnvSensorMeasurements {
      * Indicates whether the measurements are fresh or not.
      */
     bool fresh;
-    float temperature;
-    float humidity;
-    uint16_t co2;
+
+    temperatureType temperature;
+    humidityType humidity;
+    co2Type co2;
 };
 
 /**

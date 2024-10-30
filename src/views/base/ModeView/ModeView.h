@@ -121,7 +121,7 @@ class ModeView : public View {
 
     void reset(uint32_t now) override;
 
-    ~ModeView() override = default;
+    ~ModeView() override = default;  // TODO: check if it is necessary to define destructor
 
    protected:
     struct Components {
@@ -210,14 +210,25 @@ class ModeView : public View {
      */
     const settings::EnvironmentEvaluation& envEvalSettings;
 
-    void updateMeasurementsLineState(const EnvSensorMeasurements& measurements) const;
-    void updateStatusLineState(const EnvSensorMeasurements& measurements) const;
-
     /**
      * Caches measurement status icons.
      * @param display reference to display.
      */
     static void cacheMeasurementStatusIcons(Display& display);
 };
+
+// TODO: move to a cpp file
+inline uint8_t getEnvStatusIconID(const env_eval::Evaluation& eval) {
+    switch (eval) {
+        case env_eval::Evaluation::OPTIMAL:
+            return ModeViewIconIDs::measurementStatusOptimal;
+        case env_eval::Evaluation::ACCEPTABLE:
+            return ModeViewIconIDs::measurementStatusAcceptable;
+        case env_eval::Evaluation::BAD:
+            return ModeViewIconIDs::measurementStatusBad;
+        default:
+            return DisplayCGRAMInfo::defaultIconSlot;
+    }
+}
 
 #endif  // MODEVIEW_H
