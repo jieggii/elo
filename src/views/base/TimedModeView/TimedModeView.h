@@ -64,9 +64,9 @@ class TimedModeView : public ModeView {
           viewTimer(Timer(duration)) {}
 
     void setup(const uint32_t now, Display& display) override {
-        this->viewTimer.set(now);  // set the view timer
-        this->blinkClockTimer.set(now);
-        this->pause(now);  // pause the view on setup
+        this->viewTimer.set(now);              // set the view timer
+        this->resetStatusLineClockState(now);  // reset the clock component state
+        this->pause(now);                      // pause the view on setup
 
         this->ModeView::setup(now, display);
     }
@@ -178,6 +178,14 @@ class TimedModeView : public ModeView {
     Timer blinkClockTimer = Timer(TimedModeViewSettings::statusLineClockBlinkIntervalWhenPaused);
 
     /**
+     * Resets the clock component state and the blink clock timer.
+     */
+    void resetStatusLineClockState(const uint32_t now) {
+        this->blinkClockTimer.set(now);
+        this->components.statusLine.getState().getClockComponentState().show();
+    }
+
+    /**
      * Pauses the view.
      */
     void pause(const uint32_t now) {
@@ -200,9 +208,8 @@ class TimedModeView : public ModeView {
         // resume view timer:
         this->viewTimer.resume(now);
 
-        // show the clock component:
-        // this is needed for the case when user resumed the view when the clock component was hidden
-        this->components.statusLine.getState().getClockComponentState().show();
+        // reset status line clock state:
+        this->resetStatusLineClockState(now);
     }
 
     /**
