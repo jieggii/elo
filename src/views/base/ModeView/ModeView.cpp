@@ -2,8 +2,7 @@
 // Created by jieggii on 10/5/24.
 //
 
-#include "binary.h"
-
+#include "icon.h"
 #include "sfx.h"
 
 #include "ModeView.h"
@@ -140,25 +139,9 @@ void ModeView::displayFlashNotification(const uint32_t now, const char* text, co
 }
 
 void ModeView::cacheMeasurementStatusIcons(Display& display) {
-    // TODO: move icons to a separate file
-    constexpr Icon statusOptimalIcon = {
-        // icon representing face :)
-        B00000, B01010, B01010, B00000, B10001, B01110, B00000, B00000,
-    };
-
-    constexpr Icon statusAcceptableIcon = {
-        // icon representing face :|
-        B00000, B01010, B01010, B00000, B00000, B11111, B00000, B00000,
-    };
-
-    constexpr Icon statusBadIcon = {
-        // icon representing face :(
-        B00000, B01010, B01010, B00000, B00000, B01110, B10001, B00000,
-    };
-
-    display.cacheIcon(ModeViewIconIDs::measurementStatusOptimal, &statusOptimalIcon);
-    display.cacheIcon(ModeViewIconIDs::measurementStatusAcceptable, &statusAcceptableIcon);
-    display.cacheIcon(ModeViewIconIDs::measurementStatusBad, &statusBadIcon);
+    display.cacheIcon(ModeViewIconIDs::measurementStatusOptimal, &icon::measurementsStatus::optimal);
+    display.cacheIcon(ModeViewIconIDs::measurementStatusAcceptable, &icon::measurementsStatus::acceptable);
+    display.cacheIcon(ModeViewIconIDs::measurementStatusBad, &icon::measurementsStatus::bad);
 }
 
 void ModeView::reset(const uint32_t now) {}

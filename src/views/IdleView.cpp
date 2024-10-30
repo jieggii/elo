@@ -1,20 +1,9 @@
-#include "binary.h"
+#include "icon.h"
 
 #include "IdleView.h"
 
 void IdleView::setup(const uint32_t now, Display& display) {
-    // TODO: move icons to a separate file
-    constexpr Icon modeIcon1 = {
-        // empty icon
-        B00000, B00000, B00000, B00000, B00000, B00000, B00000, B00000,
-    };
-
-    constexpr Icon modeIcon2 = {
-        // table
-        B00000, B00000, B00000, B00000, B11111, B01010, B01010, B01010,
-    };
-
-    cacheModeIndicatorIcons(display, &modeIcon1, &modeIcon2);
+    cacheModeIndicatorIcons(display, &icon::modeIndicator::idle::modeIcon1, &icon::modeIndicator::idle::modeIcon2);
 
     this->ModeView::setup(now, display);
 }
