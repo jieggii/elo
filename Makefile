@@ -15,6 +15,11 @@ fmt:
 	done
 	@echo "Done!"
 
+.PHONY: build-debug
+build-debug:
+	@echo "Building debug release..."
+	pio run -e debug -t size
+
 .PHONY: run-debug
 run-debug:
 	@echo "Building debug release and uploading to the board..."
