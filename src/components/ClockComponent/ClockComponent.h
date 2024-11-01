@@ -7,6 +7,7 @@
 
 /**
  * ClockComponent represents a clock which displays hours, minutes and seconds.
+ * TODO: store render buffer inside of the component, do not create a new instance every render() call.
  */
 class ClockComponent final : public ViewComponent<ClockComponentState&> {
    public:
