@@ -29,7 +29,7 @@ namespace Hardware {
 }  // namespace Hardware
 
 namespace UI {
-    constexpr uint16_t viewRenderInterval = 17;      // 58.823529 fps
+    constexpr uint16_t viewRenderInterval = 33;      // 30.303030303030305 fps
     App APP(Hardware::display, viewRenderInterval);  // app instance
 
     namespace StaticComponentStates {
