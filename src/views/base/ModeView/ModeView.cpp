@@ -150,14 +150,13 @@ void ModeView::update(const uint32_t now) {
             measurementsLineState.setMeasurements(
                 MeasurementsLineComponentState::Measurements::fromEnvSensorMeasurements(&measurements));
 
-            measurementsLineState.setMeasurementStatusIconIDs(
+            measurementsLineState.setMeasurementEvaluationIconIDs(
                 {.temperature = temperatureStatusIconID, .humidity = humidityStatusIconID, .co2 = co2StatusIconID});
 
-            if (!measurementsLineState.isDisplayMeasurementStatusIcons()) {
+            if (!measurementsLineState.areMeasurementsAvailable()) {
                 // play a melody and start displaying measurements if they are available for the first time:
                 this->hardware.buzzer.scheduleMelody(sfx::measurementsAvailable, std::size(sfx::measurementsAvailable));
-                measurementsLineState.setDisplayMeasurementStatusIcons(true);
-                measurementsLineState.getDisplayMeasurementsTimer().set(now);
+                measurementsLineState.setMeasurementsAvailable(now);
             }
 
             // update status line:

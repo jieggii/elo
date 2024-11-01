@@ -4,9 +4,15 @@
 
 #include "MeasurementsLineComponentState.h"
 
-Timer& MeasurementsLineComponentState::getDisplayMeasurementsTimer() { return this->displayMeasurementsTimer; }
+uint32_t MeasurementsLineComponentState::getDisplayMeasurementsDuration() const {
+    return this->displayMeasurementsDuration;
+}
 
-Timer& MeasurementsLineComponentState::getDisplayStatusesTimer() { return this->displayStatusesTimer; }
+uint32_t MeasurementsLineComponentState::getDisplayEvaluationsDuration() const {
+    return this->displayEvaluationsDuration;
+}
+
+Timer& MeasurementsLineComponentState::getSwitchStateTimer() { return this->switchStateTimer; }
 
 Timer& MeasurementsLineComponentState::getUpdateMeasurementsTimer() { return this->updateMeasurementsTimer; }
 
@@ -14,29 +20,32 @@ void MeasurementsLineComponentState::setMeasurements(const Measurements measurem
     this->measurements = measurements;
 }
 
-MeasurementsLineComponentState::Measurements& MeasurementsLineComponentState::getMeasurements() {
+void MeasurementsLineComponentState::setMeasurementEvaluationIconIDs(const MeasurementEvaluationIconIDs iconIDs) {
+    this->measurementEvaluationIconIDs = iconIDs;
+}
+
+const MeasurementsLineComponentState::Measurements& MeasurementsLineComponentState::getMeasurements() const {
     return this->measurements;
 }
 
-void MeasurementsLineComponentState::setState(const State state) { this->state = state; }
-
-MeasurementsLineComponentState::State MeasurementsLineComponentState::getState() const { return this->state; }
-
-void MeasurementsLineComponentState::setMeasurementStatusIconIDs(const MeasurementStatusIconIDs iconIDs) {
-    this->measurementStatusIconIDs = iconIDs;
+MeasurementsLineComponentState::MeasurementEvaluationIconIDs
+MeasurementsLineComponentState::getMeasurementEvaluationIconIDs() const {
+    return this->measurementEvaluationIconIDs;
 }
 
-MeasurementsLineComponentState::MeasurementStatusIconIDs MeasurementsLineComponentState::getMeasurementStatusIconIDs() {
-    return this->measurementStatusIconIDs;
+void MeasurementsLineComponentState::setDisplayingEvaluation(const bool displayingEvaluations) {
+    this->displayingEvaluations = displayingEvaluations;
 }
 
-bool MeasurementsLineComponentState::isDisplayMeasurementStatusIcons() const {
-    return this->displayMeasurementStatusIcons;
+bool MeasurementsLineComponentState::isDisplayingEvaluation() const { return this->displayingEvaluations; }
+
+void MeasurementsLineComponentState::setMeasurementsAvailable(const uint32_t now) {
+    // setup and set timer switchStateTimer:
+    this->switchStateTimer.setDuration(this->displayMeasurementsDuration);
+    this->switchStateTimer.set(now);
+
+    // update flag:
+    this->measurementsAvailable = true;
 }
 
-void MeasurementsLineComponentState::setDisplayMeasurementStatusIcons(const bool displayMeasurementStatusIcons) {
-    this->displayMeasurementStatusIcons = displayMeasurementStatusIcons;
-
-    // set displayMeasurementsTimer so that measurements are displayed once again:
-    // this->displayMeasurementsTimer.set(now);
-}
+bool MeasurementsLineComponentState::areMeasurementsAvailable() const { return this->measurementsAvailable; }

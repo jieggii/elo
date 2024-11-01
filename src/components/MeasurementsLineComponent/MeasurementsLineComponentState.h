@@ -14,13 +14,8 @@
 
 class MeasurementsLineComponentState final : public ViewComponentState {
    public:
-    enum class State {
-        DISPLAYING_MEASUREMENTS,  // measurements are displayed
-        DISPLAYING_STATUSES,      // icons representing measurement statuses are displayed
-    };
-
     /**
-     * Icon IDs representing statuses of each measurement.
+     * Environmental measurements.
      */
     struct Measurements {
         uint8_t temperature;
@@ -39,55 +34,60 @@ class MeasurementsLineComponentState final : public ViewComponentState {
         }
     };
 
-    struct MeasurementStatusIconIDs {
+    /**
+     * Icon IDs representing evaluations of each measurement.
+     */
+    struct MeasurementEvaluationIconIDs {
         uint8_t temperature;
         uint8_t humidity;
         uint8_t co2;
     };
 
     /**
-     * Create a new MeasurementsLineComponentState.
+     * Constructor.
      * @param displayMeasurementsDuration how long to display measurements in milliseconds.
-     * @param displayStatusesDuration how long to display measurement statuses in milliseconds.
+     * @param displayEvaluationsDuration how long to display measurement evaluations in milliseconds.
      */
-    MeasurementsLineComponentState(const uint32_t displayMeasurementsDuration, const uint32_t displayStatusesDuration)
-        : measurementStatusIconIDs({.temperature = display::CGRAM::defaultIconSlot,
-                                    .humidity = display::CGRAM::defaultIconSlot,
-                                    .co2 = display::CGRAM::defaultIconSlot}),
-          displayMeasurementsTimer(Timer(displayMeasurementsDuration)),
-          displayStatusesTimer(Timer(displayStatusesDuration)) {}
+    MeasurementsLineComponentState(const uint32_t displayMeasurementsDuration,
+                                   const uint32_t displayEvaluationsDuration)
+        : displayMeasurementsDuration(displayMeasurementsDuration),
+          displayEvaluationsDuration(displayEvaluationsDuration) {}
 
-    void setMeasurementStatusIconIDs(MeasurementStatusIconIDs iconIDs);
-    MeasurementStatusIconIDs getMeasurementStatusIconIDs();
+    [[nodiscard]] uint32_t getDisplayMeasurementsDuration() const;
+    [[nodiscard]] uint32_t getDisplayEvaluationsDuration() const;
 
-    Timer& getDisplayMeasurementsTimer();
-    Timer& getDisplayStatusesTimer();
+    void setMeasurementEvaluationIconIDs(MeasurementEvaluationIconIDs iconIDs);
+    [[nodiscard]] MeasurementEvaluationIconIDs getMeasurementEvaluationIconIDs() const;
+
+    void setDisplayingEvaluation(bool displayingEvaluations);
+    [[nodiscard]] bool isDisplayingEvaluation() const;
+
+    /**
+     * Sets measurements available flag to true.
+     */
+    void setMeasurementsAvailable(uint32_t now);
+
+    /**
+     * Returns true if measurements are available.
+     */
+    [[nodiscard]] bool areMeasurementsAvailable() const;
+
+    Timer& getSwitchStateTimer();
     Timer& getUpdateMeasurementsTimer();
 
     void setMeasurements(Measurements measurements);
-    Measurements& getMeasurements();
-
-    void setState(State state);
-    [[nodiscard]] State getState() const;
-
-    void setDisplayMeasurementStatusIcons(bool displayMeasurementStatusIcons);
-    [[nodiscard]] bool isDisplayMeasurementStatusIcons() const;
+    [[nodiscard]] const Measurements& getMeasurements() const;
 
    private:
     /**
-     * Icon IDs representing statuses of each measurement.
+     * Duration of displaying measurements.
      */
-    MeasurementStatusIconIDs measurementStatusIconIDs;
+    const uint32_t displayMeasurementsDuration;
 
     /**
-     * Timer controlling how long measurements are displayed.
+     * Duration of displaying evaluations.
      */
-    Timer displayMeasurementsTimer;
-
-    /**
-     * Timer controlling how long measurement statuses are displayed.
-     */
-    Timer displayStatusesTimer;
+    const uint32_t displayEvaluationsDuration;
 
     /**
      * Timer indicating when it is time to update measurements.
@@ -95,19 +95,32 @@ class MeasurementsLineComponentState final : public ViewComponentState {
     Timer updateMeasurementsTimer;
 
     /**
-     * Current measurements to display.
+     * Flag indicating whether measurement evaluations should be displayed.
      */
-    Measurements measurements = {.temperature = 0, .humidity = 0, .co2 = 0};
+    bool displayingEvaluations = false;
 
     /**
-     * Current state of the component.
+     * Environmental measurements.
      */
-    State state = State::DISPLAYING_MEASUREMENTS;
+    Measurements measurements = Measurements{.temperature = 0, .humidity = 0, .co2 = 0};
 
     /**
-     * Whether to display measurement status icons.
+     * Timer controlling state switching.
      */
-    bool displayMeasurementStatusIcons = false;
+    Timer switchStateTimer = Timer();
+
+    /**
+     * Flag indicating whether measurements are available.
+     * Measurement evaluation icons will be displayed only when measurements available.
+     */
+    bool measurementsAvailable = false;
+
+    /**
+     * Icon IDs representing statuses of each measurement.
+     */
+    MeasurementEvaluationIconIDs measurementEvaluationIconIDs = {.temperature = display::CGRAM::defaultIconSlot,
+                                                                 .humidity = display::CGRAM::defaultIconSlot,
+                                                                 .co2 = display::CGRAM::defaultIconSlot};
 };
 
 #endif  // MEASUREMENTSLINECOMPONENTSTATE_H
