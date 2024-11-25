@@ -16,10 +16,10 @@ Elo makes it easy to stay aware of your surroundings and take better care of you
 
 ## MVP includes
 
-- [ ] Device in a 3d-printed case.
-- [ ] Measurements and their evaluations are displayed on the LCD screen.
-- [ ] Configuration of the device using the source code file (`inclde/default_config.h`).
-- [ ] Posture reminder notifications.
+- [x] Device in a 3d-printed case.
+- [x] Measurements and their evaluations are displayed on the LCD screen.
+- [x] Configuration of the device using the source code file (`inclde/default_config.h`).
+- [x] Posture reminder notifications.
 
 ## Post-MVP plans
 
