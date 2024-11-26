@@ -28,6 +28,8 @@ Elo makes it easy to stay aware of your surroundings and take better care of you
 - [ ] Bug fixes and improvements to the code.
 - [ ] Add Wi-Fi support to be able to integrate with other devices.
 - [ ] User-friendly configuration.
+- [ ] Display clock in the idle mode using RTC
+- [ ] Light sensor to evaluate room lighting
 
 ## Pinout
 
