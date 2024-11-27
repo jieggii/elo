@@ -58,7 +58,7 @@ void MeasurementsLineComponent::render(display::Display& display) {
             state.getMeasurementEvaluationIconIDs();
         display.displayIcon(iconIds.temperature, {1, this->coordinates.row});
         display.displayIcon(iconIds.humidity, {6, this->coordinates.row});
-        display.displayIcon(iconIds.temperature, {12, this->coordinates.row});
+        display.displayIcon(iconIds.co2, {12, this->coordinates.row});
 
     } else {
         // add measurements to the buffer if they are not present:
