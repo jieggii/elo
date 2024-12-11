@@ -1,4 +1,5 @@
 # elo (MVP)
+![preview](https://imgur.com/fbLqtCQ.jpg)
 
 Elo is a small, practical device designed to make your workspace more comfortable and efficient.
 It keeps track of the temperature, humidity, and CO2 levels in your room, showing the results clearly on its LCD screen.
